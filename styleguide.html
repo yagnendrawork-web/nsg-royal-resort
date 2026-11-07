@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design System & Styleguide | NSG Royal Resort</title>
+  <meta name="description" content="Component and token styleguide for NSG Royal Resort.">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <style>
+    .sg-section {
+      margin-bottom: var(--space-16);
+      padding-bottom: var(--space-12);
+      border-bottom: 1px solid var(--gold-light);
+    }
+    .sg-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: var(--space-4);
+      margin-top: var(--space-6);
+    }
+    .sg-color-card {
+      border-radius: var(--r-card);
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: var(--shadow-soft);
+      background: var(--ivory);
+    }
+    .sg-color-swatch {
+      height: 90px;
+      width: 100%;
+    }
+    .sg-color-info {
+      padding: var(--space-3);
+      font-size: 0.8125rem;
+    }
+    .sg-color-name {
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .sg-color-hex {
+      color: var(--muted);
+      font-family: monospace;
+    }
+    .sg-ratio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-6);
+      margin-top: var(--space-6);
+    }
+  </style>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="assets/img/manifest.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+</head>
+<body>
+  <!-- Header Partial -->
+  <header class="site-header" id="site-header">
+  <div class="container header-container">
+    <a href="index.html" class="header-brand" aria-label="NSG Royal Resort Home">
+      <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="header-logo" width="160" height="160">
+    </a>
+
+    <nav class="header-nav" id="header-nav" aria-label="Main Navigation">
+      <div class="nav-capsule">
+        <span class="nav-indicator" aria-hidden="true"></span>
+        <ul class="nav-list">
+          <li><a href="stay.html" class="nav-link">Stay</a></li>
+          <li><a href="amenities.html" class="nav-link">Amenities</a></li>
+          <li><a href="dining.html" class="nav-link">Dining</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="policies.html" class="nav-link">Policies</a></li>
+        </ul>
+      </div>
+      <div class="mobile-menu-actions">
+        <a href="https://wa.me/[TBD: WHATSAPP]" class="mobile-menu-pill" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+        <a href="tel:[TBD: PHONE]" class="mobile-menu-pill">Call us</a>
+        <a href="book.html" class="btn btn-primary btn-lg mobile-cta">Book now</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <a href="book.html" class="btn btn-primary btn-sm header-book">Book now</a>
+      <button type="button" class="menu-toggle" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span class="menu-toggle-icon" aria-hidden="true">
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+  <main style="padding-top: 100px;">
+    <div class="container section">
+      <header class="section-header">
+        <span class="section-tag">Design System</span>
+        <h1 class="section-title">Component & Token Styleguide</h1>
+        <hr class="gold-hairline" aria-hidden="true">
+        <p class="section-subtitle">Comprehensive showcase of all tokens, typography, ratios, and UI components.</p>
+      </header>
+
+      <!-- 1. Color Palette Tokens -->
+      <section class="sg-section" aria-labelledby="sg-colors">
+        <h2 id="sg-colors">1. Color Palette Tokens</h2>
+        <p class="text-muted">Strict color palette from SPEC Section 4.</p>
+        <div class="sg-grid">
+          <div class="sg-color-card">
+            <div class="sg-color-swatch" style="background-color: var(--ivory); border-bottom: 1px solid #e0e0e0;"></div>
+            <div class="sg-color-info">
+              <div class="sg-color-name">--ivory</div>
+              <div class="sg-color-hex">#FBF8F2</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-swatch" style="background-color: var(--sand);"></div>
+            <div class="sg-color-info">
+              <div class="sg-color-name">--sand</div>
+              <div class="sg-color-hex">#F1EADB</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-swatch" style="background-color: var(--emerald-900);"></div>
+            <div class="sg-color-info">
+              <div class="sg-color-name">--emerald-900</div>
+              <div class="sg-color-hex">#0E2F28</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-swatch" style="background-color: var(--emerald-700);"></div>
+            <div class="sg-color-info">
+              <div class="sg-color-name">--emerald-700</div>
+              <div class="sg-color-hex">#1B4D41</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-swatch" style="background-color: var(--gold);"></div>
+            <div class="sg-color-info">
+              <div class="sg-color-name">--gold</div>
+              <div class="sg-color-hex">#C29B4A</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-swatch" style="background-color: var(--gold-light);"></div>
+            <div class="sg-color-info">
+              <div class="sg-color-name">--gold-light</div>
+              <div class="sg-color-hex">#E8D5A3</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-swatch" style="background-color: var(--ink);"></div>
+            <div class="sg-color-info">
+              <div class="sg-color-name">--ink</div>
+              <div class="sg-color-hex">#1E2421</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-swatch" style="background-color: var(--muted);"></div>
+            <div class="sg-color-info">
+              <div class="sg-color-name">--muted</div>
+              <div class="sg-color-hex">#5E655F</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-swatch" style="background-color: var(--ok);"></div>
+            <div class="sg-color-info">
+              <div class="sg-color-name">--ok</div>
+              <div class="sg-color-hex">#2E7D5B</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-swatch" style="background-color: var(--warn);"></div>
+            <div class="sg-color-info">
+              <div class="sg-color-name">--warn</div>
+              <div class="sg-color-hex">#B7791F</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-swatch" style="background-color: var(--err);"></div>
+            <div class="sg-color-info">
+              <div class="sg-color-name">--err</div>
+              <div class="sg-color-hex">#B3382C</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. Typography Hierarchy -->
+      <section class="sg-section" aria-labelledby="sg-type">
+        <h2 id="sg-type">2. Typography Scale</h2>
+        <div style="margin-top: var(--space-6); display: flex; flex-direction: column; gap: var(--space-6);">
+          <div>
+            <h2>Heading 1 — Cormorant Garamond 600 (Fluid)</h2>
+            <small class="text-muted">clamp(2.4rem, 6vw, 4.2rem)</small>
+          </div>
+          <div>
+            <h2>Heading 2 — Cormorant Garamond 600 (Fluid)</h2>
+            <small class="text-muted">clamp(1.9rem, 4vw, 2.8rem)</small>
+          </div>
+          <div>
+            <h3>Heading 3 — Cormorant Garamond 600 (1.4rem)</h3>
+          </div>
+          <div>
+            <h4>Heading 4 — Cormorant Garamond 600 (1.15rem)</h4>
+          </div>
+          <div>
+            <p><strong>Body Text — Inter 400/500/600 (1.0625rem / 1.65):</strong> NSG Royal Resort is located in Nidigattu, Bheemunipatnam. Experience exceptional coastal elegance with luxury suites, private swimming pool, and pristine cricket turf.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. Button Styles & Sizes -->
+      <section class="sg-section" aria-labelledby="sg-buttons">
+        <h2 id="sg-buttons">3. Buttons (Primary, Secondary, Ghost in All Sizes)</h2>
+        <div style="margin-top: var(--space-6); display: flex; flex-direction: column; gap: var(--space-6);">
+          <div>
+            <h4 style="margin-bottom: var(--space-3);">Primary (Gold fill, Ink text; hover = Emerald-700, Ivory)</h4>
+            <div style="display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap;">
+              <button class="btn btn-primary btn-sm">Primary Small</button>
+              <button class="btn btn-primary btn-md">Primary Medium</button>
+              <button class="btn btn-primary btn-lg">Primary Large</button>
+              <button class="btn btn-primary btn-md" disabled>Primary Disabled</button>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: var(--space-3);">Secondary (Transparent, 1px Gold border)</h4>
+            <div style="display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap;">
+              <button class="btn btn-secondary btn-sm">Secondary Small</button>
+              <button class="btn btn-secondary btn-md">Secondary Medium</button>
+              <button class="btn btn-secondary btn-lg">Secondary Large</button>
+              <button class="btn btn-secondary btn-md" disabled>Secondary Disabled</button>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: var(--space-3);">Ghost (Transparent, no border)</h4>
+            <div style="display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap;">
+              <button class="btn btn-ghost btn-sm">Ghost Small</button>
+              <button class="btn btn-ghost btn-md">Ghost Medium</button>
+              <button class="btn btn-ghost btn-lg">Ghost Large</button>
+            </div>
+          </div>
+
+          <!-- On Dark / Emerald Background -->
+          <div style="background-color: var(--emerald-900); padding: var(--space-6); border-radius: var(--r-card);">
+            <h4 style="color: var(--ivory); margin-bottom: var(--space-3);">Buttons on Dark / Emerald Background</h4>
+            <div style="display: flex; gap: var(--space-4); align-items: center; flex-wrap: wrap;">
+              <button class="btn btn-primary btn-md">Primary Button</button>
+              <button class="btn btn-secondary btn-md">Secondary Button</button>
+              <button class="btn btn-ghost btn-md">Ghost Button</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. Chips and Status Badges -->
+      <section class="sg-section" aria-labelledby="sg-badges">
+        <h2 id="sg-badges">4. Chips & Status Badges</h2>
+        <div style="margin-top: var(--space-6); display: flex; flex-direction: column; gap: var(--space-6);">
+          <div>
+            <h4 style="margin-bottom: var(--space-3);">Filter Chips</h4>
+            <div class="chip-group">
+              <button class="chip is-active" aria-pressed="true">All Spaces</button>
+              <button class="chip" aria-pressed="false">Swimming Pool</button>
+              <button class="chip" aria-pressed="false">Cricket Turf</button>
+              <button class="chip" aria-pressed="false">Lush Gardens</button>
+              <button class="chip" aria-pressed="false">Penthouse Suite</button>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: var(--space-3);">Status Badges</h4>
+            <div style="display: flex; gap: var(--space-3); flex-wrap: wrap;">
+              <span class="badge badge-ok">Confirmed</span>
+              <span class="badge badge-warn">Hold Expiring</span>
+              <span class="badge badge-err">Cancelled</span>
+              <span class="badge badge-neutral">Archived</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. Placeholder Frames in ALL Ratios (SPEC Section 5 & 7) -->
+      <section class="sg-section" aria-labelledby="sg-ratios">
+        <h2 id="sg-ratios">5. Placeholder Frames in All Ratios</h2>
+        <p class="text-muted">Sand-to-emerald gradient, 1px gold-light border, centered logo mark.</p>
+        <div class="sg-ratio-grid">
+          <div>
+            <h4 style="margin-bottom: var(--space-2);">16/9 (Hero)</h4>
+            <div class="slot-ph" data-slot="demo-16-9" data-label="hero · 16/9" style="aspect-ratio: 16/9;">
+              <div class="slot-ph-content">
+                <svg class="slot-ph-logo" viewBox="0 0 48 48" width="36" height="36" fill="none">
+                  <path d="M24 6L6 20L10 40H38L42 20L24 6Z" stroke="var(--gold)" stroke-width="1.5"/>
+                  <path d="M24 16L16 26H32L24 16Z" fill="var(--gold-light)" opacity="0.6"/>
+                </svg>
+                <span class="slot-ph-label">demo · 16/9</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: var(--space-2);">21/9 (Banners)</h4>
+            <div class="slot-ph" data-slot="demo-21-9" data-label="banner · 21/9" style="aspect-ratio: 21/9;">
+              <div class="slot-ph-content">
+                <svg class="slot-ph-logo" viewBox="0 0 48 48" width="32" height="32" fill="none">
+                  <path d="M24 6L6 20L10 40H38L42 20L24 6Z" stroke="var(--gold)" stroke-width="1.5"/>
+                </svg>
+                <span class="slot-ph-label">banner · 21/9</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: var(--space-2);">4/3 (Packages, Amenities, Cars)</h4>
+            <div class="slot-ph" data-slot="demo-4-3" data-label="pkg · 4/3" style="aspect-ratio: 4/3;">
+              <div class="slot-ph-content">
+                <svg class="slot-ph-logo" viewBox="0 0 48 48" width="36" height="36" fill="none">
+                  <path d="M24 6L6 20L10 40H38L42 20L24 6Z" stroke="var(--gold)" stroke-width="1.5"/>
+                </svg>
+                <span class="slot-ph-label">pkg · 4/3</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: var(--space-2);">3/2 (Events, Gallery)</h4>
+            <div class="slot-ph" data-slot="demo-3-2" data-label="event · 3/2" style="aspect-ratio: 3/2;">
+              <div class="slot-ph-content">
+                <svg class="slot-ph-logo" viewBox="0 0 48 48" width="36" height="36" fill="none">
+                  <path d="M24 6L6 20L10 40H38L42 20L24 6Z" stroke="var(--gold)" stroke-width="1.5"/>
+                </svg>
+                <span class="slot-ph-label">event · 3/2</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: var(--space-2);">1200/630 (OG Image)</h4>
+            <div class="slot-ph" data-slot="demo-og" data-label="og-image · 1200x630" style="aspect-ratio: 1200/630;">
+              <div class="slot-ph-content">
+                <svg class="slot-ph-logo" viewBox="0 0 48 48" width="36" height="36" fill="none">
+                  <path d="M24 6L6 20L10 40H38L42 20L24 6Z" stroke="var(--gold)" stroke-width="1.5"/>
+                </svg>
+                <span class="slot-ph-label">og-image · 1200x630</span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: var(--space-2);">1/1 (Square)</h4>
+            <div class="slot-ph" data-slot="demo-1-1" data-label="square · 1/1" style="aspect-ratio: 1/1;">
+              <div class="slot-ph-content">
+                <svg class="slot-ph-logo" viewBox="0 0 48 48" width="36" height="36" fill="none">
+                  <path d="M24 6L6 20L10 40H38L42 20L24 6Z" stroke="var(--gold)" stroke-width="1.5"/>
+                </svg>
+                <span class="slot-ph-label">square · 1/1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. Card Components Showcase -->
+      <section class="sg-section" aria-labelledby="sg-cards">
+        <h2 id="sg-cards">6. Card Components (Package, Amenity, Event, Car, Review)</h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--space-8); margin-top: var(--space-6);">
+          <!-- Car Card -->
+          <article class="card-car">
+            <div class="slot-ph" style="aspect-ratio: 4/3;">
+              <div class="slot-ph-content"><span class="slot-ph-label">car-01 · 4/3</span></div>
+            </div>
+            <div class="card-car-body">
+              <h3 class="card-car-title">Toyota Fortuner 4x4</h3>
+              <div class="card-car-specs">
+                <span class="badge badge-neutral">7 Seater</span>
+                <span class="badge badge-neutral">Automatic</span>
+                <span class="badge badge-neutral">Diesel</span>
+                <span class="badge badge-ok">Available</span>
+              </div>
+              <p class="text-muted" style="font-size: 0.875rem;">Premium SUV for guest transit or coastal drives.</p>
+              <div style="margin-top: var(--space-4);">
+                <a href="#" class="btn btn-secondary btn-sm">Enquire on WhatsApp</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Review Card -->
+          <article class="card-review">
+            <div style="color: var(--gold); margin-bottom: var(--space-2);">★ ★ ★ ★ ★</div>
+            <blockquote class="card-review-quote">
+              "The most magical venue in Bheemili. The cricket turf and illuminated pool made our celebration unforgettable."
+            </blockquote>
+            <div class="card-review-author">Verified Guest Review</div>
+            <div class="text-muted" style="font-size: 0.8125rem;">Family Celebration</div>
+          </article>
+        </div>
+      </section>
+
+      <!-- 7. Form Controls & Error States -->
+      <section class="sg-section" aria-labelledby="sg-forms">
+        <h2 id="sg-forms">7. Form Controls with Error States</h2>
+        <div style="max-width: 540px; margin-top: var(--space-6);">
+          <div class="form-group">
+            <label class="form-label" for="sg-input-normal">Guest Full Name</label>
+            <input type="text" id="sg-input-normal" class="form-input" placeholder="e.g. Rajesh Chowdary">
+          </div>
+
+          <div class="form-group has-error">
+            <label class="form-label" for="sg-input-error">Phone Number (10 digits)</label>
+            <input type="tel" id="sg-input-error" class="form-input" value="98765">
+            <span class="form-error">Please enter a valid 10-digit Indian mobile number.</span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sg-select">Select Experience</label>
+            <select id="sg-select" class="form-select">
+              <option>Whole Resort Stay</option>
+              <option>Penthouse Suite</option>
+              <option>Wedding / Reception Event</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="sg-notes">Special Requests & Inquiries</label>
+            <textarea id="sg-notes" class="form-textarea" placeholder="Tell us about your requirements..."></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. Accordion Component -->
+      <section class="sg-section" aria-labelledby="sg-accordion">
+        <h2 id="sg-accordion">8. Accordion Component</h2>
+        <div class="accordion" style="max-width: 680px; margin-top: var(--space-6);">
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="true">
+              <span>What are the check-in and check-out timings?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+            <div class="accordion-body">
+              Standard check-in is at 11 AM and check-out is at 10 AM. Early check-in or late checkout can be accommodated subject to prior bookings.
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              <span>How does the advance payment work?</span>
+              <svg class="accordion-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+            <div class="accordion-body">
+              An advance is paid via UPI to secure your dates. The remaining balance is payable upon arrival at the resort.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. Toast Notification & Modal Preview -->
+      <section class="sg-section" aria-labelledby="sg-feedback">
+        <h2 id="sg-feedback">9. Toast Notification & Modal Preview</h2>
+        <div style="display: flex; gap: var(--space-6); flex-wrap: wrap; margin-top: var(--space-6);">
+          <div class="toast" style="position: static; animation: none;">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--ok)" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+            <span>Booking hold reserved for 15 minutes</span>
+          </div>
+
+          <div class="toast" style="position: static; animation: none; border-color: var(--err);">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="var(--err)" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span>Please complete all required fields</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10. Calendar Grid Preview (SPEC Section 6: styles only) -->
+      <section class="sg-section" aria-labelledby="sg-calendar">
+        <h2 id="sg-calendar">10. Calendar Component Styles</h2>
+        <p class="text-muted">Calendar styles showcasing day states (selected, in-range, blocked, available).</p>
+        <div style="max-width: 400px; margin-top: var(--space-6);">
+          <div class="calendar-card">
+            <div class="calendar-header">
+              <span class="calendar-month-title">October 2026</span>
+            </div>
+            <div class="calendar-grid">
+              <span class="calendar-weekday">Su</span>
+              <span class="calendar-weekday">Mo</span>
+              <span class="calendar-weekday">Tu</span>
+              <span class="calendar-weekday">We</span>
+              <span class="calendar-weekday">Th</span>
+              <span class="calendar-weekday">Fr</span>
+              <span class="calendar-weekday">Sa</span>
+
+              <button class="calendar-day" disabled style="opacity: 0.2;">27</button>
+              <button class="calendar-day" disabled style="opacity: 0.2;">28</button>
+              <button class="calendar-day" disabled style="opacity: 0.2;">29</button>
+              <button class="calendar-day" disabled style="opacity: 0.2;">30</button>
+              <button class="calendar-day">1</button>
+              <button class="calendar-day">2</button>
+              <button class="calendar-day">3</button>
+
+              <button class="calendar-day">4</button>
+              <button class="calendar-day">5</button>
+              <button class="calendar-day">6</button>
+              <button class="calendar-day">7</button>
+              <button class="calendar-day calendar-day--blocked" disabled title="Blocked">8</button>
+              <button class="calendar-day calendar-day--blocked" disabled title="Blocked">9</button>
+              <button class="calendar-day">10</button>
+
+              <button class="calendar-day">11</button>
+              <button class="calendar-day calendar-day--selected">12</button>
+              <button class="calendar-day calendar-day--in-range">13</button>
+              <button class="calendar-day calendar-day--in-range">14</button>
+              <button class="calendar-day calendar-day--selected">15</button>
+              <button class="calendar-day">16</button>
+              <button class="calendar-day">17</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer Partial -->
+  <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brands"><div class="brand-pair">
+  <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="brand-pair-logo" width="160" height="160" loading="lazy" decoding="async">
+  <span class="brand-pair-rule" aria-hidden="true"></span>
+  <img src="assets/img/aroma-logo.png" alt="Aroma Restaurant" class="brand-pair-logo brand-pair-logo--aroma" width="360" height="286" loading="lazy" decoding="async">
+</div></div>
+        <h3 class="footer-title">NSG Royal Resort</h3>
+        <p class="footer-text">A private resort in Bheemili for weddings, family functions and weekend getaways. Book the whole place for your people.</p>
+        <p class="footer-text" style="margin-top: 1rem;">
+          <strong>Address:</strong> Nidigattu, Bheemunipatnam, Bheemili
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Explore</h4>
+        <ul class="footer-links">
+          <li><a href="stay.html" class="footer-link">Stay</a></li>
+          <li><a href="amenities.html" class="footer-link">Amenities</a></li>
+          <li><a href="dining.html" class="footer-link">Dining</a></li>
+          <li><a href="events.html" class="footer-link">Weddings & events</a></li>
+          
+          <li><a href="stay.html#car-rental" class="footer-link">Self-drive cars</a></li>
+          
+          <li><a href="gallery.html" class="footer-link">Photos</a></li>
+          <li><a href="book.html" class="footer-link">Check availability</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Information</h4>
+        <ul class="footer-links">
+          <li><a href="contact.html" class="footer-link">Contact & location</a></li>
+          <li><a href="policies.html" class="footer-link">Policies</a></li>
+          <li><a href="styleguide.html" class="footer-link">Design Styleguide</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 NSG Royal Resort. All rights reserved.</span>
+      <span>Make Every Moment Royal · Weddings · Celebrations · Getaways</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

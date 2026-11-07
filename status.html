@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Status | NSG Royal Resort</title>
+  <meta name="description" content="Check your booking with your booking ID and the last 4 digits of your phone. Save your booking confirmation.">
+  <meta name="robots" content="noindex">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/status.js" defer></script>
+</head>
+<body class="page-status">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header Partial -->
+  <header class="site-header" id="site-header">
+  <div class="container header-container">
+    <a href="index.html" class="header-brand" aria-label="NSG Royal Resort Home">
+      <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="header-logo" width="160" height="160">
+    </a>
+
+    <nav class="header-nav" id="header-nav" aria-label="Main Navigation">
+      <div class="nav-capsule">
+        <span class="nav-indicator" aria-hidden="true"></span>
+        <ul class="nav-list">
+          <li><a href="stay.html" class="nav-link">Stay</a></li>
+          <li><a href="amenities.html" class="nav-link">Amenities</a></li>
+          <li><a href="dining.html" class="nav-link">Dining</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="policies.html" class="nav-link">Policies</a></li>
+        </ul>
+      </div>
+      <div class="mobile-menu-actions">
+        <a href="https://wa.me/[TBD: WHATSAPP]" class="mobile-menu-pill" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+        <a href="tel:[TBD: PHONE]" class="mobile-menu-pill">Call us</a>
+        <a href="book.html" class="btn btn-primary btn-lg mobile-cta">Book now</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <a href="book.html" class="btn btn-primary btn-sm header-book">Book now</a>
+      <button type="button" class="menu-toggle" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span class="menu-toggle-icon" aria-hidden="true">
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Page Banner -->
+  <section class="hero-section hero-section--banner" aria-label="Check Booking Status">
+    <div class="hero-backdrop" aria-hidden="true">
+      <img class="slot-img" src="assets/img/banner-stay-960.webp" srcset="assets/img/banner-stay-480.webp 480w, assets/img/banner-stay-960.webp 960w" sizes="100vw" width="1200" height="514" alt="The villa and lawn at sunset" fetchpriority="high" decoding="async" style="aspect-ratio:21/9;object-position:50% 50%;">
+    </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <span class="hero-strapline">Booking status</span>
+      <h1 class="hero-title">Check your booking</h1>
+    </div>
+  </section>
+
+  <main id="main-content">
+    <div class="container section">
+      <div class="status-page-layout">
+        <header class="section-header no-print">
+          <p class="section-subtitle">Enter your booking ID and the last 4 digits of your phone.</p>
+        </header>
+
+        <!-- Lookup Form Card -->
+        <div class="status-lookup-card no-print">
+          <h3 style="font-size: 1.3rem; margin-bottom: var(--space-4);">Find your booking</h3>
+
+          <form id="status-lookup-form" novalidate>
+            <div class="form-group">
+              <label for="lookup-id" class="form-label">Booking ID</label>
+              <input
+                type="text"
+                id="lookup-id"
+                class="form-input"
+                placeholder="e.g. BK-DEMO-0001"
+                required
+                autocomplete="off"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="lookup-last4" class="form-label">Last 4 digits of your phone</label>
+              <input
+                type="text"
+                id="lookup-last4"
+                class="form-input"
+                placeholder="e.g. 1234"
+                maxlength="4"
+                pattern="\d{4}"
+                required
+                autocomplete="off"
+              >
+            </div>
+
+            <div id="status-error-alert" class="payment-error-alert" style="display:none;" role="alert"></div>
+
+            <button type="submit" class="btn btn-primary btn-md" id="btn-status-submit" style="width: 100%;">
+              Check status &rarr;
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Container -->
+        <div id="status-result-container" style="display:none;"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Partial -->
+  <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brands"><div class="brand-pair">
+  <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="brand-pair-logo" width="160" height="160" loading="lazy" decoding="async">
+  <span class="brand-pair-rule" aria-hidden="true"></span>
+  <img src="assets/img/aroma-logo.png" alt="Aroma Restaurant" class="brand-pair-logo brand-pair-logo--aroma" width="360" height="286" loading="lazy" decoding="async">
+</div></div>
+        <h3 class="footer-title">NSG Royal Resort</h3>
+        <p class="footer-text">A private resort in Bheemili for weddings, family functions and weekend getaways. Book the whole place for your people.</p>
+        <p class="footer-text" style="margin-top: 1rem;">
+          <strong>Address:</strong> Nidigattu, Bheemunipatnam, Bheemili
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Explore</h4>
+        <ul class="footer-links">
+          <li><a href="stay.html" class="footer-link">Stay</a></li>
+          <li><a href="amenities.html" class="footer-link">Amenities</a></li>
+          <li><a href="dining.html" class="footer-link">Dining</a></li>
+          <li><a href="events.html" class="footer-link">Weddings & events</a></li>
+          
+          <li><a href="stay.html#car-rental" class="footer-link">Self-drive cars</a></li>
+          
+          <li><a href="gallery.html" class="footer-link">Photos</a></li>
+          <li><a href="book.html" class="footer-link">Check availability</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Information</h4>
+        <ul class="footer-links">
+          <li><a href="contact.html" class="footer-link">Contact & location</a></li>
+          <li><a href="policies.html" class="footer-link">Policies</a></li>
+          <li><a href="styleguide.html" class="footer-link">Design Styleguide</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 NSG Royal Resort. All rights reserved.</span>
+      <span>Make Every Moment Royal · Weddings · Celebrations · Getaways</span>
+    </div>
+  </div>
+</footer>
+
+
+  <!-- Sticky Mobile Bar Partial -->
+  <nav class="sticky-mobile-bar" aria-label="Quick Actions">
+  <a href="book.html" class="sticky-bar-link sticky-bar-link--primary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+    <span>Book now</span>
+  </a>
+  <a href="https://wa.me/[TBD: WHATSAPP]" class="sticky-bar-link" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    </svg>
+    <span>WhatsApp</span>
+  </a>
+  <a href="tel:[TBD: PHONE]" class="sticky-bar-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+    <span>Call</span>
+  </a>
+</nav>
+
+</body>
+</html>

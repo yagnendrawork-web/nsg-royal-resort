@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photos | NSG Royal Resort, Bheemili</title>
+  <meta name="description" content="See the pool, cricket turf, gardens, penthouse and past celebrations at NSG Royal Resort in Bheemili.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Photos | NSG Royal Resort, Bheemili">
+  <meta property="og:description" content="See the pool, cricket turf, gardens, penthouse and past celebrations at NSG Royal Resort in Bheemili.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/gallery.js" defer></script>
+</head>
+<body class="page-gallery">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header Partial -->
+  <header class="site-header" id="site-header">
+  <div class="container header-container">
+    <a href="index.html" class="header-brand" aria-label="NSG Royal Resort Home">
+      <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="header-logo" width="160" height="160">
+    </a>
+
+    <nav class="header-nav" id="header-nav" aria-label="Main Navigation">
+      <div class="nav-capsule">
+        <span class="nav-indicator" aria-hidden="true"></span>
+        <ul class="nav-list">
+          <li><a href="stay.html" class="nav-link">Stay</a></li>
+          <li><a href="amenities.html" class="nav-link">Amenities</a></li>
+          <li><a href="dining.html" class="nav-link">Dining</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="policies.html" class="nav-link">Policies</a></li>
+        </ul>
+      </div>
+      <div class="mobile-menu-actions">
+        <a href="https://wa.me/[TBD: WHATSAPP]" class="mobile-menu-pill" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+        <a href="tel:[TBD: PHONE]" class="mobile-menu-pill">Call us</a>
+        <a href="book.html" class="btn btn-primary btn-lg mobile-cta">Book now</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <a href="book.html" class="btn btn-primary btn-sm header-book">Book now</a>
+      <button type="button" class="menu-toggle" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span class="menu-toggle-icon" aria-hidden="true">
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section hero-section--banner" aria-label="Gallery">
+      <div class="hero-backdrop" aria-hidden="true">
+        <img class="slot-img" src="assets/img/banner-gallery-960.webp" srcset="assets/img/banner-gallery-480.webp 480w, assets/img/banner-gallery-960.webp 960w" sizes="100vw" width="1200" height="514" alt="The resort at night" loading="lazy" decoding="async" style="aspect-ratio:21/9;object-position:50% 50%;">
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <span class="hero-strapline">Take a look around</span>
+        <h1 class="hero-title">Moments at NSG Royal</h1>
+      </div>
+    </section>
+
+    <!-- Filter Chips -->
+    <section class="section bg-ivory" aria-labelledby="gallery-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">Gallery</span>
+          <h2 id="gallery-title" class="section-title">Moments at NSG Royal</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+        </header>
+
+        <div class="chip-group reveal" id="gallery-filters" role="group" aria-label="Filter gallery by category">
+          <button class="chip is-active" data-cat="all" aria-pressed="true">All</button>
+          <button class="chip" data-cat="property" aria-pressed="false">Property</button>
+          <button class="chip" data-cat="pool-turf" aria-pressed="false">Pool & turf</button>
+          <button class="chip" data-cat="rooms" aria-pressed="false">Rooms</button>
+          <button class="chip" data-cat="events" aria-pressed="false">Events</button>
+          <button class="chip" data-cat="weddings" aria-pressed="false">Weddings</button>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid" id="gallery-grid">
+          
+          
+          <figure class="gallery-item reveal" data-cat="property">
+            <img class="slot-img" src="assets/img/gallery-01-480.webp" srcset="assets/img/gallery-01-480.webp 480w" sizes="(min-width: 768px) 33vw, 50vw" width="675" height="900" alt="The villa under a night sky" loading="lazy" decoding="async" style="aspect-ratio:3/4;object-position:50% 50%;">
+            <figcaption class="gallery-caption">The villa under a night sky</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="property">
+            <img class="slot-img" src="assets/img/gallery-02-960.webp" srcset="assets/img/gallery-02-480.webp 480w, assets/img/gallery-02-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="The resort lit up at night" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">The resort lit up at night</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="pool-turf">
+            <img class="slot-img" src="assets/img/gallery-03-960.webp" srcset="assets/img/gallery-03-480.webp 480w, assets/img/gallery-03-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Pool, turf and lawns from above" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Pool, turf and lawns from above</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="weddings">
+            <img class="slot-img" src="assets/img/gallery-04-960.webp" srcset="assets/img/gallery-04-480.webp 480w, assets/img/gallery-04-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Haldi stage with a marigold ring" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Haldi stage with a marigold ring</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="events">
+            <img class="slot-img" src="assets/img/gallery-05-960.webp" srcset="assets/img/gallery-05-480.webp 480w, assets/img/gallery-05-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Birthday pool party" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Birthday pool party</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="property">
+            <img class="slot-img" src="assets/img/gallery-06-960.webp" srcset="assets/img/gallery-06-480.webp 480w, assets/img/gallery-06-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="The villa at sunset" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">The villa at sunset</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="rooms">
+            <img class="slot-img" src="assets/img/gallery-07-960.webp" srcset="assets/img/gallery-07-480.webp 480w, assets/img/gallery-07-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Penthouse bedroom with a view" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Penthouse bedroom with a view</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="pool-turf">
+            <img class="slot-img" src="assets/img/gallery-08-960.webp" srcset="assets/img/gallery-08-480.webp 480w, assets/img/gallery-08-960.webp 960w, assets/img/gallery-08-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="A big group in front of the cricket turf" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">A big group in front of the cricket turf</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="weddings">
+            <img class="slot-img" src="assets/img/gallery-09-960.webp" srcset="assets/img/gallery-09-480.webp 480w, assets/img/gallery-09-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="675" height="900" alt="Haldi stage on the lawn" loading="lazy" decoding="async" style="aspect-ratio:3/4;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Haldi stage on the lawn</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="events">
+            <img class="slot-img" src="assets/img/gallery-10-960.webp" srcset="assets/img/gallery-10-480.webp 480w, assets/img/gallery-10-960.webp 960w, assets/img/gallery-10-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Buffet by the pool" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Buffet by the pool</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="property">
+            <img class="slot-img" src="assets/img/gallery-11-960.webp" srcset="assets/img/gallery-11-480.webp 480w, assets/img/gallery-11-960.webp 960w, assets/img/gallery-11-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Garden gazebo" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Garden gazebo</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="rooms">
+            <img class="slot-img" src="assets/img/gallery-12-960.webp" srcset="assets/img/gallery-12-480.webp 480w, assets/img/gallery-12-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Penthouse living room" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Penthouse living room</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="events">
+            <img class="slot-img" src="assets/img/gallery-13-960.webp" srcset="assets/img/gallery-13-480.webp 480w, assets/img/gallery-13-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Festive lights at night" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Festive lights at night</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="rooms">
+            <img class="slot-img" src="assets/img/gallery-14-960.webp" srcset="assets/img/gallery-14-480.webp 480w, assets/img/gallery-14-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Kitchen bar counter" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Kitchen bar counter</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="weddings">
+            <img class="slot-img" src="assets/img/gallery-15-960.webp" srcset="assets/img/gallery-15-480.webp 480w, assets/img/gallery-15-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="675" height="900" alt="Haldi welcome board by the pool" loading="lazy" decoding="async" style="aspect-ratio:3/4;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Haldi welcome board by the pool</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="property">
+            <img class="slot-img" src="assets/img/gallery-16-960.webp" srcset="assets/img/gallery-16-480.webp 480w, assets/img/gallery-16-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Fire pit on the lawn at dusk" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Fire pit on the lawn at dusk</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="pool-turf">
+            <img class="slot-img" src="assets/img/gallery-17-960.webp" srcset="assets/img/gallery-17-480.webp 480w, assets/img/gallery-17-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="675" height="900" alt="Friends by the pool" loading="lazy" decoding="async" style="aspect-ratio:3/4;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Friends by the pool</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="weddings">
+            <img class="slot-img" src="assets/img/gallery-18-960.webp" srcset="assets/img/gallery-18-480.webp 480w, assets/img/gallery-18-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Engagement stage decor" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Engagement stage decor</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="rooms">
+            <img class="slot-img" src="assets/img/gallery-19-960.webp" srcset="assets/img/gallery-19-480.webp 480w, assets/img/gallery-19-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Penthouse suite and terrace" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Penthouse suite and terrace</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="weddings">
+            <img class="slot-img" src="assets/img/gallery-20-960.webp" srcset="assets/img/gallery-20-480.webp 480w, assets/img/gallery-20-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Villa dressed in marigolds" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Villa dressed in marigolds</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="rooms">
+            <img class="slot-img" src="assets/img/gallery-21-960.webp" srcset="assets/img/gallery-21-480.webp 480w, assets/img/gallery-21-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Living room" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Living room</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="property">
+            <img class="slot-img" src="assets/img/gallery-22-960.webp" srcset="assets/img/gallery-22-480.webp 480w, assets/img/gallery-22-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Front porch at night" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Front porch at night</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="rooms">
+            <img class="slot-img" src="assets/img/gallery-23-960.webp" srcset="assets/img/gallery-23-480.webp 480w, assets/img/gallery-23-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Bedroom" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Bedroom</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="property">
+            <img class="slot-img" src="assets/img/gallery-24-960.webp" srcset="assets/img/gallery-24-480.webp 480w, assets/img/gallery-24-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Entrance foyer" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Entrance foyer</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="rooms">
+            <img class="slot-img" src="assets/img/gallery-25-960.webp" srcset="assets/img/gallery-25-480.webp 480w, assets/img/gallery-25-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Kitchen and dining table" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Kitchen and dining table</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="rooms">
+            <img class="slot-img" src="assets/img/gallery-26-960.webp" srcset="assets/img/gallery-26-480.webp 480w, assets/img/gallery-26-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Bedroom with sofa" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Bedroom with sofa</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="property">
+            <img class="slot-img" src="assets/img/gallery-27-960.webp" srcset="assets/img/gallery-27-480.webp 480w, assets/img/gallery-27-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Side view of the villa at night" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Side view of the villa at night</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="rooms">
+            <img class="slot-img" src="assets/img/gallery-28-960.webp" srcset="assets/img/gallery-28-480.webp 480w, assets/img/gallery-28-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Bar counter" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Bar counter</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="rooms">
+            <img class="slot-img" src="assets/img/gallery-29-960.webp" srcset="assets/img/gallery-29-480.webp 480w, assets/img/gallery-29-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Bedroom with wall art" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Bedroom with wall art</figcaption>
+          </figure>
+          
+          <figure class="gallery-item reveal" data-cat="rooms">
+            <img class="slot-img" src="assets/img/gallery-30-960.webp" srcset="assets/img/gallery-30-480.webp 480w, assets/img/gallery-30-960.webp 960w" sizes="(min-width: 768px) 33vw, 50vw" width="1200" height="800" alt="Living room and open kitchen" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;">
+            <figcaption class="gallery-caption">Living room and open kitchen</figcaption>
+          </figure>
+          
+        </div>
+
+        <div id="gallery-coming-soon" style="display:none;" class="reveal">
+          <p class="text-muted" style="text-align:center; padding: var(--space-16);">Photos coming soon.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Partial -->
+  <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brands"><div class="brand-pair">
+  <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="brand-pair-logo" width="160" height="160" loading="lazy" decoding="async">
+  <span class="brand-pair-rule" aria-hidden="true"></span>
+  <img src="assets/img/aroma-logo.png" alt="Aroma Restaurant" class="brand-pair-logo brand-pair-logo--aroma" width="360" height="286" loading="lazy" decoding="async">
+</div></div>
+        <h3 class="footer-title">NSG Royal Resort</h3>
+        <p class="footer-text">A private resort in Bheemili for weddings, family functions and weekend getaways. Book the whole place for your people.</p>
+        <p class="footer-text" style="margin-top: 1rem;">
+          <strong>Address:</strong> Nidigattu, Bheemunipatnam, Bheemili
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Explore</h4>
+        <ul class="footer-links">
+          <li><a href="stay.html" class="footer-link">Stay</a></li>
+          <li><a href="amenities.html" class="footer-link">Amenities</a></li>
+          <li><a href="dining.html" class="footer-link">Dining</a></li>
+          <li><a href="events.html" class="footer-link">Weddings & events</a></li>
+          
+          <li><a href="stay.html#car-rental" class="footer-link">Self-drive cars</a></li>
+          
+          <li><a href="gallery.html" class="footer-link">Photos</a></li>
+          <li><a href="book.html" class="footer-link">Check availability</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Information</h4>
+        <ul class="footer-links">
+          <li><a href="contact.html" class="footer-link">Contact & location</a></li>
+          <li><a href="policies.html" class="footer-link">Policies</a></li>
+          <li><a href="styleguide.html" class="footer-link">Design Styleguide</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 NSG Royal Resort. All rights reserved.</span>
+      <span>Make Every Moment Royal · Weddings · Celebrations · Getaways</span>
+    </div>
+  </div>
+</footer>
+
+
+  <!-- Sticky Mobile Bar Partial -->
+  <nav class="sticky-mobile-bar" aria-label="Quick Actions">
+  <a href="book.html" class="sticky-bar-link sticky-bar-link--primary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+    <span>Book now</span>
+  </a>
+  <a href="https://wa.me/[TBD: WHATSAPP]" class="sticky-bar-link" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    </svg>
+    <span>WhatsApp</span>
+  </a>
+  <a href="tel:[TBD: PHONE]" class="sticky-bar-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+    <span>Call</span>
+  </a>
+</nav>
+
+
+  <!-- Lightbox (hidden by default): photos from the gallery, or a YouTube video inserted only when opened -->
+<div class="lightbox" id="gallery-lightbox" role="dialog" aria-modal="true" aria-hidden="true" data-watch-label="Watch on YouTube" data-video-title="Play video">
+  <button type="button" class="lightbox-close" aria-label="Close lightbox">&times;</button>
+  <div class="lightbox-content">
+    <img class="lightbox-img" src="" alt="">
+  </div>
+  <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous image">&#8592;</button>
+  <button type="button" class="lightbox-nav lightbox-next" aria-label="Next image">&#8594;</button>
+</div>
+
+</body>
+</html>

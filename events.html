@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weddings & Events in Bheemili | NSG Royal Resort</title>
+  <meta name="description" content="Weddings, engagements, birthdays and corporate outings at a private resort in Bheemili. Hold your date with a small advance.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Weddings & Events in Bheemili | NSG Royal Resort">
+  <meta property="og:description" content="Weddings, engagements, birthdays and corporate outings at a private resort in Bheemili. Hold your date with a small advance.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/events.js" defer></script>
+  <script src="js/gallery.js" defer></script>
+</head>
+<body class="page-events">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header Partial -->
+  <header class="site-header" id="site-header">
+  <div class="container header-container">
+    <a href="index.html" class="header-brand" aria-label="NSG Royal Resort Home">
+      <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="header-logo" width="160" height="160">
+    </a>
+
+    <nav class="header-nav" id="header-nav" aria-label="Main Navigation">
+      <div class="nav-capsule">
+        <span class="nav-indicator" aria-hidden="true"></span>
+        <ul class="nav-list">
+          <li><a href="stay.html" class="nav-link">Stay</a></li>
+          <li><a href="amenities.html" class="nav-link">Amenities</a></li>
+          <li><a href="dining.html" class="nav-link">Dining</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="policies.html" class="nav-link">Policies</a></li>
+        </ul>
+      </div>
+      <div class="mobile-menu-actions">
+        <a href="https://wa.me/[TBD: WHATSAPP]" class="mobile-menu-pill" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+        <a href="tel:[TBD: PHONE]" class="mobile-menu-pill">Call us</a>
+        <a href="book.html" class="btn btn-primary btn-lg mobile-cta">Book now</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <a href="book.html" class="btn btn-primary btn-sm header-book">Book now</a>
+      <button type="button" class="menu-toggle" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span class="menu-toggle-icon" aria-hidden="true">
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="hero-section hero-section--banner" aria-label="Events">
+      <div class="hero-backdrop" aria-hidden="true">
+        <img class="slot-img" src="assets/img/banner-celebrations-960.webp" srcset="assets/img/banner-celebrations-480.webp 480w, assets/img/banner-celebrations-960.webp 960w" sizes="100vw" width="1200" height="514" alt="Haldi stage with a marigold ring at the resort" loading="lazy" decoding="async" style="aspect-ratio:21/9;object-position:50% 50%;">
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <span class="hero-strapline">Weddings, birthdays and more</span>
+        <h1 class="hero-title">Celebrate at NSG Royal</h1>
+        <p class="hero-lead">Weddings, birthdays and team days, with the whole resort to yourselves.</p>
+        <a href="#enquire-form" class="btn btn-primary btn-lg">Plan your event</a>
+      </div>
+    </section>
+
+    <!-- Events we host: one tab per event type (all panels show without JS) -->
+    <section class="section ev-host" id="event-types" aria-labelledby="types-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">Events</span>
+          <h2 id="types-title" class="section-title">Events we host</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">From weddings to birthdays to team outings.</p>
+        </header>
+        <div class="ev-tabs reveal" role="tablist" aria-label="Choose an event type">
+          <span class="ev-tab-indicator" aria-hidden="true"></span>
+          <button type="button" class="ev-tab" role="tab" id="ev-tab-wedding" aria-controls="ev-wedding" aria-selected="true">Weddings & Receptions</button>
+          <button type="button" class="ev-tab" role="tab" id="ev-tab-birthday" aria-controls="ev-birthday" aria-selected="false" tabindex="-1">Birthdays & Parties</button>
+          <button type="button" class="ev-tab" role="tab" id="ev-tab-corporate" aria-controls="ev-corporate" aria-selected="false" tabindex="-1">Corporate Outings</button>
+        </div>
+        <div class="ev-panels reveal">
+          <div class="ev-panel" id="ev-wedding" role="tabpanel" aria-labelledby="ev-tab-wedding" tabindex="0" data-event="wedding">
+            <div class="ev-panel-media">
+              <div class="pkg-slider">
+                <div class="pkg-slides" role="region" tabindex="0" aria-label="Event photos">
+                  <figure class="pkg-slide"><img class="slot-img" src="assets/img/banner-celebrations-960.webp" srcset="assets/img/banner-celebrations-480.webp 480w, assets/img/banner-celebrations-960.webp 960w" sizes="100vw" width="1200" height="514" alt="Haldi stage with a marigold ring at the resort" loading="lazy" decoding="async" style="aspect-ratio:21/9;object-position:50% 50%;"><figcaption class="pkg-slide-caption">Haldi stage with a marigold ring</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/event-wedding-960.webp" srcset="assets/img/event-wedding-480.webp 480w, assets/img/event-wedding-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="Haldi stage with marigold strings on the lawn" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 45%;"><figcaption class="pkg-slide-caption">Haldi stage on the lawn</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/event-haldi-welcome-960.webp" srcset="assets/img/event-haldi-welcome-480.webp 480w, assets/img/event-haldi-welcome-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="Haldi welcome board by the pool" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 45%;"><figcaption class="pkg-slide-caption">Welcome board by the pool</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/event-decor-960.webp" srcset="assets/img/event-decor-480.webp 480w, assets/img/event-decor-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="Villa decorated with marigold garlands" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;"><figcaption class="pkg-slide-caption">The villa dressed in marigolds</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/event-engagement-960.webp" srcset="assets/img/event-engagement-480.webp 480w, assets/img/event-engagement-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="Engagement stage with a flower ring" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;"><figcaption class="pkg-slide-caption">Engagement stage</figcaption></figure>
+                </div>
+              </div>
+            </div>
+            <div class="ev-panel-body">
+              <h3 class="ev-panel-title">Weddings & Receptions</h3>
+              <p class="ev-panel-desc">Host your wedding, engagement or reception with the whole resort to yourselves.</p>
+              <h4 class="ev-panel-label">What you get</h4>
+              <ul class="ev-list">
+                <li data-optional>[TBD: wedding inclusion 1]</li>
+                <li data-optional>[TBD: wedding inclusion 2]</li>
+                <li data-optional>Use of the pool and turf</li>
+              </ul>
+              <h4 class="ev-panel-label">Spaces you can use</h4>
+              <ul class="ev-spaces">
+                <li class="ev-space">The Lawn <span class="ev-space-cap" data-optional>[TBD: grand lawn capacity]</span></li>
+                <li class="ev-space">Penthouse <span class="ev-space-cap" data-optional>[TBD: penthouse terrace capacity]</span></li>
+              </ul>
+              <p class="ev-advance" data-optional>Advance: [TBD: wedding advance]</p>
+              <a href="#enquire-form" class="btn btn-primary btn-md ev-plan" data-plan="wedding">Plan this event</a>
+            </div>
+          </div>
+          <div class="ev-panel" id="ev-birthday" role="tabpanel" aria-labelledby="ev-tab-birthday" tabindex="0" data-event="birthday">
+            <div class="ev-panel-media">
+              <div class="pkg-slider">
+                <div class="pkg-slides" role="region" tabindex="0" aria-label="Event photos">
+                  <figure class="pkg-slide"><img class="slot-img" src="assets/img/event-birthday-960.webp" srcset="assets/img/event-birthday-480.webp 480w, assets/img/event-birthday-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="Kids splashing in the pool at a birthday party, with a cake table on the lawn" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:45% 55%;"><figcaption class="pkg-slide-caption">A birthday pool party</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/event-lights-960.webp" srcset="assets/img/event-lights-480.webp 480w, assets/img/event-lights-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="The villa in festive colour lights at night" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;"><figcaption class="pkg-slide-caption">Festive lights at night</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/banner-dining-960.webp" srcset="assets/img/banner-dining-480.webp 480w, assets/img/banner-dining-960.webp 960w, assets/img/banner-dining-1600.webp 1600w" sizes="100vw" width="1200" height="514" alt="Guests at a buffet by the pool" loading="lazy" decoding="async" style="aspect-ratio:21/9;object-position:40% 45%;"><figcaption class="pkg-slide-caption">Buffet by the pool</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/garden-firepit-960.webp" srcset="assets/img/garden-firepit-480.webp 480w, assets/img/garden-firepit-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="Evening seating around the fire pit" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;"><figcaption class="pkg-slide-caption">Evenings by the fire</figcaption></figure>
+                </div>
+              </div>
+            </div>
+            <div class="ev-panel-body">
+              <h3 class="ev-panel-title">Birthdays & Parties</h3>
+              <p class="ev-panel-desc">Pool parties, milestone birthdays and family get-togethers.</p>
+              <h4 class="ev-panel-label">What you get</h4>
+              <ul class="ev-list">
+                <li data-optional>Poolside and lawn</li>
+                <li data-optional>[TBD: birthday inclusion]</li>
+                <li data-optional>Use of the turf</li>
+              </ul>
+              <h4 class="ev-panel-label">Spaces you can use</h4>
+              <ul class="ev-spaces">
+                <li class="ev-space">Poolside <span class="ev-space-cap" data-optional>[TBD: poolside deck capacity]</span></li>
+                <li class="ev-space">The Lawn <span class="ev-space-cap" data-optional>[TBD: grand lawn capacity]</span></li>
+                <li class="ev-space">Cricket Turf <span class="ev-space-cap" data-optional>[TBD: turf capacity]</span></li>
+              </ul>
+              <p class="ev-advance" data-optional>Advance: [TBD: birthday/corporate advance]</p>
+              <a href="#enquire-form" class="btn btn-primary btn-md ev-plan" data-plan="birthday">Plan this event</a>
+            </div>
+          </div>
+          <div class="ev-panel" id="ev-corporate" role="tabpanel" aria-labelledby="ev-tab-corporate" tabindex="0" data-event="corporate">
+            <div class="ev-panel-media">
+              <div class="pkg-slider">
+                <div class="pkg-slides" role="region" tabindex="0" aria-label="Event photos">
+                  <figure class="pkg-slide"><img class="slot-img" src="assets/img/event-corporate-960.webp" srcset="assets/img/event-corporate-480.webp 480w, assets/img/event-corporate-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="Group day out by the pool" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 70%;"><figcaption class="pkg-slide-caption">Group day out by the pool</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/amenity-turf-960.webp" srcset="assets/img/amenity-turf-480.webp 480w, assets/img/amenity-turf-960.webp 960w, assets/img/amenity-turf-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Guests in front of the cricket turf" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 40%;"><figcaption class="pkg-slide-caption">Cricket on the turf</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/banner-dining-960.webp" srcset="assets/img/banner-dining-480.webp 480w, assets/img/banner-dining-960.webp 960w, assets/img/banner-dining-1600.webp 1600w" sizes="100vw" width="1200" height="514" alt="Guests at a buffet by the pool" loading="lazy" decoding="async" style="aspect-ratio:21/9;object-position:40% 45%;"><figcaption class="pkg-slide-caption">Lunch by the pool</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/amenity-gardens-960.webp" srcset="assets/img/amenity-gardens-480.webp 480w, assets/img/amenity-gardens-960.webp 960w, assets/img/amenity-gardens-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Garden gazebo and lawns" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"><figcaption class="pkg-slide-caption">Garden gazebo</figcaption></figure>
+                </div>
+              </div>
+            </div>
+            <div class="ev-panel-body">
+              <h3 class="ev-panel-title">Corporate Outings</h3>
+              <p class="ev-panel-desc">Team outings and offsites with space to meet, play and relax.</p>
+              <h4 class="ev-panel-label">What you get</h4>
+              <ul class="ev-list">
+                <li data-optional>Lawn and open spaces</li>
+                <li data-optional>[TBD: birthday inclusion]</li>
+                <li data-optional>Use of the turf and pool</li>
+              </ul>
+              <h4 class="ev-panel-label">Spaces you can use</h4>
+              <ul class="ev-spaces">
+                <li class="ev-space">The Lawn <span class="ev-space-cap" data-optional>[TBD: grand lawn capacity]</span></li>
+                <li class="ev-space">Cricket Turf <span class="ev-space-cap" data-optional>[TBD: turf capacity]</span></li>
+                <li class="ev-space">Poolside <span class="ev-space-cap" data-optional>[TBD: poolside deck capacity]</span></li>
+              </ul>
+              <p class="ev-advance" data-optional>Advance: [TBD: birthday/corporate advance]</p>
+              <a href="#enquire-form" class="btn btn-primary btn-md ev-plan" data-plan="corporate">Plan this event</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Past celebrations: photo mosaic (frames without a photo are dropped in production builds) -->
+    <section class="section ev-past" id="past-events" aria-labelledby="past-events-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">Past events</span>
+          <h2 id="past-events-title" class="section-title">Past celebrations</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">A few moments from celebrations at the resort.</p>
+        </header>
+        <div class="ev-mosaic">
+          <figure class="ev-moment reveal"><img class="slot-img" src="assets/img/banner-celebrations-960.webp" srcset="assets/img/banner-celebrations-480.webp 480w, assets/img/banner-celebrations-960.webp 960w" sizes="100vw" width="1200" height="514" alt="Haldi stage with a marigold ring at the resort" loading="lazy" decoding="async" style="aspect-ratio:21/9;object-position:50% 50%;"><figcaption class="ev-moment-caption">Haldi celebration</figcaption></figure><figure class="ev-moment reveal"><img class="slot-img" src="assets/img/event-birthday-960.webp" srcset="assets/img/event-birthday-480.webp 480w, assets/img/event-birthday-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="Kids splashing in the pool at a birthday party, with a cake table on the lawn" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:45% 55%;"><figcaption class="ev-moment-caption">Birthday pool party</figcaption></figure><figure class="ev-moment reveal"><img class="slot-img" src="assets/img/event-engagement-960.webp" srcset="assets/img/event-engagement-480.webp 480w, assets/img/event-engagement-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="Engagement stage with a flower ring" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;"><figcaption class="ev-moment-caption">Engagement evening</figcaption></figure><figure class="ev-moment reveal"><img class="slot-img" src="assets/img/event-lights-960.webp" srcset="assets/img/event-lights-480.webp 480w, assets/img/event-lights-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="The villa in festive colour lights at night" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 50%;"><figcaption class="ev-moment-caption">Festive night</figcaption></figure><figure class="ev-moment reveal"><img class="slot-img" src="assets/img/event-haldi-welcome-960.webp" srcset="assets/img/event-haldi-welcome-480.webp 480w, assets/img/event-haldi-welcome-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="Haldi welcome board by the pool" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 45%;"><figcaption class="ev-moment-caption">Haldi by the pool</figcaption></figure><figure class="ev-moment reveal"><img class="slot-img" src="assets/img/event-corporate-960.webp" srcset="assets/img/event-corporate-480.webp 480w, assets/img/event-corporate-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="800" alt="Group day out by the pool" loading="lazy" decoding="async" style="aspect-ratio:3/2;object-position:50% 70%;"><figcaption class="ev-moment-caption">Friends get-together</figcaption></figure>
+        </div>
+        <div class="video-block">
+          <h3 class="video-block-title reveal">Videos from past events</h3>
+          <figure class="video-feature video-feature--portrait reveal" data-video-feature data-src="assets/videos/event-highlight.mp4" data-poster="assets/videos/event-highlight.jpg" data-title="[TBD: event name]">
+            <video muted loop playsinline preload="none" poster="assets/videos/event-highlight.jpg" width="720" height="1280" aria-label="Event highlight"><source src="assets/videos/event-highlight.mp4" type="video/mp4"></video>
+            <button type="button" class="vf-open" aria-label="Open video"></button>
+            <span class="vf-bigplay" aria-hidden="true"></span>
+            <div class="vf-controls">
+              <button type="button" class="vf-btn vf-play" aria-label="Play video" data-label-play="Play video" data-label-pause="Pause video"></button>
+              <button type="button" class="vf-btn vf-mute" aria-label="Unmute video" data-label-unmute="Unmute video" data-label-mute="Mute video"></button>
+            </div>
+            <figcaption class="vf-caption">[TBD: event name]</figcaption>
+          </figure>
+                    <div class="video-grid">
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Plan your event: the page's single booking path -->
+    <section class="section bg-ivory ev-plan-section" id="enquire-form" aria-labelledby="enquire-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">Ask us</span>
+          <h2 id="enquire-title" class="section-title">Plan your event</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">One short form. We will take it from there.</p>
+        </header>
+        <div class="ev-plan-grid">
+        <aside class="ev-steps reveal" aria-label="How it works">
+          <h3 class="ev-steps-title">How it works</h3>
+          <ol class="ev-steps-list">
+            <li><strong>Tell us about it</strong><span>Your date, guest count and what you have in mind.</span></li><li><strong>We call you back</strong><span>Our team will contact you within 24 hours.</span></li><li><strong>Hold your date</strong><span>Pay a small advance to lock it in. We plan the rest with you.</span></li>
+          </ol>
+        </aside>
+        <form id="event-enquiry-form" class="enquiry-form" novalidate>
+          <div class="form-group">
+            <label for="ev-name" class="form-label">Your name <span style="color:var(--err)">*</span></label>
+            <input type="text" id="ev-name" name="name" class="form-input" placeholder="e.g. Ramesh Varma" required>
+            <span class="form-error">Please enter your name.</span>
+          </div>
+          <div class="form-group">
+            <label for="ev-phone" class="form-label">Mobile number (10 digits) <span style="color:var(--err)">*</span></label>
+            <input type="tel" id="ev-phone" name="phone" class="form-input" placeholder="e.g. 9876543210" required>
+            <span class="form-error">Please enter a 10-digit mobile number.</span>
+          </div>
+          <div class="form-group">
+            <label for="ev-email" class="form-label">Email (optional)</label>
+            <input type="email" id="ev-email" name="email" class="form-input" placeholder="e.g. ramesh@example.com">
+          </div>
+          <div class="form-group">
+            <label for="ev-event-type" class="form-label">Type of event <span style="color:var(--err)">*</span></label>
+            <select id="ev-event-type" name="eventType" class="form-select" required>
+              <option value="">Choose one</option>
+              <option value="wedding">Wedding or reception</option>
+              <option value="birthday">Birthday or party</option>
+              <option value="corporate">Corporate outing</option>
+              <option value="other">Something else</option>
+            </select>
+            <span class="form-error">Please choose the type of event.</span>
+          </div>
+          <div class="form-group">
+            <label for="ev-date" class="form-label">Preferred date</label>
+            <input type="date" id="ev-date" name="eventDate" class="form-input">
+          </div>
+          <div class="form-group">
+            <label for="ev-guests" class="form-label">Number of guests</label>
+            <input type="number" id="ev-guests" name="guests" class="form-input" min="1" value="10">
+          </div>
+          <div class="form-group">
+            <label for="ev-notes" class="form-label">Anything else? (optional)</label>
+            <textarea id="ev-notes" name="notes" class="form-textarea" placeholder="e.g. decor, food, music, timings" maxlength="1000"></textarea>
+          </div>
+          <input type="text" name="_hp" style="display:none;" tabindex="-1" autocomplete="off">
+          <div id="ev-error-alert" class="payment-error-alert" style="display:none;" role="alert"></div>
+          <button type="submit" class="btn btn-primary btn-lg" id="ev-submit-btn" style="width:100%;">
+            Send &rarr;
+          </button>
+        </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Partial -->
+  <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brands"><div class="brand-pair">
+  <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="brand-pair-logo" width="160" height="160" loading="lazy" decoding="async">
+  <span class="brand-pair-rule" aria-hidden="true"></span>
+  <img src="assets/img/aroma-logo.png" alt="Aroma Restaurant" class="brand-pair-logo brand-pair-logo--aroma" width="360" height="286" loading="lazy" decoding="async">
+</div></div>
+        <h3 class="footer-title">NSG Royal Resort</h3>
+        <p class="footer-text">A private resort in Bheemili for weddings, family functions and weekend getaways. Book the whole place for your people.</p>
+        <p class="footer-text" style="margin-top: 1rem;">
+          <strong>Address:</strong> Nidigattu, Bheemunipatnam, Bheemili
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Explore</h4>
+        <ul class="footer-links">
+          <li><a href="stay.html" class="footer-link">Stay</a></li>
+          <li><a href="amenities.html" class="footer-link">Amenities</a></li>
+          <li><a href="dining.html" class="footer-link">Dining</a></li>
+          <li><a href="events.html" class="footer-link">Weddings & events</a></li>
+          
+          <li><a href="stay.html#car-rental" class="footer-link">Self-drive cars</a></li>
+          
+          <li><a href="gallery.html" class="footer-link">Photos</a></li>
+          <li><a href="book.html" class="footer-link">Check availability</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Information</h4>
+        <ul class="footer-links">
+          <li><a href="contact.html" class="footer-link">Contact & location</a></li>
+          <li><a href="policies.html" class="footer-link">Policies</a></li>
+          <li><a href="styleguide.html" class="footer-link">Design Styleguide</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 NSG Royal Resort. All rights reserved.</span>
+      <span>Make Every Moment Royal · Weddings · Celebrations · Getaways</span>
+    </div>
+  </div>
+</footer>
+
+
+  <!-- Sticky Mobile Bar Partial -->
+  <nav class="sticky-mobile-bar" aria-label="Quick Actions">
+  <a href="book.html" class="sticky-bar-link sticky-bar-link--primary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+    <span>Book now</span>
+  </a>
+  <a href="https://wa.me/[TBD: WHATSAPP]" class="sticky-bar-link" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    </svg>
+    <span>WhatsApp</span>
+  </a>
+  <a href="tel:[TBD: PHONE]" class="sticky-bar-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+    <span>Call</span>
+  </a>
+</nav>
+
+
+  <!-- Lightbox (hidden by default): photos from the gallery, or a YouTube video inserted only when opened -->
+<div class="lightbox" id="gallery-lightbox" role="dialog" aria-modal="true" aria-hidden="true" data-watch-label="Watch on YouTube" data-video-title="Play video">
+  <button type="button" class="lightbox-close" aria-label="Close lightbox">&times;</button>
+  <div class="lightbox-content">
+    <img class="lightbox-img" src="" alt="">
+  </div>
+  <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous image">&#8592;</button>
+  <button type="button" class="lightbox-nav lightbox-next" aria-label="Next image">&#8594;</button>
+</div>
+
+</body>
+</html>

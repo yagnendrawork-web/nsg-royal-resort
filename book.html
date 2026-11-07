@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your Dates | NSG Royal Resort</title>
+  <meta name="description" content="See free dates and the price, then pay a small advance by UPI. We confirm after checking your payment. Balance at the resort.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Book Your Dates | NSG Royal Resort">
+  <meta property="og:description" content="See free dates and the price, then pay a small advance by UPI. We confirm after checking your payment. Balance at the resort.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Preload Banner -->
+  <link rel="preload" as="image" href="assets/img/banner-stay-480.webp" imagesrcset="assets/img/banner-stay-480.webp 480w, assets/img/banner-stay-960.webp 960w" imagesizes="100vw">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/calendar.js" defer></script>
+  <script src="js/payment.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/addons.js" defer></script>
+  <script src="js/book.js" defer></script>
+</head>
+<body class="page-book">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header Partial -->
+  <header class="site-header" id="site-header">
+  <div class="container header-container">
+    <a href="index.html" class="header-brand" aria-label="NSG Royal Resort Home">
+      <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="header-logo" width="160" height="160">
+    </a>
+
+    <nav class="header-nav" id="header-nav" aria-label="Main Navigation">
+      <div class="nav-capsule">
+        <span class="nav-indicator" aria-hidden="true"></span>
+        <ul class="nav-list">
+          <li><a href="stay.html" class="nav-link">Stay</a></li>
+          <li><a href="amenities.html" class="nav-link">Amenities</a></li>
+          <li><a href="dining.html" class="nav-link">Dining</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="policies.html" class="nav-link">Policies</a></li>
+        </ul>
+      </div>
+      <div class="mobile-menu-actions">
+        <a href="https://wa.me/[TBD: WHATSAPP]" class="mobile-menu-pill" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+        <a href="tel:[TBD: PHONE]" class="mobile-menu-pill">Call us</a>
+        <a href="book.html" class="btn btn-primary btn-lg mobile-cta">Book now</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <a href="book.html" class="btn btn-primary btn-sm header-book">Book now</a>
+      <button type="button" class="menu-toggle" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span class="menu-toggle-icon" aria-hidden="true">
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Page Banner -->
+  <section class="hero-section hero-section--banner" aria-label="Book a Stay">
+    <div class="hero-backdrop" aria-hidden="true">
+      <img class="slot-img" src="assets/img/banner-stay-960.webp" srcset="assets/img/banner-stay-480.webp 480w, assets/img/banner-stay-960.webp 960w" sizes="100vw" width="1200" height="514" alt="The villa and lawn at sunset" fetchpriority="high" decoding="async" style="aspect-ratio:21/9;object-position:50% 50%;">
+    </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <span class="hero-strapline">Book direct</span>
+      <h1 class="hero-title">Book your dates</h1>
+    </div>
+  </section>
+
+  <main id="main-content">
+    <div class="container section">
+      <header class="book-page-header book-page-header--no-top">
+        <p class="section-subtitle" style="text-align:center;margin-bottom:var(--space-6);">Choose your dates, see the price and hold them with a small advance.</p>
+  <p class="book-trust-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+    <span>Pay a small advance now. Pay the balance at the resort. We confirm after we check your payment.</span>
+  </p>
+
+        <!-- Stepper Indicators -->
+        <nav class="booking-stepper" aria-label="Reservation Steps">
+          <span class="step-pill step-pill--active" id="step-indicator-1">1. Dates</span>
+          <span class="step-pill" id="step-indicator-2">2. Your details</span>
+          <span class="step-pill" id="step-indicator-3">3. Advance</span>
+          <span class="step-pill" id="step-indicator-4">4. Done</span>
+        </nav>
+      </header>
+
+      <!-- STEP 1: Date & Package Selection -->
+      <section id="book-step-1" class="book-step" aria-labelledby="step1-heading">
+        <h2 id="step1-heading" class="visually-hidden" style="position:absolute;left:-9999px;">Step 1: Choose dates and package</h2>
+
+        <!-- Type Toggle: Stay vs Event -->
+        <div style="text-align: center;">
+          <div class="booking-type-toggle" role="radiogroup" aria-label="Booking Type">
+            <label class="toggle-option">
+              <input type="radio" name="bookingType" value="stay" checked>
+              <span class="toggle-label">Stay</span>
+            </label>
+            <label class="toggle-option">
+              <input type="radio" name="bookingType" value="event">
+              <span class="toggle-label">Event</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Stay Package Options Block -->
+        <div id="stay-options-block">
+          <div class="package-selection-cards" role="radiogroup" aria-label="Select Package">
+            <label class="package-radio-card">
+              <input type="radio" name="packageSelect" value="whole" checked>
+              <div class="package-radio-title">Whole Resort</div>
+              <div class="package-radio-meta" data-pkg-guests="whole" data-text="All rooms, penthouse, pool, turf and gardens · Up to [TBD: whole resort max guests] guests"></div>
+              <div class="card-package-pricing book-pkg-pricing is-loading" data-pkg="whole">
+                <div class="price-row"><span class="price-currency">₹</span><span class="price-val" data-pkg-price data-fallback-price="Advance: [TBD: whole resort advance]"></span><span class="price-period">per night</span></div>
+                <div class="price-advance" data-pkg-advance></div>
+              </div>
+            </label>
+            <label class="package-radio-card">
+              <input type="radio" name="packageSelect" value="penthouse">
+              <div class="package-radio-title">Penthouse + Pool, Turf & Garden</div>
+              <div class="package-radio-meta" data-pkg-guests="penthouse" data-text="Rooftop penthouse with pool, turf and garden · Up to [TBD: penthouse max guests] guests"></div>
+              <div class="card-package-pricing book-pkg-pricing is-loading" data-pkg="penthouse">
+                <div class="price-row"><span class="price-currency">₹</span><span class="price-val" data-pkg-price data-fallback-price="Advance: [TBD: penthouse advance]"></span><span class="price-period">per night</span></div>
+                <div class="price-advance" data-pkg-advance></div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Event Options Block (Hidden initially) -->
+        <div id="event-options-block" style="display:none; max-width:600px; margin: 0 auto var(--space-6);">
+          <div class="form-group">
+            <label for="event-type-select" class="form-label">Type of event</label>
+            <select id="event-type-select" class="form-select">
+              <option value="wedding">Wedding or reception</option>
+              <option value="birthday">Birthday or party</option>
+              <option value="corporate">Corporate outing</option>
+              <option value="other">Something else</option>
+            </select>
+          </div>
+          <p class="text-muted" style="font-size:0.875rem;">
+            Want to talk about decor, food or space first? Ask us on the Events page.
+          </p>
+        </div>
+
+        <!-- Step 1 Layout: Calendar + Summary -->
+        <div class="book-step-1-layout">
+          <div>
+            <!-- Calendar Component Container -->
+            <div id="calendar-container"></div>
+            <div id="calendar-error-msg" class="form-error" style="display:none; margin-top:8px;" role="alert"></div>
+
+            <!-- Guests Input -->
+            <div class="form-group" style="margin-top:var(--space-6); max-width:320px;">
+              <label for="guests-input" class="form-label">Number of guests</label>
+              <input type="number" id="guests-input" class="form-input" min="1" max="100" value="2">
+              <small class="text-muted" id="guests-max-hint" style="display:block; margin-top:4px;">Each package has a guest limit.</small>
+            </div>
+
+            <!-- Optional add-ons ("Make it special"): shown once dates are chosen and items exist -->
+            <section class="addons-step" id="addons-step" aria-labelledby="addons-heading" hidden>
+              <h2 id="addons-heading" class="addons-heading">Make it special</h2>
+              <p class="addons-sub">Optional extras for your stay or event. Add any you like, or skip.</p>
+              <div id="addons-list" class="addons-list"></div>
+              <p class="addons-paid-note">Add-ons are paid at the resort. Your advance stays the same.</p>
+              <button type="button" class="btn btn-ghost btn-sm" id="addons-skip">Skip, continue without add-ons</button>
+            </section>
+          </div>
+
+          <!-- Price Summary & Continue -->
+          <div>
+            <div class="price-summary-card" id="price-summary-card">
+              <div class="summary-placeholder">
+                <span>Pick your check-in and check-out dates to see the price.</span>
+              </div>
+            </div>
+            <div id="price-summary-live" class="visually-hidden" aria-live="polite" style="position:absolute;left:-9999px;"></div>
+
+            <div id="step1-error-alert" class="payment-error-alert" style="display:none; margin-top:var(--space-4);" role="alert"></div>
+
+            <div style="margin-top: var(--space-6);">
+              <button type="button" class="btn btn-primary btn-lg" id="btn-step1-continue" style="width:100%;">
+                Continue &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: Guest Details -->
+      <section id="book-step-2" class="book-step" style="display:none;" aria-labelledby="step2-heading">
+        <h2 id="step2-heading" class="visually-hidden" style="position:absolute;left:-9999px;">Step 2: Your details</h2>
+
+        <div class="booking-form-card">
+          <div class="step2-overview-box" id="step2-booking-overview"></div>
+
+          <form id="step2-form" novalidate>
+            <div class="form-group" id="name-group">
+              <label for="guest-name" class="form-label">Your name <span style="color:var(--err)">*</span></label>
+              <input type="text" id="guest-name" name="name" class="form-input" placeholder="e.g. Ramesh Varma" maxlength="100" required>
+              <span class="form-error">Please enter your name.</span>
+            </div>
+
+            <div class="form-group" id="phone-group">
+              <label for="guest-phone" class="form-label">Mobile number (10 digits) <span style="color:var(--err)">*</span></label>
+              <input type="tel" id="guest-phone" name="phone" class="form-input" placeholder="e.g. 9876543210" maxlength="15" required>
+              <span class="form-error">Please enter a 10-digit mobile number.</span>
+            </div>
+
+            <div class="form-group" id="email-group">
+              <label for="guest-email" class="form-label">Email (optional)</label>
+              <input type="email" id="guest-email" name="email" class="form-input" placeholder="e.g. ramesh@example.com">
+              <span class="form-error">Please check your email address, or leave it empty.</span>
+            </div>
+
+            <div class="form-group">
+              <label for="guest-notes" class="form-label">Anything we should know? (optional)</label>
+              <textarea id="guest-notes" name="notes" class="form-textarea" placeholder="e.g. birthday surprise, food preferences, arrival time" maxlength="500"></textarea>
+            </div>
+
+            <!-- Honeypot Field -->
+            <input type="text" name="_hp" id="hp-field" style="display:none;" tabindex="-1" autocomplete="off">
+
+            <!-- Turnstile Container -->
+            <div id="turnstile-container"></div>
+
+            <!-- Cancellation Policy Agreement Checkbox -->
+            <div class="form-group" id="policy-group" style="margin-top:var(--space-4);">
+              <label style="display:flex; align-items:flex-start; gap:var(--space-2); cursor:pointer; font-size:0.9375rem;">
+                <input type="checkbox" id="policy-checkbox" required style="margin-top:3px; min-height:20px; min-width:20px;">
+                <span>
+                  I agree to the
+                  <a href="policies.html#cancellation" target="_blank" rel="noopener" style="color:var(--emerald-900); text-decoration:underline;">cancellation policy</a>
+                  and house rules.
+                </span>
+              </label>
+              <span class="form-error" style="margin-top:4px;">Please tick the box to agree before you continue.</span>
+            </div>
+
+            <div id="step2-error-alert" class="payment-error-alert" style="display:none;" role="alert"></div>
+
+            <div style="display:flex; gap:var(--space-4); margin-top:var(--space-8); justify-content:space-between;">
+              <button type="button" class="btn btn-secondary btn-md" id="btn-step2-back">&larr; Back</button>
+              <button type="submit" class="btn btn-primary btn-md" id="btn-step2-submit">Continue to payment &rarr;</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- STEP 3: Advance Payment (UPI) -->
+      <section id="book-step-3" class="book-step" style="display:none;" aria-labelledby="step3-heading">
+        <h2 id="step3-heading" class="visually-hidden" style="position:absolute;left:-9999px;">Step 3: Pay the advance</h2>
+        <div id="step3-payment-container"></div>
+      </section>
+
+      <!-- STEP 4: Request Received / Confirmation -->
+      <section id="book-step-4" class="book-step" style="display:none;" aria-labelledby="step4-heading">
+        <h2 id="step4-heading" class="visually-hidden" style="position:absolute;left:-9999px;">Step 4: Request received</h2>
+        <div id="step4-confirmation-content"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer Partial -->
+  <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brands"><div class="brand-pair">
+  <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="brand-pair-logo" width="160" height="160" loading="lazy" decoding="async">
+  <span class="brand-pair-rule" aria-hidden="true"></span>
+  <img src="assets/img/aroma-logo.png" alt="Aroma Restaurant" class="brand-pair-logo brand-pair-logo--aroma" width="360" height="286" loading="lazy" decoding="async">
+</div></div>
+        <h3 class="footer-title">NSG Royal Resort</h3>
+        <p class="footer-text">A private resort in Bheemili for weddings, family functions and weekend getaways. Book the whole place for your people.</p>
+        <p class="footer-text" style="margin-top: 1rem;">
+          <strong>Address:</strong> Nidigattu, Bheemunipatnam, Bheemili
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Explore</h4>
+        <ul class="footer-links">
+          <li><a href="stay.html" class="footer-link">Stay</a></li>
+          <li><a href="amenities.html" class="footer-link">Amenities</a></li>
+          <li><a href="dining.html" class="footer-link">Dining</a></li>
+          <li><a href="events.html" class="footer-link">Weddings & events</a></li>
+          
+          <li><a href="stay.html#car-rental" class="footer-link">Self-drive cars</a></li>
+          
+          <li><a href="gallery.html" class="footer-link">Photos</a></li>
+          <li><a href="book.html" class="footer-link">Check availability</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Information</h4>
+        <ul class="footer-links">
+          <li><a href="contact.html" class="footer-link">Contact & location</a></li>
+          <li><a href="policies.html" class="footer-link">Policies</a></li>
+          <li><a href="styleguide.html" class="footer-link">Design Styleguide</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 NSG Royal Resort. All rights reserved.</span>
+      <span>Make Every Moment Royal · Weddings · Celebrations · Getaways</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

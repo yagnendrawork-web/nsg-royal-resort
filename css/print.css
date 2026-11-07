@@ -1,0 +1,117 @@
+/* ==========================================================================
+   NSG ROYAL RESORT — PRINT STYLES
+   print.css: Print view & PDF export optimizations (SPEC Section 7, 9 & 11)
+   Titled "Booking confirmation", never "invoice" or "tax invoice"
+   ========================================================================== */
+
+@media print {
+  *, *::before, *::after {
+    background: transparent !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    padding: 1.5cm !important;
+  }
+
+  /* Hide navigation, buttons, forms, footers, headers */
+  .site-header,
+  .site-footer,
+  .offers-bar,
+  .sticky-mobile-bar,
+  .no-print,
+  .btn,
+  button,
+  form,
+  .status-form-section,
+  .section-tag,
+  .gold-hairline,
+  .section-header {
+    display: none !important;
+  }
+
+  /* Booking Receipt Card in Print */
+  .booking-receipt-card {
+    border: 1px solid #333333 !important;
+    border-radius: 4px !important;
+    padding: 24pt !important;
+    margin: 0 auto !important;
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  .receipt-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    border-bottom: 2px solid #222222 !important;
+    padding-bottom: 14pt !important;
+    margin-bottom: 14pt !important;
+  }
+
+  .receipt-title {
+    font-size: 20pt !important;
+    font-weight: 700 !important;
+    color: #000000 !important;
+    margin: 0 0 4pt 0 !important;
+  }
+
+  .receipt-subtitle {
+    font-size: 10pt !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.1em !important;
+    color: #555555 !important;
+  }
+
+  .receipt-id {
+    font-size: 11pt !important;
+    margin-top: 6pt !important;
+  }
+
+  .badge {
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
+    padding: 4pt 8pt !important;
+    font-size: 9pt !important;
+  }
+
+  .receipt-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12pt !important;
+    margin-bottom: 18pt !important;
+  }
+
+  .receipt-item {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2pt !important;
+  }
+
+  .receipt-label {
+    font-size: 9pt !important;
+    text-transform: uppercase !important;
+    color: #555555 !important;
+  }
+
+  .receipt-value {
+    font-size: 11pt !important;
+    font-weight: 600 !important;
+    color: #000000 !important;
+  }
+
+  .receipt-property-info {
+    border-top: 1px solid #cccccc !important;
+    padding-top: 12pt !important;
+    margin-top: 14pt !important;
+    font-size: 10pt !important;
+    color: #444444 !important;
+    text-align: center !important;
+  }
+}

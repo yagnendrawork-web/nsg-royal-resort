@@ -1,0 +1,142 @@
+/* ==========================================================================
+   NSG ROYAL RESORT — DESIGN TOKENS
+   tokens.css: Single source of truth for all styling tokens
+   ========================================================================== */
+
+/* Font Declarations */
+@font-face {
+  font-family: 'Cormorant Garamond';
+  src: url('../assets/fonts/cormorant-garamond-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  src: url('../assets/fonts/cormorant-garamond-v21-latin-regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter-600.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter-300.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('../assets/fonts/inter-v20-latin-500italic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  /* Color Palette (SPEC Section 4) */
+  --ivory: #FBF8F2;
+  --sand: #F1EADB;
+  --emerald-900: #0E2F28;
+  --emerald-700: #1B4D41;
+  --gold: #C29B4A;
+  --gold-light: #E8D5A3;
+  --ink: #1E2421;
+  --muted: #5E655F;
+  --ok: #2E7D5B;
+  --warn: #B7791F;
+  --err: #B3382C;
+
+  /* Typography */
+  --font-heading: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --font-h1: clamp(2.6rem, 7vw, 4.8rem);
+  --font-h2: clamp(2.1rem, 4.6vw, 3.2rem);
+  --font-h3: 1.4rem;
+  --font-h4: 1.15rem;
+  --font-body-size: 1.0625rem;
+  --line-height-body: 1.65;
+  --line-height-heading: 1.12;
+
+  /* Radius Tokens (SPEC Section 4: Radius changes happen only here) */
+  --r-btn: 999px;
+  --r-card: 16px;
+  --r-input: 12px;
+
+  /* Spacing */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --section-py: clamp(3.5rem, 8vw, 7rem);
+  --container-max: 1180px;
+
+  /* Shadows & Hairlines */
+  --shadow-soft: 0 10px 30px -10px rgba(14, 47, 40, 0.08);
+  --shadow-card: 0 14px 38px -12px rgba(14, 47, 40, 0.12);
+  --hairline-gold: 1px solid var(--gold-light);
+  --hairline-gold-solid: 1px solid var(--gold);
+
+  /* Motion */
+  --transition: 200ms ease;
+
+  /* Accessibility */
+  --focus-ring: 2px solid var(--gold);
+  --focus-offset: 2px;
+
+  /* Premium layer: deep gold for small text on light backgrounds (>= 4.5:1 on ivory and sand) */
+  --gold-deep: #7D5F24;
+
+  /* Gradients */
+  --gold-gradient: linear-gradient(135deg, #DCBE78 0%, var(--gold) 48%, #A8843B 100%);
+  --gold-line: linear-gradient(90deg, transparent 0%, var(--gold) 22%, var(--gold-light) 50%, var(--gold) 78%, transparent 100%);
+  --emerald-gradient: linear-gradient(160deg, var(--emerald-700) 0%, var(--emerald-900) 62%, #0A241F 100%);
+  --hero-overlay: linear-gradient(180deg, rgba(10, 36, 31, 0.62) 0%, rgba(10, 36, 31, 0.30) 38%, rgba(10, 36, 31, 0.48) 64%, rgba(10, 36, 31, 0.86) 100%);
+
+  /* Layered shadows */
+  --shadow-sm: 0 1px 2px rgba(14, 47, 40, 0.06), 0 2px 8px -2px rgba(14, 47, 40, 0.06);
+  --shadow-md: 0 2px 4px rgba(14, 47, 40, 0.04), 0 10px 24px -8px rgba(14, 47, 40, 0.14);
+  --shadow-lg: 0 4px 10px rgba(14, 47, 40, 0.05), 0 28px 56px -18px rgba(14, 47, 40, 0.28);
+
+  /* Ornaments (inline SVG, under 2 KB together) */
+  --lotus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C29B4A' stroke-width='1.2' stroke-linejoin='round'%3E%3Cpath d='M12 4c2.6 3.2 2.6 8.3 0 12-2.6-3.7-2.6-8.8 0-12z'/%3E%3Cpath d='M12 16c-.9-3.9-4-6.6-8-6.8.3 4 3.6 6.8 8 6.8zM12 16c.9-3.9 4-6.6 8-6.8-.3 4-3.6 6.8-8 6.8z'/%3E%3Cpath d='M6 19h12'/%3E%3C/svg%3E");
+  --pattern-lotus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72' fill='none' stroke='%23E8D5A3' stroke-opacity='.07' stroke-width='1'%3E%3Cpath d='M36 22c2.6 3.2 2.6 8.3 0 12-2.6-3.7-2.6-8.8 0-12zM36 34c-.9-3.9-4-6.6-8-6.8.3 4 3.6 6.8 8 6.8zM36 34c.9-3.9 4-6.6 8-6.8-.3 4-3.6 6.8-8 6.8z'/%3E%3Cpath d='M0 0l4 4M72 0l-4 4M0 72l4-4M72 72l-4-4'/%3E%3C/svg%3E");
+  --wave-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 56' preserveAspectRatio='none'%3E%3Cpath d='M0 56V28C240 4 480 0 720 14s480 34 720 14v28z'/%3E%3C/svg%3E");
+
+  /* Motion */
+  --ease-out: cubic-bezier(.22, .8, .26, 1);
+  --dur-fast: 200ms;
+  --dur: 400ms;
+  --dur-slow: 600ms;
+
+  /* Layout */
+  --measure: 65ch;
+  --header-h: 96px;
+}

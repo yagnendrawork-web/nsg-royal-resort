@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amenities | NSG Royal Resort, Bheemili</title>
+  <meta name="description" content="Food from our partner Aroma Restaurants, a drinks bar, snacks, a refrigerator and self-drive cars for guests at NSG Royal Resort.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Amenities | NSG Royal Resort, Bheemili">
+  <meta property="og:description" content="Food from our partner Aroma Restaurants, a drinks bar, snacks, a refrigerator and self-drive cars for guests at NSG Royal Resort.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/amenities.js" defer></script>
+</head>
+<body class="page-amenities">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header Partial -->
+  <header class="site-header" id="site-header">
+  <div class="container header-container">
+    <a href="index.html" class="header-brand" aria-label="NSG Royal Resort Home">
+      <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="header-logo" width="160" height="160">
+    </a>
+
+    <nav class="header-nav" id="header-nav" aria-label="Main Navigation">
+      <div class="nav-capsule">
+        <span class="nav-indicator" aria-hidden="true"></span>
+        <ul class="nav-list">
+          <li><a href="stay.html" class="nav-link">Stay</a></li>
+          <li><a href="amenities.html" class="nav-link">Amenities</a></li>
+          <li><a href="dining.html" class="nav-link">Dining</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="policies.html" class="nav-link">Policies</a></li>
+        </ul>
+      </div>
+      <div class="mobile-menu-actions">
+        <a href="https://wa.me/[TBD: WHATSAPP]" class="mobile-menu-pill" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+        <a href="tel:[TBD: PHONE]" class="mobile-menu-pill">Call us</a>
+        <a href="book.html" class="btn btn-primary btn-lg mobile-cta">Book now</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <a href="book.html" class="btn btn-primary btn-sm header-book">Book now</a>
+      <button type="button" class="menu-toggle" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span class="menu-toggle-icon" aria-hidden="true">
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+  <!-- Line icons used on this page -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="am-food" viewBox="0 0 24 24"><path d="M5 3v8a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V3M7 13v8M17 21V3c-2 1-3.5 3.5-3.5 7 0 2 1 3 3.5 3"/></symbol>
+    <symbol id="am-bar" viewBox="0 0 24 24"><path d="M6 3h12l-6 8-6-8zM12 11v8M8 21h8M8.5 6.5h7"/></symbol>
+    <symbol id="am-snacks" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="9" cy="9.5" r="1"/><circle cx="14.5" cy="8.5" r=".8"/><circle cx="15" cy="14" r="1"/><circle cx="10" cy="15" r=".8"/></symbol>
+    <symbol id="am-fridge" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2"/><path d="M6 9.5h12M9 5.5v2M9 12.5v3"/></symbol>
+    <symbol id="am-car" viewBox="0 0 24 24"><path d="M4 16v-3.5L6 7h12l2 5.5V16M4 16h16M4 16v2.5h3V16M17 16v2.5h3V16M4 12.5h16"/><circle cx="7.5" cy="14" r=".6"/><circle cx="16.5" cy="14" r=".6"/></symbol>
+  </svg>
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="hero-section hero-section--banner" aria-label="Amenities">
+      <div class="hero-backdrop" aria-hidden="true">
+        <img class="slot-img" src="assets/img/banner-amenities-960.webp" srcset="assets/img/banner-amenities-480.webp 480w, assets/img/banner-amenities-960.webp 960w" sizes="100vw" width="1200" height="514" alt="Living room and kitchen" loading="lazy" decoding="async" style="aspect-ratio:21/9;object-position:50% 55%;">
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <span class="hero-strapline">Amenities</span>
+        <h1 class="hero-title">Make yourselves at home</h1>
+        <p class="hero-lead">Good food, cold drinks, snacks and a car when you need one.</p>
+      </div>
+    </section>
+
+    <!-- Jump bar: sticks under the header and lights up the section in view -->
+    <nav class="am-jump" aria-label="Jump to an amenity">
+      <div class="container">
+        <ul class="am-jump-list">
+          <li><a href="#am-food" class="am-jump-link"><svg class="am-icon" aria-hidden="true"><use href="#am-food"/></svg>Food</a></li>
+          <li><a href="#am-bar" class="am-jump-link"><svg class="am-icon" aria-hidden="true"><use href="#am-bar"/></svg>Drinks bar</a></li>
+          <li><a href="#am-snacks" class="am-jump-link"><svg class="am-icon" aria-hidden="true"><use href="#am-snacks"/></svg>Snacks</a></li>
+          <li><a href="#am-fridge" class="am-jump-link"><svg class="am-icon" aria-hidden="true"><use href="#am-fridge"/></svg>Refrigerator</a></li>
+          
+          <li><a href="#am-cars" class="am-jump-link"><svg class="am-icon" aria-hidden="true"><use href="#am-car"/></svg>Cars</a></li>
+          
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Food partner -->
+    <section class="section bg-ivory am-food" id="am-food" aria-labelledby="am-food-title">
+      <div class="container am-split">
+        <div class="am-split-media reveal">
+          <img class="slot-img" src="assets/img/amenity-dining-960.webp" srcset="assets/img/amenity-dining-480.webp 480w, assets/img/amenity-dining-960.webp 960w, assets/img/amenity-dining-1600.webp 1600w" sizes="(min-width: 900px) 50vw, 100vw" width="1200" height="900" alt="Buffet served by the pool" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:40% 45%;">
+          <span class="am-badge" aria-hidden="true"><svg class="am-icon"><use href="#am-food"/></svg></span>
+        </div>
+        <div class="am-split-body reveal">
+          <span class="section-tag">Food partner</span>
+          <h2 id="am-food-title" class="section-title">Meals by Aroma Restaurant</h2>
+          <hr class="gold-hairline am-hairline-left" aria-hidden="true">
+          <p class="am-lead">Food at the resort is served by Aroma Restaurant. See the packages and the menu on our Dining page.</p>
+          <p class="am-detail" data-optional>[TBD: Aroma menu, meal timings and how guests order]</p>
+          <a href="dining.html" class="btn btn-primary btn-md">See the menu</a>
+          <a href="https://wa.me/[TBD: WHATSAPP]" class="btn btn-secondary btn-md" target="_blank" rel="noopener noreferrer">Ask about the menu</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- In-house comforts: bento grid -->
+    <section class="section bg-sand am-comforts" aria-labelledby="am-comforts-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">In-house comforts</span>
+          <h2 id="am-comforts-title" class="section-title">Little things that make a stay easy</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+        </header>
+        <div class="am-bento">
+          <article class="am-card am-card--photo am-card--wide reveal" id="am-bar">
+            <div class="am-card-media"><img class="slot-img" src="assets/img/amenity-bar-960.webp" srcset="assets/img/amenity-bar-480.webp 480w, assets/img/amenity-bar-960.webp 960w" sizes="(min-width: 900px) 50vw, 100vw" width="1200" height="900" alt="Bar counter with a stool in the kitchen" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:40% 55%;"></div>
+            <div class="am-card-body">
+              <svg class="am-icon am-card-icon" aria-hidden="true"><use href="#am-bar"/></svg>
+              <h3 class="am-card-title">Drinks bar</h3>
+              <p class="am-card-text">A drinks bar for your group to sit back and unwind.</p>
+              <p class="am-detail" data-optional>[TBD: drinks bar details and timings]</p>
+            </div>
+          </article>
+          <article class="am-card am-card--icon reveal" id="am-snacks">
+            <div class="am-card-body">
+              <svg class="am-icon am-card-icon am-card-icon--lg" aria-hidden="true"><use href="#am-snacks"/></svg>
+              <h3 class="am-card-title">Snacks</h3>
+              <p class="am-card-text">Snacks for those in-between moments.</p>
+              <p class="am-detail" data-optional>[TBD: snacks offered and whether they are included or paid]</p>
+            </div>
+          </article>
+          <article class="am-card am-card--photo reveal" id="am-fridge">
+            <div class="am-card-media"><img class="slot-img" src="assets/img/amenity-fridge-960.webp" srcset="assets/img/amenity-fridge-480.webp 480w, assets/img/amenity-fridge-960.webp 960w" sizes="(min-width: 900px) 25vw, 100vw" width="1200" height="900" alt="Bar counter with a refrigerator" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:80% 60%;"></div>
+            <div class="am-card-body">
+              <svg class="am-icon am-card-icon" aria-hidden="true"><use href="#am-fridge"/></svg>
+              <h3 class="am-card-title">Refrigerator</h3>
+              <p class="am-card-text">A refrigerator to keep your food and drinks cold.</p>
+              <p class="am-detail" data-optional>[TBD: where the refrigerator is and its size]</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    
+    <!-- Self-drive cars -->
+    <section class="section bg-emerald am-cars" id="am-cars" aria-labelledby="am-cars-title">
+      <div class="container am-cars-inner reveal">
+        <div class="am-cars-art" aria-hidden="true">
+          <svg class="am-icon"><use href="#am-car"/></svg>
+          <span class="am-road"></span>
+        </div>
+        <div class="am-cars-body">
+          <span class="section-tag">Getting around</span>
+          <h2 id="am-cars-title" class="section-title">Self-drive cars</h2>
+          <p class="am-lead">Need a car during your stay? Our partners have self-drive cars on request.</p>
+          <p class="am-cars-terms">Self-drive only · Partner cars · Deposit, fuel, km and ID as per partner terms</p>
+          <a href="stay.html#car-rental" class="btn btn-primary btn-md">See the cars</a>
+        </div>
+      </div>
+    </section>
+    
+
+    <!-- Final call to action -->
+    <section class="section bg-ivory am-final" aria-labelledby="am-final-title">
+      <div class="container am-final-inner reveal">
+        <h2 id="am-final-title" class="section-title">Ready for your stay?</h2>
+        <hr class="gold-hairline" aria-hidden="true">
+        <p class="section-subtitle">Book the resort and we will have everything ready when you arrive.</p>
+        <a href="book.html" class="btn btn-primary btn-lg">Book your stay</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Partial -->
+  <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brands"><div class="brand-pair">
+  <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="brand-pair-logo" width="160" height="160" loading="lazy" decoding="async">
+  <span class="brand-pair-rule" aria-hidden="true"></span>
+  <img src="assets/img/aroma-logo.png" alt="Aroma Restaurant" class="brand-pair-logo brand-pair-logo--aroma" width="360" height="286" loading="lazy" decoding="async">
+</div></div>
+        <h3 class="footer-title">NSG Royal Resort</h3>
+        <p class="footer-text">A private resort in Bheemili for weddings, family functions and weekend getaways. Book the whole place for your people.</p>
+        <p class="footer-text" style="margin-top: 1rem;">
+          <strong>Address:</strong> Nidigattu, Bheemunipatnam, Bheemili
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Explore</h4>
+        <ul class="footer-links">
+          <li><a href="stay.html" class="footer-link">Stay</a></li>
+          <li><a href="amenities.html" class="footer-link">Amenities</a></li>
+          <li><a href="dining.html" class="footer-link">Dining</a></li>
+          <li><a href="events.html" class="footer-link">Weddings & events</a></li>
+          
+          <li><a href="stay.html#car-rental" class="footer-link">Self-drive cars</a></li>
+          
+          <li><a href="gallery.html" class="footer-link">Photos</a></li>
+          <li><a href="book.html" class="footer-link">Check availability</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Information</h4>
+        <ul class="footer-links">
+          <li><a href="contact.html" class="footer-link">Contact & location</a></li>
+          <li><a href="policies.html" class="footer-link">Policies</a></li>
+          <li><a href="styleguide.html" class="footer-link">Design Styleguide</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 NSG Royal Resort. All rights reserved.</span>
+      <span>Make Every Moment Royal · Weddings · Celebrations · Getaways</span>
+    </div>
+  </div>
+</footer>
+
+
+  <!-- Sticky Mobile Bar Partial -->
+  <nav class="sticky-mobile-bar" aria-label="Quick Actions">
+  <a href="book.html" class="sticky-bar-link sticky-bar-link--primary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+    <span>Book now</span>
+  </a>
+  <a href="https://wa.me/[TBD: WHATSAPP]" class="sticky-bar-link" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    </svg>
+    <span>WhatsApp</span>
+  </a>
+  <a href="tel:[TBD: PHONE]" class="sticky-bar-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+    <span>Call</span>
+  </a>
+</nav>
+
+</body>
+</html>

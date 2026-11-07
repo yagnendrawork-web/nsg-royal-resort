@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stay at NSG Royal Resort, Bheemili</title>
+  <meta name="description" content="Book the whole resort, or the penthouse with pool, turf and garden. One booking per date, so the place is all yours.">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Stay at NSG Royal Resort, Bheemili">
+  <meta property="og:description" content="Book the whole resort, or the penthouse with pool, turf and garden. One booking per date, so the place is all yours.">
+  <meta property="og:image" content="assets/img/og-image.jpg">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/cars.js" defer></script>
+</head>
+<body class="page-stay">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header Partial -->
+  <header class="site-header" id="site-header">
+  <div class="container header-container">
+    <a href="index.html" class="header-brand" aria-label="NSG Royal Resort Home">
+      <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="header-logo" width="160" height="160">
+    </a>
+
+    <nav class="header-nav" id="header-nav" aria-label="Main Navigation">
+      <div class="nav-capsule">
+        <span class="nav-indicator" aria-hidden="true"></span>
+        <ul class="nav-list">
+          <li><a href="stay.html" class="nav-link">Stay</a></li>
+          <li><a href="amenities.html" class="nav-link">Amenities</a></li>
+          <li><a href="dining.html" class="nav-link">Dining</a></li>
+          <li><a href="events.html" class="nav-link">Events</a></li>
+          <li><a href="gallery.html" class="nav-link">Gallery</a></li>
+          <li><a href="contact.html" class="nav-link">Contact</a></li>
+          <li><a href="policies.html" class="nav-link">Policies</a></li>
+        </ul>
+      </div>
+      <div class="mobile-menu-actions">
+        <a href="https://wa.me/[TBD: WHATSAPP]" class="mobile-menu-pill" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+        <a href="tel:[TBD: PHONE]" class="mobile-menu-pill">Call us</a>
+        <a href="book.html" class="btn btn-primary btn-lg mobile-cta">Book now</a>
+      </div>
+    </nav>
+
+    <div class="header-actions">
+      <a href="book.html" class="btn btn-primary btn-sm header-book">Book now</a>
+      <button type="button" class="menu-toggle" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle navigation menu">
+        <span class="menu-toggle-icon" aria-hidden="true">
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+          <span class="menu-toggle-bar"></span>
+        </span>
+      </button>
+    </div>
+  </div>
+</header>
+
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section hero-section--banner" aria-label="Stay">
+      <div class="hero-backdrop" aria-hidden="true">
+        <img class="slot-img" src="assets/img/banner-stay-960.webp" srcset="assets/img/banner-stay-480.webp 480w, assets/img/banner-stay-960.webp 960w" sizes="100vw" width="1200" height="514" alt="The villa and lawn at sunset" fetchpriority="high" decoding="async" style="aspect-ratio:21/9;object-position:50% 50%;">
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <span class="hero-strapline">A private resort, just for your group</span>
+        <h1 class="hero-title">The whole place, just for you</h1>
+        <a href="book.html" class="btn btn-primary btn-lg">Book now</a>
+      </div>
+    </section>
+
+    <!-- Package Comparison -->
+    <section class="section bg-ivory" id="packages" aria-labelledby="packages-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">Packages</span>
+          <h2 id="packages-title" class="section-title">Choose your package</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">We take one booking per date, so you never share the resort with another group.</p>
+        </header>
+        <div class="packages-grid" id="stay-packages-container">
+          <article class="card-package reveal">
+            <div class="card-package-media">
+              <div class="pkg-slider">
+                <div class="pkg-slides" role="region" tabindex="0" aria-label="Package photos. Swipe or use the arrows to see more.">
+                  <figure class="pkg-slide"><img class="slot-img" src="assets/img/pkg-whole-960.webp" srcset="assets/img/pkg-whole-480.webp 480w, assets/img/pkg-whole-960.webp 960w" sizes="(min-width: 768px) 50vw, 100vw" width="1200" height="900" alt="The whole resort lit up at night" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 55%;"><figcaption class="pkg-slide-caption">The whole resort, lit up at night</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/pkg-whole-rooms-960.webp" srcset="assets/img/pkg-whole-rooms-480.webp 480w, assets/img/pkg-whole-rooms-960.webp 960w" sizes="(min-width: 768px) 50vw, 100vw" width="1200" height="900" alt="A bedroom at the resort" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"><figcaption class="pkg-slide-caption">Bedrooms</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/amenity-penthouse-960.webp" srcset="assets/img/amenity-penthouse-480.webp 480w, assets/img/amenity-penthouse-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Penthouse suite opening onto the terrace" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"><figcaption class="pkg-slide-caption">The penthouse suite</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/amenity-pool-960.webp" srcset="assets/img/amenity-pool-480.webp 480w, assets/img/amenity-pool-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Swimming pool" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:40% 70%;"><figcaption class="pkg-slide-caption">Swimming pool</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/amenity-turf-960.webp" srcset="assets/img/amenity-turf-480.webp 480w, assets/img/amenity-turf-960.webp 960w, assets/img/amenity-turf-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Guests in front of the cricket turf" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 40%;"><figcaption class="pkg-slide-caption">Cricket turf</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/amenity-gardens-960.webp" srcset="assets/img/amenity-gardens-480.webp 480w, assets/img/amenity-gardens-960.webp 960w, assets/img/amenity-gardens-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Garden gazebo and lawns" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"><figcaption class="pkg-slide-caption">Garden gazebo and lawns</figcaption></figure>
+                </div>
+              </div>
+            </div>
+            <div class="card-package-body">
+              <h3 class="card-package-title">Whole Resort</h3>
+              <p class="card-package-tagline">Every room, the penthouse, the pool, the turf and the gardens. Just for your group.</p>
+              <div class="card-package-pricing is-loading" data-pkg="whole">
+                <div class="price-row">
+                  <span class="price-currency">₹</span>
+                  <span class="price-val" id="stay-pkg-price-whole" data-pkg-price data-fallback-price="[TBD: whole resort rate]"></span>
+                  <span class="price-period">per night</span>
+                </div>
+                <div class="price-advance" id="stay-pkg-advance-whole" data-pkg-advance data-fallback-advance="[TBD: whole resort advance]"></div>
+              </div>
+              <a href="book.html?type=stay&package=whole" class="btn btn-primary btn-md">Book this</a>
+            </div>
+          </article>
+          <article class="card-package reveal">
+            <div class="card-package-media">
+              <div class="pkg-slider">
+                <div class="pkg-slides" role="region" tabindex="0" aria-label="Package photos. Swipe or use the arrows to see more.">
+                  <figure class="pkg-slide"><img class="slot-img" src="assets/img/pkg-penthouse-960.webp" srcset="assets/img/pkg-penthouse-480.webp 480w, assets/img/pkg-penthouse-960.webp 960w" sizes="(min-width: 768px) 50vw, 100vw" width="1200" height="900" alt="Penthouse bedroom with a view of the hills" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"><figcaption class="pkg-slide-caption">Penthouse bedroom with a view</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/penthouse-lounge-960.webp" srcset="assets/img/penthouse-lounge-480.webp 480w, assets/img/penthouse-lounge-960.webp 960w" sizes="(min-width: 768px) 50vw, 100vw" width="1200" height="900" alt="Penthouse living room" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"><figcaption class="pkg-slide-caption">Penthouse living room</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/amenity-pool-960.webp" srcset="assets/img/amenity-pool-480.webp 480w, assets/img/amenity-pool-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Swimming pool" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:40% 70%;"><figcaption class="pkg-slide-caption">Swimming pool</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/amenity-turf-960.webp" srcset="assets/img/amenity-turf-480.webp 480w, assets/img/amenity-turf-960.webp 960w, assets/img/amenity-turf-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Guests in front of the cricket turf" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 40%;"><figcaption class="pkg-slide-caption">Cricket turf</figcaption></figure><figure class="pkg-slide"><img class="slot-img" src="assets/img/amenity-gardens-960.webp" srcset="assets/img/amenity-gardens-480.webp 480w, assets/img/amenity-gardens-960.webp 960w, assets/img/amenity-gardens-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Garden gazebo and lawns" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"><figcaption class="pkg-slide-caption">Garden and lawns</figcaption></figure>
+                </div>
+              </div>
+            </div>
+            <div class="card-package-body">
+              <h3 class="card-package-title">Penthouse + Pool, Turf & Garden</h3>
+              <p class="card-package-tagline">The rooftop penthouse with pool, turf and garden. Ground-floor rooms not included.</p>
+              <div class="card-package-pricing is-loading" data-pkg="penthouse">
+                <div class="price-row">
+                  <span class="price-currency">₹</span>
+                  <span class="price-val" id="stay-pkg-price-penthouse" data-pkg-price data-fallback-price="[TBD: penthouse rate]"></span>
+                  <span class="price-period">per night</span>
+                </div>
+                <div class="price-advance" id="stay-pkg-advance-penthouse" data-pkg-advance data-fallback-advance="[TBD: penthouse advance]"></div>
+              </div>
+              <a href="book.html?type=stay&package=penthouse" class="btn btn-primary btn-md">Book this</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Amenity Sections -->
+    <section class="section bg-sand" id="amenities" aria-labelledby="amenities-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">Amenities</span>
+          <h2 id="amenities-title" class="section-title">What you get</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">All of this comes with your stay.</p>
+        </header>
+        <div class="amenities-grid">
+          <article class="card-amenity reveal">
+            <div class="card-amenity-media"><img class="slot-img" src="assets/img/amenity-pool-960.webp" srcset="assets/img/amenity-pool-480.webp 480w, assets/img/amenity-pool-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Swimming pool" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:40% 70%;"></div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">Swimming Pool</h3>
+              <p class="card-amenity-desc">Just for your group.</p>
+            </div>
+          </article>
+          <article class="card-amenity reveal">
+            <div class="card-amenity-media"><img class="slot-img" src="assets/img/amenity-turf-960.webp" srcset="assets/img/amenity-turf-480.webp 480w, assets/img/amenity-turf-960.webp 960w, assets/img/amenity-turf-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Guests in front of the cricket turf" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 40%;"></div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">Cricket Turf</h3>
+              <p class="card-amenity-desc">Box cricket for all ages.</p>
+            </div>
+          </article>
+          <article class="card-amenity reveal">
+            <div class="card-amenity-media"><img class="slot-img" src="assets/img/amenity-gardens-960.webp" srcset="assets/img/amenity-gardens-480.webp 480w, assets/img/amenity-gardens-960.webp 960w, assets/img/amenity-gardens-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Garden gazebo and lawns" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"></div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">Gardens</h3>
+              <p class="card-amenity-desc">Lawns and a garden gazebo for functions and games.</p>
+            </div>
+          </article>
+          <article class="card-amenity reveal">
+            <div class="card-amenity-media"><img class="slot-img" src="assets/img/amenity-penthouse-960.webp" srcset="assets/img/amenity-penthouse-480.webp 480w, assets/img/amenity-penthouse-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Penthouse suite opening onto the terrace" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"></div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">Penthouse</h3>
+              <p class="card-amenity-desc">Top-floor suite opening onto the terrace.</p>
+            </div>
+          </article>
+          <article class="card-amenity reveal" id="amenity-rooms">
+            <div class="card-amenity-media"><img class="slot-img" src="assets/img/amenity-rooms-960.webp" srcset="assets/img/amenity-rooms-480.webp 480w, assets/img/amenity-rooms-960.webp 960w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Living room with sofa" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"></div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">Living spaces</h3>
+              <p class="card-amenity-desc">Bedrooms, a living room and a kitchen for your group.</p>
+            </div>
+          </article>
+          <a href="dining.html" class="card-amenity reveal" id="amenity-dining">
+            <div class="card-amenity-media"><img class="slot-img" src="assets/img/amenity-dining-960.webp" srcset="assets/img/amenity-dining-480.webp 480w, assets/img/amenity-dining-960.webp 960w, assets/img/amenity-dining-1600.webp 1600w" sizes="(min-width: 900px) 50vw, 100vw" width="1200" height="900" alt="Buffet served by the pool" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:40% 45%;"></div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">Dining</h3>
+              <p class="card-amenity-desc">Food packages and the menu from Aroma Restaurant.</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Included vs Extra -->
+    <section class="section bg-ivory" id="included-extra" aria-labelledby="included-title">
+      <div class="container">
+        <div class="two-column">
+          <div class="col reveal">
+            <h3 id="included-title">Included</h3>
+            <p>Comes with your stay.</p>
+            <ul>
+              <li>The whole property for your group (Whole Resort)</li>
+              <li>Swimming pool and cricket turf</li>
+              <li>Gardens and open lawns</li>
+              <li>The penthouse</li>
+            </ul>
+          </div>
+          <div class="col reveal">
+            <h3>On request</h3>
+            <p>Ask us and we'll try to arrange it.</p>
+            <ul>
+              <li>Self-drive partner cars</li>
+              <li>Multi-cuisine food delivered to the resort</li>
+              <li>Event decoration</li>
+              <li>Early check-in or late check-out, when the dates allow</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Check-in / Check-out -->
+    <section class="section bg-sand" id="check-info" aria-labelledby="check-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">Good to know</span>
+          <h2 id="check-title" class="section-title">Check-in & check-out</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+        </header>
+        <div class="info-grid">
+          <div class="info-card reveal">
+            <h3>Check-in</h3>
+            <p><strong>11 AM</strong></p>
+          </div>
+          <div class="info-card reveal">
+            <h3>Check-out</h3>
+            <p><strong>10 AM</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Car rental (feature flagged): partner self-drive cars; live list from cars.js replaces the known cars below -->
+    
+    <section class="section bg-ivory" id="car-rental" aria-labelledby="cars-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">Getting around</span>
+          <h2 id="cars-title" class="section-title">Car rental</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">Need a car during your stay? Our partners have self-drive cars on request.</p>
+        </header>
+        <div class="car-cards-grid" id="cars-container">
+          <article class="card-car reveal">
+            <div class="card-car-media"><img class="slot-img" src="assets/img/car-01-960.webp" srcset="assets/img/car-01-480.webp 480w, assets/img/car-01-960.webp 960w, assets/img/car-01-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Audi Q5, white, front view" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"></div>
+            <div class="card-car-body">
+              <h3 class="card-car-title">Audi Q5</h3>
+              <p class="car-desc">Self-drive SUV from our partner.</p>
+              <div class="car-rate"><span class="rate-val rate-val--request">Price on request</span></div>
+              <p class="car-terms">Self-drive only · Partner vehicle · Valid driving licence and photo ID needed · Deposit and fuel terms shared when you enquire</p>
+              <p class="car-availability">Availability confirmed on enquiry</p>
+              <p class="car-credit">Photo: LuvsMG481, CC BY-SA 4.0, via Wikimedia Commons</p>
+              <div class="car-actions"><a href="https://wa.me/[TBD: WHATSAPP]" class="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer">Enquire on WhatsApp</a></div>
+            </div>
+          </article><article class="card-car reveal">
+            <div class="card-car-media"><img class="slot-img" src="assets/img/car-02-960.webp" srcset="assets/img/car-02-480.webp 480w, assets/img/car-02-960.webp 960w, assets/img/car-02-1600.webp 1600w" sizes="(min-width: 768px) 33vw, 100vw" width="1200" height="900" alt="Mercedes-Benz GLC, white, front view" loading="lazy" decoding="async" style="aspect-ratio:4/3;object-position:50% 50%;"></div>
+            <div class="card-car-body">
+              <h3 class="card-car-title">Mercedes-Benz SUV</h3>
+              <p class="car-desc">Self-drive SUV from our partner.</p>
+              <div class="car-rate"><span class="rate-val rate-val--request">Price on request</span></div>
+              <p class="car-terms">Self-drive only · Partner vehicle · Valid driving licence and photo ID needed · Deposit and fuel terms shared when you enquire</p>
+              <p class="car-availability">Availability confirmed on enquiry</p>
+              <p class="car-credit">Photo: LuvsMG481, CC BY-SA 4.0, via Wikimedia Commons</p>
+              <div class="car-actions"><a href="https://wa.me/[TBD: WHATSAPP]" class="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer">Enquire on WhatsApp</a></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    
+  </main>
+
+  <!-- Footer Partial -->
+  <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brands"><div class="brand-pair">
+  <img src="assets/img/logo-md.png" alt="NSG Royal Resort" class="brand-pair-logo" width="160" height="160" loading="lazy" decoding="async">
+  <span class="brand-pair-rule" aria-hidden="true"></span>
+  <img src="assets/img/aroma-logo.png" alt="Aroma Restaurant" class="brand-pair-logo brand-pair-logo--aroma" width="360" height="286" loading="lazy" decoding="async">
+</div></div>
+        <h3 class="footer-title">NSG Royal Resort</h3>
+        <p class="footer-text">A private resort in Bheemili for weddings, family functions and weekend getaways. Book the whole place for your people.</p>
+        <p class="footer-text" style="margin-top: 1rem;">
+          <strong>Address:</strong> Nidigattu, Bheemunipatnam, Bheemili
+        </p>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Explore</h4>
+        <ul class="footer-links">
+          <li><a href="stay.html" class="footer-link">Stay</a></li>
+          <li><a href="amenities.html" class="footer-link">Amenities</a></li>
+          <li><a href="dining.html" class="footer-link">Dining</a></li>
+          <li><a href="events.html" class="footer-link">Weddings & events</a></li>
+          
+          <li><a href="stay.html#car-rental" class="footer-link">Self-drive cars</a></li>
+          
+          <li><a href="gallery.html" class="footer-link">Photos</a></li>
+          <li><a href="book.html" class="footer-link">Check availability</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Information</h4>
+        <ul class="footer-links">
+          <li><a href="contact.html" class="footer-link">Contact & location</a></li>
+          <li><a href="policies.html" class="footer-link">Policies</a></li>
+          <li><a href="styleguide.html" class="footer-link">Design Styleguide</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 NSG Royal Resort. All rights reserved.</span>
+      <span>Make Every Moment Royal · Weddings · Celebrations · Getaways</span>
+    </div>
+  </div>
+</footer>
+
+
+  <!-- Sticky Mobile Bar Partial -->
+  <nav class="sticky-mobile-bar" aria-label="Quick Actions">
+  <a href="book.html" class="sticky-bar-link sticky-bar-link--primary">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+      <line x1="16" y1="2" x2="16" y2="6"/>
+      <line x1="8" y1="2" x2="8" y2="6"/>
+      <line x1="3" y1="10" x2="21" y2="10"/>
+    </svg>
+    <span>Book now</span>
+  </a>
+  <a href="https://wa.me/[TBD: WHATSAPP]" class="sticky-bar-link" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+    </svg>
+    <span>WhatsApp</span>
+  </a>
+  <a href="tel:[TBD: PHONE]" class="sticky-bar-link">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+    </svg>
+    <span>Call</span>
+  </a>
+</nav>
+
+</body>
+</html>
