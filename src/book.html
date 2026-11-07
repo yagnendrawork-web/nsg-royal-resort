@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{seo.book.title}}</title>
+  <meta name="description" content="{{seo.book.description}}">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{seo.book.title}}">
+  <meta property="og:description" content="{{seo.book.description}}">
+  <meta property="og:image" content="assets/img/{{seo.book.ogImage}}">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Preload Banner -->
+  {{preload:banner-stay}}
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/calendar.js" defer></script>
+  <script src="js/payment.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/addons.js" defer></script>
+  <script src="js/book.js" defer></script>
+</head>
+<body class="page-book">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">{{copy.common.skipToMainContent}}</a>
+
+  <!-- Header Partial -->
+  {{include:header}}
+
+  <!-- Page Banner -->
+  <section class="hero-section hero-section--banner" aria-label="Book a Stay">
+    <div class="hero-backdrop" aria-hidden="true">
+      {{slot:banner-stay}}
+    </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <span class="hero-strapline">{{copy.book.directOnlineReservation}}</span>
+      <h1 class="hero-title">{{book.title}}</h1>
+    </div>
+  </section>
+
+  <main id="main-content">
+    <div class="container section">
+      <header class="book-page-header book-page-header--no-top">
+        <p class="section-subtitle" style="text-align:center;margin-bottom:var(--space-6);">{{book.subtitle}}</p>
+  <p class="book-trust-note">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+    <span>{{copy.book.trustNote}}</span>
+  </p>
+
+        <!-- Stepper Indicators -->
+        <nav class="booking-stepper" aria-label="Reservation Steps">
+          <span class="step-pill step-pill--active" id="step-indicator-1">{{copy.book.n1DatesPackage}}</span>
+          <span class="step-pill" id="step-indicator-2">{{copy.book.n2GuestDetails}}</span>
+          <span class="step-pill" id="step-indicator-3">{{copy.book.n3Payment}}</span>
+          <span class="step-pill" id="step-indicator-4">{{copy.book.n4Confirmation}}</span>
+        </nav>
+      </header>
+
+      <!-- STEP 1: Date & Package Selection -->
+      <section id="book-step-1" class="book-step" aria-labelledby="step1-heading">
+        <h2 id="step1-heading" class="visually-hidden" style="position:absolute;left:-9999px;">{{copy.book.step1ChooseDates}}</h2>
+
+        <!-- Type Toggle: Stay vs Event -->
+        <div style="text-align: center;">
+          <div class="booking-type-toggle" role="radiogroup" aria-label="Booking Type">
+            <label class="toggle-option">
+              <input type="radio" name="bookingType" value="stay" checked>
+              <span class="toggle-label">{{book.stayTab}}</span>
+            </label>
+            <label class="toggle-option">
+              <input type="radio" name="bookingType" value="event">
+              <span class="toggle-label">{{book.eventTab}}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Stay Package Options Block -->
+        <div id="stay-options-block">
+          <div class="package-selection-cards" role="radiogroup" aria-label="Select Package">
+            <label class="package-radio-card">
+              <input type="radio" name="packageSelect" value="whole" checked>
+              <div class="package-radio-title">{{copy.book.wholeResort}}</div>
+              <div class="package-radio-meta" data-pkg-guests="whole" data-text="{{copy.book.allSuitesPenthousePool}}"></div>
+              <div class="card-package-pricing book-pkg-pricing is-loading" data-pkg="whole">
+                <div class="price-row"><span class="price-currency">₹</span><span class="price-val" data-pkg-price data-fallback-price="{{copy.book.n10000AdvanceRequired}}"></span><span class="price-period">{{ui.labels.perNight}}</span></div>
+                <div class="price-advance" data-pkg-advance></div>
+              </div>
+            </label>
+            <label class="package-radio-card">
+              <input type="radio" name="packageSelect" value="penthouse">
+              <div class="package-radio-title">{{copy.book.penthousePoolTurf}}</div>
+              <div class="package-radio-meta" data-pkg-guests="penthouse" data-text="{{copy.book.rooftopSuiteWithPool}}"></div>
+              <div class="card-package-pricing book-pkg-pricing is-loading" data-pkg="penthouse">
+                <div class="price-row"><span class="price-currency">₹</span><span class="price-val" data-pkg-price data-fallback-price="{{copy.book.n5000AdvanceRequired}}"></span><span class="price-period">{{ui.labels.perNight}}</span></div>
+                <div class="price-advance" data-pkg-advance></div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Event Options Block (Hidden initially) -->
+        <div id="event-options-block" style="display:none; max-width:600px; margin: 0 auto var(--space-6);">
+          <div class="form-group">
+            <label for="event-type-select" class="form-label">{{copy.book.occasionEventType}}</label>
+            <select id="event-type-select" class="form-select">
+              <option value="wedding">{{copy.book.weddingReception10000}}</option>
+              <option value="birthday">{{copy.book.birthdayPrivateCelebration5}}</option>
+              <option value="corporate">{{copy.book.corporateGatheringOffsite5}}</option>
+              <option value="other">{{copy.book.otherCelebration2000}}</option>
+            </select>
+          </div>
+          <p class="text-muted" style="font-size:0.875rem;">
+            {{book.eventEnquiryLinkText}}
+          </p>
+        </div>
+
+        <!-- Step 1 Layout: Calendar + Summary -->
+        <div class="book-step-1-layout">
+          <div>
+            <!-- Calendar Component Container -->
+            <div id="calendar-container"></div>
+            <div id="calendar-error-msg" class="form-error" style="display:none; margin-top:8px;" role="alert"></div>
+
+            <!-- Guests Input -->
+            <div class="form-group" style="margin-top:var(--space-6); max-width:320px;">
+              <label for="guests-input" class="form-label">{{copy.book.numberOfGuests}}</label>
+              <input type="number" id="guests-input" class="form-input" min="1" max="100" value="2">
+              <small class="text-muted" id="guests-max-hint" style="display:block; margin-top:4px;">{{copy.book.maxCapacityApplies}}</small>
+            </div>
+
+            <!-- Optional add-ons ("Make it special"): shown once dates are chosen and items exist -->
+            <section class="addons-step" id="addons-step" aria-labelledby="addons-heading" hidden>
+              <h2 id="addons-heading" class="addons-heading">{{ui.addons.title}}</h2>
+              <p class="addons-sub">{{ui.addons.subtitle}}</p>
+              <div id="addons-list" class="addons-list"></div>
+              <p class="addons-paid-note">{{ui.addons.paidAtResort}}</p>
+              <button type="button" class="btn btn-ghost btn-sm" id="addons-skip">{{ui.addons.skip}}</button>
+            </section>
+          </div>
+
+          <!-- Price Summary & Continue -->
+          <div>
+            <div class="price-summary-card" id="price-summary-card">
+              <div class="summary-placeholder">
+                <span>{{copy.book.selectCheckInAnd}}</span>
+              </div>
+            </div>
+            <div id="price-summary-live" class="visually-hidden" aria-live="polite" style="position:absolute;left:-9999px;"></div>
+
+            <div id="step1-error-alert" class="payment-error-alert" style="display:none; margin-top:var(--space-4);" role="alert"></div>
+
+            <div style="margin-top: var(--space-6);">
+              <button type="button" class="btn btn-primary btn-lg" id="btn-step1-continue" style="width:100%;">
+                {{copy.book.continueToGuestDetails}}
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: Guest Details -->
+      <section id="book-step-2" class="book-step" style="display:none;" aria-labelledby="step2-heading">
+        <h2 id="step2-heading" class="visually-hidden" style="position:absolute;left:-9999px;">{{copy.book.step2GuestInformation}}</h2>
+
+        <div class="booking-form-card">
+          <div class="step2-overview-box" id="step2-booking-overview"></div>
+
+          <form id="step2-form" novalidate>
+            <div class="form-group" id="name-group">
+              <label for="guest-name" class="form-label">{{copy.book.fullName}} <span style="color:var(--err)">*</span></label>
+              <input type="text" id="guest-name" name="name" class="form-input" placeholder="{{copy.book.eGRameshVarma}}" maxlength="100" required>
+              <span class="form-error">{{copy.book.pleaseEnterYourFull}}</span>
+            </div>
+
+            <div class="form-group" id="phone-group">
+              <label for="guest-phone" class="form-label">{{copy.book.phoneNumber10Digit}} <span style="color:var(--err)">*</span></label>
+              <input type="tel" id="guest-phone" name="phone" class="form-input" placeholder="{{copy.book.eG9876543210}}" maxlength="15" required>
+              <span class="form-error">{{copy.book.pleaseEnterAValid}}</span>
+            </div>
+
+            <div class="form-group" id="email-group">
+              <label for="guest-email" class="form-label">{{copy.book.emailAddressOptional}}</label>
+              <input type="email" id="guest-email" name="email" class="form-input" placeholder="{{copy.book.eGRameshExample}}">
+              <span class="form-error">{{copy.book.pleaseEnterAValid2}}</span>
+            </div>
+
+            <div class="form-group">
+              <label for="guest-notes" class="form-label">{{copy.book.specialRequestsOrOccasion}}</label>
+              <textarea id="guest-notes" name="notes" class="form-textarea" placeholder="{{copy.book.earlyCheckInRequest}}" maxlength="500"></textarea>
+            </div>
+
+            <!-- Honeypot Field -->
+            <input type="text" name="_hp" id="hp-field" style="display:none;" tabindex="-1" autocomplete="off">
+
+            <!-- Turnstile Container -->
+            <div id="turnstile-container"></div>
+
+            <!-- Cancellation Policy Agreement Checkbox -->
+            <div class="form-group" id="policy-group" style="margin-top:var(--space-4);">
+              <label style="display:flex; align-items:flex-start; gap:var(--space-2); cursor:pointer; font-size:0.9375rem;">
+                <input type="checkbox" id="policy-checkbox" required style="margin-top:3px; min-height:20px; min-width:20px;">
+                <span>
+                  {{copy.book.iHaveReadAnd}}
+                  <a href="policies.html#cancellation" target="_blank" rel="noopener" style="color:var(--emerald-900); text-decoration:underline;">{{copy.book.cancellationPolicy}}</a>
+                  {{copy.book.andResortHouseRules}}
+                </span>
+              </label>
+              <span class="form-error" style="margin-top:4px;">{{copy.book.youMustAgreeTo}}</span>
+            </div>
+
+            <div id="step2-error-alert" class="payment-error-alert" style="display:none;" role="alert"></div>
+
+            <div style="display:flex; gap:var(--space-4); margin-top:var(--space-8); justify-content:space-between;">
+              <button type="button" class="btn btn-secondary btn-md" id="btn-step2-back">{{copy.book.backToDates}}</button>
+              <button type="submit" class="btn btn-primary btn-md" id="btn-step2-submit">{{copy.book.proceedToAdvancePayment}}</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- STEP 3: Advance Payment (UPI) -->
+      <section id="book-step-3" class="book-step" style="display:none;" aria-labelledby="step3-heading">
+        <h2 id="step3-heading" class="visually-hidden" style="position:absolute;left:-9999px;">{{copy.book.step3AdvancePayment}}</h2>
+        <div id="step3-payment-container"></div>
+      </section>
+
+      <!-- STEP 4: Request Received / Confirmation -->
+      <section id="book-step-4" class="book-step" style="display:none;" aria-labelledby="step4-heading">
+        <h2 id="step4-heading" class="visually-hidden" style="position:absolute;left:-9999px;">{{copy.book.step4RequestReceived}}</h2>
+        <div id="step4-confirmation-content"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Footer Partial -->
+  {{include:footer}}
+</body>
+</html>

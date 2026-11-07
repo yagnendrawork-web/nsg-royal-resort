@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{seo.stay.title}}</title>
+  <meta name="description" content="{{seo.stay.description}}">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{seo.stay.title}}">
+  <meta property="og:description" content="{{seo.stay.description}}">
+  <meta property="og:image" content="assets/img/{{seo.stay.ogImage}}">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <!--feature:cars--><script src="js/cars.js" defer></script><!--/feature-->
+</head>
+<body class="page-stay">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">{{copy.common.skipToMainContent}}</a>
+
+  <!-- Header Partial -->
+  {{include:header}}
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section hero-section--banner" aria-label="Stay">
+      <div class="hero-backdrop" aria-hidden="true">
+        {{slot:banner-stay}}
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <span class="hero-strapline">{{stay.subtitle}}</span>
+        <h1 class="hero-title">{{stay.heroTitle}}</h1>
+        <a href="book.html" class="btn btn-primary btn-lg">{{ui.buttons.bookNow}}</a>
+      </div>
+    </section>
+
+    <!-- Package Comparison -->
+    <section class="section bg-ivory" id="packages" aria-labelledby="packages-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{copy.stay.packages}}</span>
+          <h2 id="packages-title" class="section-title">{{stay.packagesTitle}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{stay.packagesSubtitle}}</p>
+        </header>
+        <div class="packages-grid" id="stay-packages-container">
+          <article class="card-package reveal">
+            <div class="card-package-media">
+              <div class="pkg-slider">
+                <div class="pkg-slides" role="region" tabindex="0" aria-label="{{copy.packages.photosLabel}}">
+                  <!--each:copy.packages.wholeSlides--><figure class="pkg-slide">{{slot:.slot}}<figcaption class="pkg-slide-caption">{{.caption}}</figcaption></figure><!--/each-->
+                </div>
+              </div>
+            </div>
+            <div class="card-package-body">
+              <h3 class="card-package-title">{{copy.stay.wholeResort}}</h3>
+              <p class="card-package-tagline">{{copy.stay.completeEstatePrivacyIncluding}}</p>
+              <div class="card-package-pricing is-loading" data-pkg="whole">
+                <div class="price-row">
+                  <span class="price-currency">₹</span>
+                  <span class="price-val" id="stay-pkg-price-whole" data-pkg-price data-fallback-price="{{copy.stay.tbdWholeResortRate}}"></span>
+                  <span class="price-period">{{ui.labels.perNight}}</span>
+                </div>
+                <div class="price-advance" id="stay-pkg-advance-whole" data-pkg-advance data-fallback-advance="{{copy.stay.tbdWholeResortAdvance}}"></div>
+              </div>
+              <a href="book.html?type=stay&package=whole" class="btn btn-primary btn-md">{{stay.ctaBook}}</a>
+            </div>
+          </article>
+          <article class="card-package reveal">
+            <div class="card-package-media">
+              <div class="pkg-slider">
+                <div class="pkg-slides" role="region" tabindex="0" aria-label="{{copy.packages.photosLabel}}">
+                  <!--each:copy.packages.penthouseSlides--><figure class="pkg-slide">{{slot:.slot}}<figcaption class="pkg-slide-caption">{{.caption}}</figcaption></figure><!--/each-->
+                </div>
+              </div>
+            </div>
+            <div class="card-package-body">
+              <h3 class="card-package-title">{{copy.stay.penthousePoolTurfGarden}}</h3>
+              <p class="card-package-tagline">{{copy.stay.privateRooftopPenthouseSuite}}</p>
+              <div class="card-package-pricing is-loading" data-pkg="penthouse">
+                <div class="price-row">
+                  <span class="price-currency">₹</span>
+                  <span class="price-val" id="stay-pkg-price-penthouse" data-pkg-price data-fallback-price="{{copy.stay.tbdPenthouseRate}}"></span>
+                  <span class="price-period">{{ui.labels.perNight}}</span>
+                </div>
+                <div class="price-advance" id="stay-pkg-advance-penthouse" data-pkg-advance data-fallback-advance="{{copy.stay.tbdPenthouseAdvance}}"></div>
+              </div>
+              <a href="book.html?type=stay&package=penthouse" class="btn btn-primary btn-md">{{stay.ctaBook}}</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Amenity Sections -->
+    <section class="section bg-sand" id="amenities" aria-labelledby="amenities-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{copy.stay.amenities}}</span>
+          <h2 id="amenities-title" class="section-title">{{stay.amenitiesTitle}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{stay.amenitiesSubtitle}}</p>
+        </header>
+        <div class="amenities-grid">
+          <article class="card-amenity reveal">
+            <div class="card-amenity-media">{{slot:amenity-pool}}</div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">{{copy.stay.swimmingPool}}</h3>
+              <p class="card-amenity-desc">{{copy.stay.privateLeisurePoolWith}}</p>
+            </div>
+          </article>
+          <article class="card-amenity reveal">
+            <div class="card-amenity-media">{{slot:amenity-turf}}</div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">{{copy.stay.cricketTurf}}</h3>
+              <p class="card-amenity-desc">{{copy.stay.boxCricketTurfWith}}</p>
+            </div>
+          </article>
+          <article class="card-amenity reveal">
+            <div class="card-amenity-media">{{slot:amenity-gardens}}</div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">{{copy.stay.lushGardens}}</h3>
+              <p class="card-amenity-desc">{{copy.stay.manicuredEventLawnsAnd}}</p>
+            </div>
+          </article>
+          <article class="card-amenity reveal">
+            <div class="card-amenity-media">{{slot:amenity-penthouse}}</div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">{{copy.stay.luxuryPenthouse}}</h3>
+              <p class="card-amenity-desc">{{copy.stay.rooftopSuiteWithPanoramic}}</p>
+            </div>
+          </article>
+          <article class="card-amenity reveal" id="amenity-rooms">
+            <div class="card-amenity-media">{{slot:amenity-rooms}}</div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">{{stay.roomsTileTitle}}</h3>
+              <p class="card-amenity-desc">{{stay.roomsTileText}}</p>
+            </div>
+          </article>
+          <a href="dining.html" class="card-amenity reveal" id="amenity-dining">
+            <div class="card-amenity-media">{{slot:amenity-dining}}</div>
+            <div class="card-amenity-body">
+              <h3 class="card-amenity-title">{{copy.common.dining}}</h3>
+              <p class="card-amenity-desc">{{stay.diningTileText}}</p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Included vs Extra -->
+    <section class="section bg-ivory" id="included-extra" aria-labelledby="included-title">
+      <div class="container">
+        <div class="two-column">
+          <div class="col reveal">
+            <h3 id="included-title">{{stay.includedTitle}}</h3>
+            <p>{{stay.includedSubtitle}}</p>
+            <ul>
+              <li>{{copy.stay.fullPrivateAccessTo}}</li>
+              <li>{{copy.stay.privateSwimmingPoolCricket}}</li>
+              <li>{{copy.stay.expansivePartyLawnsGardens}}</li>
+              <li>{{copy.stay.luxuryPenthouseSuiteAccess}}</li>
+            </ul>
+          </div>
+          <div class="col reveal">
+            <h3>{{stay.extraTitle}}</h3>
+            <p>{{stay.extraSubtitle}}</p>
+            <ul>
+              <li>{{copy.stay.selfDriveLuxuryCars}}</li>
+              <li>{{copy.stay.customCateringDecor}}</li>
+              <li>{{copy.stay.eventCoordinationServices}}</li>
+              <li>{{copy.stay.earlyCheckInLate}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Check-in / Check-out -->
+    <section class="section bg-sand" id="check-info" aria-labelledby="check-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{copy.stay.practicalInfo}}</span>
+          <h2 id="check-title" class="section-title">{{stay.checkInOutTitle}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+        </header>
+        <div class="info-grid">
+          <div class="info-card reveal">
+            <h3>{{stay.checkInLabel}}</h3>
+            <p><strong>{{site.checkInTime}}</strong></p>
+          </div>
+          <div class="info-card reveal">
+            <h3>{{stay.checkOutLabel}}</h3>
+            <p><strong>{{site.checkOutTime}}</strong></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Car rental (feature flagged): partner self-drive cars; live list from cars.js replaces the known cars below -->
+    <!--feature:cars-->
+    <section class="section bg-ivory" id="car-rental" aria-labelledby="cars-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{copy.stay.transport}}</span>
+          <h2 id="cars-title" class="section-title">{{stay.carsTitle}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{cars.intro}}</p>
+        </header>
+        <div class="car-cards-grid" id="cars-container">
+          <!--each:cars.known--><article class="card-car reveal">
+            <div class="card-car-media">{{slot:.slot}}</div>
+            <div class="card-car-body">
+              <h3 class="card-car-title">{{.name}}</h3>
+              <p class="car-desc">{{.description}}</p>
+              <div class="car-rate"><span class="rate-val rate-val--request">{{ui.labels.priceOnRequest}}</span></div>
+              <p class="car-terms">{{ui.cars.terms}}</p>
+              <p class="car-availability">{{ui.cars.availabilityNote}}</p>
+              <p class="car-credit">{{.credit}}</p>
+              <div class="car-actions"><a href="https://wa.me/{{config.WHATSAPP}}" class="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer">{{ui.cars.enquireWhatsApp}}</a></div>
+            </div>
+          </article><!--/each-->
+        </div>
+      </div>
+    </section>
+    <!--/feature-->
+  </main>
+
+  <!-- Footer Partial -->
+  {{include:footer}}
+
+  <!-- Sticky Mobile Bar Partial -->
+  {{include:sticky-bar}}
+</body>
+</html>

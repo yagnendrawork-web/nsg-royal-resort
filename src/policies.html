@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{seo.policies.title}}</title>
+  <meta name="description" content="{{seo.policies.description}}">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{seo.policies.title}}">
+  <meta property="og:description" content="{{seo.policies.description}}">
+  <meta property="og:image" content="assets/img/{{seo.policies.ogImage}}">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+</head>
+<body class="page-policies">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">{{copy.common.skipToMainContent}}</a>
+
+  <!-- Header Partial -->
+  {{include:header}}
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section hero-section--banner" aria-label="Policies">
+      <div class="hero-backdrop" aria-hidden="true">
+        {{slot:banner-contact}}
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <span class="hero-strapline">{{policies.subtitle}}</span>
+        <h1 class="hero-title">{{policies.heroTitle}}</h1>
+      </div>
+    </section>
+
+    <!-- Policies Content -->
+    <section class="section bg-ivory" id="policies-content" aria-labelledby="policies-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <h2 id="policies-title" class="section-title">{{policiesPage.sectionTitle}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{policiesPage.intro}}</p>
+          <p class="policy-updated">{{policiesPage.updated}}</p>
+        </header>
+        <div class="policy-layout">
+          <nav class="policy-toc" aria-label="{{policiesPage.tocLabel}}">
+            <p class="policy-toc-title">{{policiesPage.tocLabel}}</p>
+            <ol class="policy-toc-list">
+              <!--each:policiesPage.sections--><li><a class="policy-toc-link" href="#{{.id}}">{{.title}}</a></li><!--/each-->
+            </ol>
+          </nav>
+          <div class="policy-body">
+            <!--each:policiesPage.sections--><section class="policy-section" id="{{.id}}" aria-labelledby="{{.id}}-heading">
+              <h3 id="{{.id}}-heading">{{.title}}</h3>
+              <div class="policy-text">{{.body}}</div>
+            </section><!--/each-->
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Partial -->
+  {{include:footer}}
+
+  <!-- Sticky Mobile Bar Partial -->
+  {{include:sticky-bar}}
+</body>
+</html>

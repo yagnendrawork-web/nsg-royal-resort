@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{seo.status.title}}</title>
+  <meta name="description" content="{{seo.status.description}}">
+  <meta name="robots" content="noindex">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/status.js" defer></script>
+</head>
+<body class="page-status">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">{{copy.common.skipToMainContent}}</a>
+
+  <!-- Header Partial -->
+  {{include:header}}
+
+  <!-- Page Banner -->
+  <section class="hero-section hero-section--banner" aria-label="Check Booking Status">
+    <div class="hero-backdrop" aria-hidden="true">
+      {{slot:banner-stay}}
+    </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+    <div class="container hero-content">
+      <span class="hero-strapline">{{copy.status.reservationLookup}}</span>
+      <h1 class="hero-title">{{status.title}}</h1>
+    </div>
+  </section>
+
+  <main id="main-content">
+    <div class="container section">
+      <div class="status-page-layout">
+        <header class="section-header no-print">
+          <p class="section-subtitle">{{status.subtitle}}</p>
+        </header>
+
+        <!-- Lookup Form Card -->
+        <div class="status-lookup-card no-print">
+          <h3 style="font-size: 1.3rem; margin-bottom: var(--space-4);">{{status.formHeading}}</h3>
+
+          <form id="status-lookup-form" novalidate>
+            <div class="form-group">
+              <label for="lookup-id" class="form-label">{{status.bookingIdLabel}}</label>
+              <input
+                type="text"
+                id="lookup-id"
+                class="form-input"
+                placeholder="{{copy.status.eGBkDemo}}"
+                required
+                autocomplete="off"
+              >
+            </div>
+
+            <div class="form-group">
+              <label for="lookup-last4" class="form-label">{{status.phoneLast4Label}}</label>
+              <input
+                type="text"
+                id="lookup-last4"
+                class="form-input"
+                placeholder="{{copy.status.eG1234}}"
+                maxlength="4"
+                pattern="\d{4}"
+                required
+                autocomplete="off"
+              >
+            </div>
+
+            <div id="status-error-alert" class="payment-error-alert" style="display:none;" role="alert"></div>
+
+            <button type="submit" class="btn btn-primary btn-md" id="btn-status-submit" style="width: 100%;">
+              {{status.checkStatusBtn}} &rarr;
+            </button>
+          </form>
+        </div>
+
+        <!-- Result Container -->
+        <div id="status-result-container" style="display:none;"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer Partial -->
+  {{include:footer}}
+
+  <!-- Sticky Mobile Bar Partial -->
+  {{include:sticky-bar}}
+</body>
+</html>

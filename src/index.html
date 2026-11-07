@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{seo.home.title}}</title>
+  <meta name="description" content="{{seo.home.description}}">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{seo.home.title}}">
+  <meta property="og:description" content="{{seo.home.description}}">
+  <meta property="og:image" content="assets/img/{{seo.home.ogImage}}">
+
+  <!-- Preload Critical Fonts (SPEC Section 4: two used above the fold) -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Preload Hero Image Slot if present -->
+  {{preload:banner-events}}
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="assets/img/manifest.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/motion.js" defer></script>
+  <!--each:gallery.videoScript--><script src="js/gallery.js" defer></script><!--/each-->
+</head>
+<body class="page-home">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">{{copy.common.skipToMainContent}}</a>
+
+  <!-- Header Partial -->
+  {{include:header}}
+
+
+  <main id="main-content">
+    <!-- Line icons (one inline sprite) -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/></symbol>
+      <symbol id="i-pool" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M2 18c2 0 3-1.5 5-1.5s3 1.5 5 1.5 3-1.5 5-1.5 3 1.5 5 1.5M2 14c2 0 3-1.5 5-1.5s3 1.5 5 1.5 3-1.5 5-1.5 3 1.5 5 1.5M8 12V5a2 2 0 0 1 4 0M16 12V5a2 2 0 0 0-4 0"/></symbol>
+      <symbol id="i-events" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M12 3v3M8.5 4.5 10 6.5M15.5 4.5 14 6.5"/></symbol>
+    </svg>
+
+    <!-- 1. Hero -->
+    <section class="hero-section hero-section--full hero-home" aria-label="Welcome">
+      <div class="hero-backdrop" aria-hidden="true" data-parallax="0.25">
+        {{slot:banner-events}}
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <span class="hero-strapline">{{home.hero.eyebrow}}</span>
+        <h1 class="hero-title">{{home.hero.h1}}</h1>
+        <p class="hero-lead">{{home.hero.subline}}</p>
+        <div class="hero-actions">
+          <a href="book.html" class="btn btn-primary btn-lg">{{home.hero.ctaStay}}</a>
+          <a href="events.html" class="btn btn-secondary btn-lg">{{home.hero.ctaEvent}}</a>
+        </div>
+        <!-- Compact Date Bar (carries dates to book.html) -->
+        <div class="hero-date-bar">
+          <form class="date-bar-form" action="book.html" method="get">
+            <input type="hidden" name="type" value="stay">
+            <input type="hidden" name="package" value="whole">
+            <div class="date-bar-field">
+              <label for="check-in-date" class="date-bar-label">{{ui.labels.checkIn}}</label>
+              <input type="date" id="check-in-date" name="checkIn" class="date-bar-input" required>
+            </div>
+            <div class="date-bar-field">
+              <label for="check-out-date" class="date-bar-label">{{ui.labels.checkOut}}</label>
+              <input type="date" id="check-out-date" name="checkOut" class="date-bar-input" required>
+            </div>
+            <div class="date-bar-field">
+              <label for="guest-count" class="date-bar-label">{{ui.labels.guests}}</label>
+              <select id="guest-count" name="guests" class="date-bar-input">
+                <option value="2">{{copy.home.n2Guests}}</option>
+                <option value="4">{{copy.home.n4Guests}}</option>
+                <option value="8">{{copy.home.n8Guests}}</option>
+                <option value="15">{{copy.home.n15Guests}}</option>
+                <option value="25">{{copy.home.n25Guests}}</option>
+                <option value="50">{{copy.home.wholeEstate50}}</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary btn-md">{{ui.buttons.checkAvailability}}</button>
+          </form>
+        </div>
+        <p class="hero-reassure">{{home.hero.reassure}}</p>
+      </div>
+    </section>
+
+    <!-- 2. Exclusivity band -->
+    <section class="section bg-ivory home-exclusive" aria-labelledby="exclusive-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{home.exclusive.tag}}</span>
+          <h2 id="exclusive-title" class="section-title">{{home.exclusive.title}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{home.exclusive.subtitle}}</p>
+        </header>
+        <ul class="ex-points">
+          <!--each:home.exclusive.points--><li class="ex-point reveal"><svg class="ex-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#{{.icon}}"/></svg><h3 class="ex-title">{{.title}}</h3><p class="ex-text">{{.text}}</p></li><!--/each-->
+        </ul>
+      </div>
+    </section>
+
+    <!-- 3. Packages with live prices -->
+    <section class="section bg-sand" id="packages-section" aria-labelledby="packages-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{copy.home.exclusiveStays}}</span>
+          <h2 id="packages-title" class="section-title">{{home.packages.title}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{home.packages.subtitle}}</p>
+        </header>
+        <div class="packages-grid" id="home-packages-container">
+          <!-- Package 1: Whole Resort -->
+          <article class="card-package reveal">
+            <div class="card-package-media">
+              <div class="pkg-slider">
+                <div class="pkg-slides" role="region" tabindex="0" aria-label="{{copy.packages.photosLabel}}">
+                  <!--each:copy.packages.wholeSlides--><figure class="pkg-slide">{{slot:.slot}}<figcaption class="pkg-slide-caption">{{.caption}}</figcaption></figure><!--/each-->
+                </div>
+              </div>
+            </div>
+            <div class="card-package-body">
+              <h3 class="card-package-title">{{home.packages.whole.name}}</h3>
+              <p class="card-package-tagline">{{home.packages.whole.tagline}}</p>
+
+              <div class="card-package-pricing is-loading" data-pkg="whole">
+                <div class="price-row">
+                  <span class="price-from">{{ui.labels.fromRate}}</span>
+                  <span class="price-currency">₹</span>
+                  <span class="price-val" id="pkg-price-whole" data-pkg-price data-fallback-price="{{home.packages.whole.fallbackPrice}}"></span>
+                  <span class="price-period">{{ui.labels.perNight}}</span>
+                </div>
+                <div class="price-advance" id="pkg-advance-whole" data-pkg-advance data-fallback-advance="{{home.packages.whole.fallbackAdvance}}"></div>
+              </div>
+
+              <ul class="card-package-inclusions" aria-label="Inclusions">
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>{{copy.home.fullPrivateAccessTo}}</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>{{copy.home.privateSwimmingPoolFloodlit}}</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>{{copy.home.expansiveManicuredPartyLawns}}</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>{{copy.home.rooftopPenthouseWithPanoramic}}</span>
+                </li>
+              </ul>
+
+              <a href="book.html?type=stay&package=whole" class="btn btn-primary btn-md">{{ui.buttons.select}} {{home.packages.whole.name}}</a>
+            </div>
+          </article>
+
+          <!-- Package 2: Penthouse + Pool, Turf & Garden -->
+          <article class="card-package reveal">
+            <div class="card-package-media">
+              <div class="pkg-slider">
+                <div class="pkg-slides" role="region" tabindex="0" aria-label="{{copy.packages.photosLabel}}">
+                  <!--each:copy.packages.penthouseSlides--><figure class="pkg-slide">{{slot:.slot}}<figcaption class="pkg-slide-caption">{{.caption}}</figcaption></figure><!--/each-->
+                </div>
+              </div>
+            </div>
+            <div class="card-package-body">
+              <h3 class="card-package-title">{{home.packages.penthouse.name}}</h3>
+              <p class="card-package-tagline">{{home.packages.penthouse.tagline}}</p>
+
+              <div class="card-package-pricing is-loading" data-pkg="penthouse">
+                <div class="price-row">
+                  <span class="price-from">{{ui.labels.fromRate}}</span>
+                  <span class="price-currency">₹</span>
+                  <span class="price-val" id="pkg-price-penthouse" data-pkg-price data-fallback-price="{{home.packages.penthouse.fallbackPrice}}"></span>
+                  <span class="price-period">{{ui.labels.perNight}}</span>
+                </div>
+                <div class="price-advance" id="pkg-advance-penthouse" data-pkg-advance data-fallback-advance="{{home.packages.penthouse.fallbackAdvance}}"></div>
+              </div>
+
+              <ul class="card-package-inclusions" aria-label="Inclusions">
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>{{copy.home.luxuryRooftopPenthouseSuite}}</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>{{copy.home.exclusiveAccessToPrivate}}</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>{{copy.home.fullAccessToCricket}}</span>
+                </li>
+                <li>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  <span>{{copy.home.groundFloorRoomsExcluded}}</span>
+                </li>
+              </ul>
+
+              <a href="book.html?type=stay&package=penthouse" class="btn btn-primary btn-md">{{ui.buttons.select}} {{copy.home.penthouseShort}}</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Experiences -->
+    <section class="section bg-ivory" aria-labelledby="experiences-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{home.experiences.tag}}</span>
+          <h2 id="experiences-title" class="section-title">{{home.experiences.title}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{home.experiences.subtitle}}</p>
+        </header>
+        <div class="exp-grid">
+          <!--each:home.experiences.items--><a href="{{.href}}" class="exp-tile reveal">{{slot:.slot}}<span class="exp-caption"><span class="exp-title">{{.title}}</span><span class="exp-text">{{.text}}</span></span></a><!--/each-->
+        </div>
+        <div class="section-cta reveal"><a href="stay.html" class="btn btn-secondary btn-md">{{home.experiences.cta}}</a></div>
+      </div>
+    </section>
+
+    <!-- 5. Dining teaser (food cards come live from the addons API; hidden when there are none) -->
+    <section class="section bg-sand home-dining" aria-labelledby="dining-title">
+      <div class="container home-dining-inner">
+        <div class="home-dining-intro reveal">
+          {{include:brand-pair}}
+          <span class="section-tag">{{home.dining.tag}}</span>
+          <h2 id="dining-title" class="section-title">{{home.dining.title}}</h2>
+          <p class="home-dining-text">{{home.dining.text}}</p>
+          <a href="dining.html" class="btn btn-primary btn-md">{{home.dining.cta}}</a>
+        </div>
+        <div class="food-cards" data-food-packages data-limit="3" aria-label="{{home.dining.cardsLabel}}"></div>
+      </div>
+    </section>
+
+    <!-- 6. Events band with past-event videos -->
+    <section class="section events-band home-events" aria-labelledby="events-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{home.eventsBand.tag}}</span>
+          <h2 id="events-title" class="section-title">{{home.eventsBand.title}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{home.eventsBand.subtitle}}</p>
+        </header>
+        <ul class="ev-type-list">
+          <!--each:home.eventsBand.types--><li class="ev-type reveal"><h3 class="ev-type-title">{{.title}}</h3><p class="ev-type-text">{{.text}}</p></li><!--/each-->
+        </ul>
+        <div class="video-block">
+          <h3 class="video-block-title reveal">{{home.eventsBand.videosTitle}}</h3>
+          <!--each:gallery.fileVideos--><figure class="video-feature video-feature--{{.orient}} reveal" data-video-feature data-src="{{.file}}" data-poster="{{.poster}}" data-title="{{.title}}">
+            <video muted loop playsinline preload="none" poster="{{.poster}}" width="{{.width}}" height="{{.height}}" aria-label="{{copy.videos.highlight}}"><source src="{{.file}}" type="video/mp4"></video>
+            <button type="button" class="vf-open" aria-label="{{copy.videos.open}}"></button>
+            <span class="vf-bigplay" aria-hidden="true"></span>
+            <div class="vf-controls">
+              <button type="button" class="vf-btn vf-play" aria-label="{{copy.videos.playLabel}}" data-label-play="{{copy.videos.playLabel}}" data-label-pause="{{copy.videos.pause}}"></button>
+              <button type="button" class="vf-btn vf-mute" aria-label="{{copy.videos.mute}}" data-label-unmute="{{copy.videos.mute}}" data-label-mute="{{copy.videos.unmute}}"></button>
+            </div>
+            <figcaption class="vf-caption">{{.title}}</figcaption>
+          </figure><!--/each-->
+                    <div class="video-grid">
+            <!--each:gallery.homeVideos--><button type="button" class="video-card reveal" data-yt-id="{{.ytId}}" data-title="{{.title}}" aria-label="{{copy.videos.play}}: {{.title}}"><span class="video-thumb-wrap">{{.thumbHtml}}<span class="video-play" aria-hidden="true"></span></span><span class="video-meta"><span class="video-title">{{.title}}</span><span class="video-desc">{{.description}}</span></span></button><!--/each-->
+          </div>
+        </div>
+        <div class="section-cta reveal"><a href="events.html#enquire-form" class="btn btn-primary btn-lg">{{home.eventsBand.cta}}</a></div>
+      </div>
+    </section>
+
+    <!-- 7. How booking works -->
+    <section class="section bg-ivory" aria-labelledby="booking-steps-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{home.stepsLabel}}</span>
+          <h2 id="booking-steps-title" class="section-title">{{home.howBookingWorks.title}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{home.howBookingWorks.subtitle}}</p>
+        </header>
+        <ol class="steps-flow reveal">
+          <!--each:home.howBookingWorks.steps--><li class="flow-step"><span class="flow-num">{{.num}}</span><h3 class="flow-title">{{.title}}</h3><p class="flow-desc">{{.desc}}</p></li><!--/each-->
+        </ol>
+      </div>
+    </section>
+
+    <!-- 8. Reviews: omitted until real reviews exist in site.json -->
+
+    <!-- 9. Location (click-to-load map) -->
+    <section class="section bg-sand" aria-labelledby="location-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{copy.home.directions}}</span>
+          <h2 id="location-title" class="section-title">{{home.location.title}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{home.location.subtitle}}</p>
+        </header>
+        <div class="location-layout">
+          <div class="location-info reveal">
+            <h3 style="font-size: 1.5rem; color: var(--emerald-900);">{{copy.home.nsgRoyalResort}}</h3>
+            <p class="location-address">
+              {{home.location.address}}
+            </p>
+            <p class="text-muted" style="font-size: 0.9375rem;">
+              {{copy.home.convenientlyPositionedAlongThe}}
+            </p>
+            <div>
+              <a href="{{home.location.directionsUrl}}" class="btn btn-secondary btn-md" target="_blank" rel="noopener noreferrer">
+                {{ui.buttons.getDirections}} &rarr;
+              </a>
+            </div>
+          </div>
+
+          <div class="map-container reveal" data-map-url="{{home.location.mapEmbedUrl}}">
+            <button type="button" class="map-placeholder" aria-label="Load interactive Google Map">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>{{ui.buttons.loadMap}}</span>
+              <small>{{copy.home.clickingLoadsTheLive}}</small>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. Final call to action -->
+    <section class="final-cta wave-top" aria-labelledby="final-cta-title">
+      <div class="container">
+        <div class="final-cta-content reveal">
+          <h2 id="final-cta-title" class="final-cta-title">{{home.finalCta.title}}</h2>
+          <p class="final-cta-subtitle">{{home.finalCta.subtitle}}</p>
+          <div class="final-cta-actions">
+            <a href="book.html" class="btn btn-primary btn-lg">{{ui.buttons.checkAvailability}}</a>
+            <a href="https://wa.me/{{config.WHATSAPP}}" class="btn btn-secondary btn-lg" target="_blank" rel="noopener noreferrer">{{home.finalCta.ctaWhatsApp}}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Partial -->
+  {{include:footer}}
+
+  <!-- Sticky Mobile Bar Partial -->
+  {{include:sticky-bar}}
+
+  {{include:lightbox}}
+</body>
+</html>

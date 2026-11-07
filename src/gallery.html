@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{seo.gallery.title}}</title>
+  <meta name="description" content="{{seo.gallery.description}}">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{seo.gallery.title}}">
+  <meta property="og:description" content="{{seo.gallery.description}}">
+  <meta property="og:image" content="assets/img/{{seo.gallery.ogImage}}">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/gallery.js" defer></script>
+</head>
+<body class="page-gallery">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">{{copy.common.skipToMainContent}}</a>
+
+  <!-- Header Partial -->
+  {{include:header}}
+
+  <main id="main-content">
+    <!-- Hero Section -->
+    <section class="hero-section hero-section--banner" aria-label="Gallery">
+      <div class="hero-backdrop" aria-hidden="true">
+        {{slot:banner-gallery}}
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <span class="hero-strapline">{{gallery.subtitle}}</span>
+        <h1 class="hero-title">{{gallery.heroTitle}}</h1>
+      </div>
+    </section>
+
+    <!-- Filter Chips -->
+    <section class="section bg-ivory" aria-labelledby="gallery-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{copy.gallery.gallery}}</span>
+          <h2 id="gallery-title" class="section-title">{{gallery.heroTitle}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+        </header>
+
+        <div class="chip-group reveal" id="gallery-filters" role="group" aria-label="Filter gallery by category">
+          <button class="chip is-active" data-cat="all" aria-pressed="true">{{gallery.filterAll}}</button>
+          <button class="chip" data-cat="property" aria-pressed="false">{{gallery.filterProperty}}</button>
+          <button class="chip" data-cat="pool-turf" aria-pressed="false">{{gallery.filterPoolTurf}}</button>
+          <button class="chip" data-cat="rooms" aria-pressed="false">{{gallery.filterRooms}}</button>
+          <button class="chip" data-cat="events" aria-pressed="false">{{gallery.filterEvents}}</button>
+          <button class="chip" data-cat="weddings" aria-pressed="false">{{gallery.filterWeddings}}</button>
+        </div>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid" id="gallery-grid">
+          <!--each:gallery.videoItems--><figure class="gallery-item gallery-item--video reveal" data-cat="{{.cat}}"><button type="button" class="video-card" data-yt-id="{{.ytId}}" data-title="{{.title}}" aria-label="{{copy.videos.play}}: {{.title}}"><span class="video-thumb-wrap">{{.thumbHtml}}<span class="video-play" aria-hidden="true"></span></span><span class="video-meta"><span class="video-title">{{.title}}</span><span class="video-desc">{{.description}}</span></span></button></figure><!--/each-->
+          <!--each:@slots:gallery-->
+          <figure class="gallery-item reveal" data-cat="{{.cat}}">
+            {{slot:.name}}
+            <figcaption class="gallery-caption">{{.alt}}</figcaption>
+          </figure>
+          <!--/each-->
+        </div>
+
+        <div id="gallery-coming-soon" style="display:none;" class="reveal">
+          <p class="text-muted" style="text-align:center; padding: var(--space-16);">{{gallery.comingSoon}}</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Partial -->
+  {{include:footer}}
+
+  <!-- Sticky Mobile Bar Partial -->
+  {{include:sticky-bar}}
+
+  {{include:lightbox}}
+</body>
+</html>

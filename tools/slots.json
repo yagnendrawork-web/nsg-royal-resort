@@ -1,0 +1,589 @@
+{
+  "hero": {
+    "ratio": "16/9",
+    "focal": "50% 45%",
+    "sizes": "100vw",
+    "alt": "Swimming pool, cricket turf and lawns seen from above",
+    "priority": false
+  },
+  "banner-stay": {
+    "ratio": "21/9",
+    "focal": "50% 50%",
+    "sizes": "100vw",
+    "alt": "The villa and lawn at sunset",
+    "priority": true
+  },
+  "banner-events": {
+    "ratio": "21/9",
+    "focal": "50% 55%",
+    "sizes": "100vw",
+    "alt": "NSG Royal Resort lit up at night, with the lawn and garden",
+    "priority": true
+  },
+  "banner-cars": {
+    "ratio": "21/9",
+    "alt": "Self-drive cars",
+    "focal": "50% 50%",
+    "sizes": "100vw"
+  },
+  "banner-gallery": {
+    "ratio": "21/9",
+    "focal": "50% 50%",
+    "sizes": "100vw",
+    "alt": "The resort at night"
+  },
+  "banner-contact": {
+    "ratio": "21/9",
+    "focal": "50% 60%",
+    "sizes": "100vw",
+    "alt": "Front of the resort at night"
+  },
+  "pkg-whole": {
+    "ratio": "4/3",
+    "focal": "50% 55%",
+    "sizes": "(min-width: 768px) 50vw, 100vw",
+    "alt": "The whole resort lit up at night"
+  },
+  "pkg-penthouse": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 50vw, 100vw",
+    "alt": "Penthouse bedroom with a view of the hills"
+  },
+  "pkg-whole-rooms": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 50vw, 100vw",
+    "alt": "A bedroom at the resort"
+  },
+  "amenity-pool": {
+    "ratio": "4/3",
+    "focal": "40% 70%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Swimming pool"
+  },
+  "amenity-turf": {
+    "ratio": "4/3",
+    "focal": "50% 40%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Guests in front of the cricket turf"
+  },
+  "amenity-gardens": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Garden gazebo and lawns"
+  },
+  "amenity-penthouse": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Penthouse suite opening onto the terrace"
+  },
+  "amenity-cars": {
+    "ratio": "4/3",
+    "alt": "Self-drive Audi Q5",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "amenity-extra": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Kitchen and dining table"
+  },
+  "event-wedding": {
+    "ratio": "3/2",
+    "focal": "50% 45%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Haldi stage with marigold strings on the lawn"
+  },
+  "event-birthday": {
+    "ratio": "3/2",
+    "focal": "45% 55%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Kids splashing in the pool at a birthday party, with a cake table on the lawn"
+  },
+  "event-corporate": {
+    "ratio": "3/2",
+    "focal": "50% 70%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Group day out by the pool"
+  },
+  "gallery-01": {
+    "ratio": "3/4",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "The villa under a night sky",
+    "cat": "property"
+  },
+  "gallery-02": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "The resort lit up at night",
+    "cat": "property"
+  },
+  "gallery-03": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Pool, turf and lawns from above",
+    "cat": "pool-turf"
+  },
+  "gallery-04": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Haldi stage with a marigold ring",
+    "cat": "weddings"
+  },
+  "gallery-05": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Birthday pool party",
+    "cat": "events"
+  },
+  "gallery-06": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "The villa at sunset",
+    "cat": "property"
+  },
+  "gallery-07": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Penthouse bedroom with a view",
+    "cat": "rooms"
+  },
+  "gallery-08": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "A big group in front of the cricket turf",
+    "cat": "pool-turf"
+  },
+  "gallery-09": {
+    "ratio": "3/4",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Haldi stage on the lawn",
+    "cat": "weddings"
+  },
+  "gallery-10": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Buffet by the pool",
+    "cat": "events"
+  },
+  "gallery-11": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Garden gazebo",
+    "cat": "property"
+  },
+  "gallery-12": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Penthouse living room",
+    "cat": "rooms"
+  },
+  "gallery-13": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Festive lights at night",
+    "cat": "events"
+  },
+  "gallery-14": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Kitchen bar counter",
+    "cat": "rooms"
+  },
+  "gallery-15": {
+    "ratio": "3/4",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Haldi welcome board by the pool",
+    "cat": "weddings"
+  },
+  "gallery-16": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Fire pit on the lawn at dusk",
+    "cat": "property"
+  },
+  "gallery-17": {
+    "ratio": "3/4",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Friends by the pool",
+    "cat": "pool-turf"
+  },
+  "gallery-18": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Engagement stage decor",
+    "cat": "weddings"
+  },
+  "gallery-19": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Penthouse suite and terrace",
+    "cat": "rooms"
+  },
+  "gallery-20": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Villa dressed in marigolds",
+    "cat": "weddings"
+  },
+  "gallery-21": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Living room",
+    "cat": "rooms"
+  },
+  "gallery-22": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Front porch at night",
+    "cat": "property"
+  },
+  "gallery-23": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Bedroom",
+    "cat": "rooms"
+  },
+  "gallery-24": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Entrance foyer",
+    "cat": "property"
+  },
+  "gallery-25": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Kitchen and dining table",
+    "cat": "rooms"
+  },
+  "gallery-26": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Bedroom with sofa",
+    "cat": "rooms"
+  },
+  "gallery-27": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Side view of the villa at night",
+    "cat": "property"
+  },
+  "gallery-28": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Bar counter",
+    "cat": "rooms"
+  },
+  "gallery-29": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Bedroom with wall art",
+    "cat": "rooms"
+  },
+  "gallery-30": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 50vw",
+    "alt": "Living room and open kitchen",
+    "cat": "rooms"
+  },
+  "car-01": {
+    "ratio": "4/3",
+    "alt": "Audi Q5, white, front view",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "car-02": {
+    "ratio": "4/3",
+    "alt": "Mercedes-Benz GLC, white, front view",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "car-03": {
+    "ratio": "4/3",
+    "alt": "Self-drive SUV, car 3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "car-04": {
+    "ratio": "4/3",
+    "alt": "Self-drive Compact SUV, car 4",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "car-05": {
+    "ratio": "4/3",
+    "alt": "Self-drive Sedan, car 5",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "car-06": {
+    "ratio": "4/3",
+    "alt": "Self-drive SUV, car 6",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "car-07": {
+    "ratio": "4/3",
+    "alt": "Self-drive MPV, car 7",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "car-08": {
+    "ratio": "4/3",
+    "alt": "Self-drive Sedan, car 8",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "car-09": {
+    "ratio": "4/3",
+    "alt": "Self-drive SUV, car 9",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "car-10": {
+    "ratio": "4/3",
+    "alt": "Self-drive MPV, car 10",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "car-11": {
+    "ratio": "4/3",
+    "alt": "Self-drive Sedan, car 11",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "car-12": {
+    "ratio": "4/3",
+    "alt": "Self-drive SUV, car 12",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw"
+  },
+  "og-image": {
+    "ratio": "1200/630",
+    "focal": "50% 50%",
+    "sizes": "1200px",
+    "alt": "NSG Royal Resort, Bheemili",
+    "format": "jpg"
+  },
+  "demo-16-9": {
+    "ratio": "16/9",
+    "alt": "Demo 16/9 slot",
+    "focal": "50% 50%",
+    "sizes": "100vw"
+  },
+  "demo-21-9": {
+    "ratio": "21/9",
+    "alt": "Demo 21/9 slot",
+    "focal": "50% 50%",
+    "sizes": "100vw"
+  },
+  "demo-4-3": {
+    "ratio": "4/3",
+    "alt": "Demo 4/3 slot",
+    "focal": "50% 50%",
+    "sizes": "100vw"
+  },
+  "demo-3-2": {
+    "ratio": "3/2",
+    "alt": "Demo 3/2 slot",
+    "focal": "50% 50%",
+    "sizes": "100vw"
+  },
+  "demo-og": {
+    "ratio": "1200/630",
+    "alt": "Demo OG slot",
+    "focal": "50% 50%",
+    "sizes": "1200px"
+  },
+  "demo-1-1": {
+    "ratio": "1/1",
+    "alt": "Demo 1/1 slot",
+    "focal": "50% 50%",
+    "sizes": "100vw"
+  },
+  "amenity-bar": {
+    "ratio": "4/3",
+    "focal": "40% 55%",
+    "sizes": "(min-width: 900px) 50vw, 100vw",
+    "alt": "Bar counter with a stool in the kitchen"
+  },
+  "amenity-fridge": {
+    "ratio": "4/3",
+    "focal": "80% 60%",
+    "sizes": "(min-width: 900px) 25vw, 100vw",
+    "alt": "Bar counter with a refrigerator"
+  },
+  "amenity-dining": {
+    "ratio": "4/3",
+    "focal": "40% 45%",
+    "sizes": "(min-width: 900px) 50vw, 100vw",
+    "alt": "Buffet served by the pool"
+  },
+  "banner-dining": {
+    "ratio": "21/9",
+    "focal": "40% 45%",
+    "sizes": "100vw",
+    "alt": "Guests at a buffet by the pool"
+  },
+  "food-01": {
+    "ratio": "3/2",
+    "alt": "A bowl of soup",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "food-02": {
+    "ratio": "3/2",
+    "alt": "Tandoori kebabs on skewers",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "food-03": {
+    "ratio": "3/2",
+    "alt": "Indian curries and biryani",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "food-04": {
+    "ratio": "3/2",
+    "alt": "Chicken biryani in a copper pot",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "food-05": {
+    "ratio": "3/2",
+    "alt": "South Indian meal on a banana leaf",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "food-06": {
+    "ratio": "3/4",
+    "alt": "Chilled mocktails",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "food-07": {
+    "ratio": "3/4",
+    "alt": "Gulab jamun",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "food-08": {
+    "ratio": "8/3",
+    "alt": "Chilled mocktails and gulab jamun",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "food-09": {
+    "ratio": "4/3",
+    "alt": "[TBD: describe this dish]",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "food-10": {
+    "ratio": "4/3",
+    "alt": "[TBD: describe this dish]",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "food-11": {
+    "ratio": "4/3",
+    "alt": "[TBD: describe this dish]",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "food-12": {
+    "ratio": "4/3",
+    "alt": "[TBD: describe this dish]",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 25vw, 50vw"
+  },
+  "banner-celebrations": {
+    "ratio": "21/9",
+    "focal": "50% 50%",
+    "sizes": "100vw",
+    "priority": false,
+    "alt": "Haldi stage with a marigold ring at the resort"
+  },
+  "banner-amenities": {
+    "ratio": "21/9",
+    "focal": "50% 55%",
+    "sizes": "100vw",
+    "alt": "Living room and kitchen"
+  },
+  "penthouse-lounge": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 50vw, 100vw",
+    "alt": "Penthouse living room"
+  },
+  "amenity-rooms": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Living room with sofa"
+  },
+  "event-haldi-welcome": {
+    "ratio": "3/2",
+    "focal": "50% 45%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Haldi welcome board by the pool"
+  },
+  "event-lights": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "The villa in festive colour lights at night"
+  },
+  "event-engagement": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Engagement stage with a flower ring"
+  },
+  "event-decor": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Villa decorated with marigold garlands"
+  },
+  "garden-firepit": {
+    "ratio": "3/2",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 100vw",
+    "alt": "Evening seating around the fire pit"
+  }
+}

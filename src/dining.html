@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{seo.dining.title}}</title>
+  <meta name="description" content="{{seo.dining.description}}">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{seo.dining.title}}">
+  <meta property="og:description" content="{{seo.dining.description}}">
+  <meta property="og:image" content="assets/img/{{seo.dining.ogImage}}">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/menu.js" defer></script>
+</head>
+<body class="page-dining">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">{{copy.common.skipToMainContent}}</a>
+
+  <!-- Header Partial -->
+  {{include:header}}
+
+  <main id="main-content">
+    <!-- Hero -->
+    <section class="hero-section hero-section--banner" aria-label="{{dining.heroStrapline}}">
+      <div class="hero-backdrop" aria-hidden="true">
+        {{slot:banner-dining}}
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <span class="hero-strapline">{{dining.heroStrapline}}</span>
+        <h1 class="hero-title">{{dining.heroTitle}}</h1>
+        <p class="hero-lead">{{dining.heroLead}}</p>
+      </div>
+    </section>
+
+    <!-- Aroma Restaurant menu (rendered by menu.js from assets/data/aroma-menu.json) -->
+    <section class="section aroma-menu" id="menu" aria-labelledby="menu-title">
+      <div class="container">
+        <header class="aroma-menu-head reveal">
+          <img src="assets/img/aroma-logo-dark.png" alt="Aroma Restaurant" class="aroma-menu-logo" width="340" height="280" loading="lazy" decoding="async">
+          <h2 id="menu-title" class="aroma-menu-title">{{dining.menuTitle}}</h2>
+          <p class="aroma-menu-sub">{{dining.menuSubtitle}}</p>
+        </header>
+        <div class="menu-app" id="aroma-menu-app">
+          <div class="menu-toolbar">
+            <div class="menu-tabs" role="tablist" aria-label="{{dining.menuNavLabel}}"></div>
+            <div class="menu-tools">
+              <div class="menu-diet-group" role="group" aria-label="{{dining.dietLabel}}">
+                <button type="button" class="menu-diet" data-diet="all" aria-pressed="true">{{dining.dietAll}}</button>
+                <button type="button" class="menu-diet" data-diet="veg" aria-pressed="false"><span class="mi-mark is-veg" aria-hidden="true"></span>{{dining.vegLabel}}</button>
+                <button type="button" class="menu-diet" data-diet="nonveg" aria-pressed="false"><span class="mi-mark is-nonveg" aria-hidden="true"></span>{{dining.nonVegLabel}}</button>
+              </div>
+              <label class="menu-search">
+                <span class="visually-hidden">{{dining.searchLabel}}</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+                <input type="search" class="menu-search-input" placeholder="{{dining.searchPlaceholder}}" autocomplete="off">
+              </label>
+            </div>
+          </div>
+          <div class="menu-panel" id="menu-panel" role="tabpanel" aria-labelledby="menu-title">
+            <p class="menu-empty">{{dining.menuLoading}}</p>
+          </div>
+          <p class="menu-live visually-hidden" aria-live="polite"></p>
+          <noscript><p class="menu-empty">{{dining.menuNoJs}}</p></noscript>
+          <p class="menu-footnote">{{dining.menuFootnote}}</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to action -->
+    <section class="final-cta wave-top" aria-labelledby="dining-cta-title">
+      <div class="container">
+        <div class="final-cta-content reveal">
+          <h2 id="dining-cta-title" class="final-cta-title">{{dining.ctaTitle}}</h2>
+          <p class="final-cta-subtitle">{{dining.ctaText}}</p>
+          <div class="final-cta-actions">
+            <a href="book.html" class="btn btn-primary btn-lg">{{dining.ctaBook}}</a>
+            <a href="https://wa.me/{{config.WHATSAPP}}" class="btn btn-secondary btn-lg" target="_blank" rel="noopener noreferrer">{{dining.ctaWhatsApp}}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Partial -->
+  {{include:footer}}
+
+  <!-- Sticky Mobile Bar Partial -->
+  {{include:sticky-bar}}
+</body>
+</html>

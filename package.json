@@ -1,0 +1,19 @@
+{
+  "name": "nsg-royal-resort",
+  "version": "1.0.0",
+  "description": "NSG Royal Resort Frontend",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "images": "node tools/images.js",
+    "build": "node tools/build.js",
+    "build:prod": "node tools/build.js --prod",
+    "dev": "node tools/build.js --watch --serve",
+    "check": "node tools/check.js",
+    "check:launch": "node tools/build.js --prod && node tools/check.js --launch"
+  },
+  "devDependencies": {
+    "qrcode-generator": "^2.0.4",
+    "sharp": "^0.33.5"
+  }
+}
