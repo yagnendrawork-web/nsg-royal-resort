@@ -198,6 +198,11 @@ window.NSG = window.NSG || {};
     }));
   }
 
+  function upiIdFromLink(link) {
+    const m = /[?&]pa=([^&]+)/.exec(String(link || ''));
+    try { return m ? decodeURIComponent(m[1]) : ''; } catch (e) { return ''; }
+  }
+
   // [{id, qty}] -> "id:qty,id:qty" for GET quote
   function addonsParam(addons) {
     return (Array.isArray(addons) ? addons : [])
@@ -655,7 +660,8 @@ window.NSG = window.NSG || {};
           holdExpiresAt: json.holdExpiresAt,
           payment: {
             mode: (json.payment && json.payment.mode) || 'upi',
-            upiId: (json.payment && json.payment.upiId) || 'nsgresort@upi',
+            // The backend may send only upiLink; read the payee UPI ID from its pa= parameter
+            upiId: (json.payment && json.payment.upiId) || upiIdFromLink(upiLink) || 'nsgresort@upi',
             payeeName: (json.payment && json.payment.payeeName) || 'NSG Royal Resort',
             upiLink: upiLink,
             note: (json.payment && json.payment.note) || `Booking ${json.bookingId}`
