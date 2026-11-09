@@ -295,5 +295,18 @@ window.NSG.IMG = {
   "garden-firepit": [
     480,
     960
+  ],
+  "food-biryani": [
+    480,
+    960,
+    1600
+  ],
+  "food-starters": [
+    480,
+    960,
+    1600
+  ],
+  "food-desserts": [
+    480
   ]
 };

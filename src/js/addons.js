@@ -13,11 +13,14 @@ window.NSG = window.NSG || {};
 
   // ---- Pure helpers (no DOM; also run by the Node verify script) ----
 
-  /** Selection is { id: qty }. Adding an item twice keeps one; per_qty items add up to maxQty. */
+  const minOf = (item) => Math.max(1, item.minQty || 1);
+  const clamp = (item, q) => Math.min(item.maxQty || 10, Math.max(minOf(item), q));
+
+  /** Selection is { id: qty }. Adding an item twice keeps one; per_qty items add up, within minQty..maxQty. */
   function add(sel, item, qty) {
     const next = Object.assign({}, sel);
-    const n = Math.max(1, Number(qty) || 1);
-    if (item.unit === 'per_qty') next[item.id] = Math.min(item.maxQty || 10, (next[item.id] || 0) + n);
+    const n = Math.max(1, Number(qty) || minOf(item));
+    if (item.unit === 'per_qty') next[item.id] = clamp(item, (next[item.id] || 0) + n);
     else next[item.id] = 1;
     return next;
   }
@@ -30,8 +33,8 @@ window.NSG = window.NSG || {};
 
   function setQty(sel, item, qty) {
     const q = Math.round(Number(qty) || 0);
-    if (q < 1) return remove(sel, item.id);
-    return Object.assign({}, sel, { [item.id]: Math.min(item.maxQty || 10, q) });
+    if (q < minOf(item)) return remove(sel, item.id); // stepping below the minimum removes the item
+    return Object.assign({}, sel, { [item.id]: clamp(item, q) });
   }
 
   /** "id" or "id:qty" list (from ?addons=) -> selection; repeated ids are merged */
@@ -40,7 +43,7 @@ window.NSG = window.NSG || {};
     String(text || '').split(',').map((s) => s.trim()).filter(Boolean).forEach((part) => {
       const bits = part.split(':');
       const item = (catalog || []).find((a) => a.id === bits[0]);
-      if (item && item.price !== null) sel = add(sel, item, bits[1] || 1);
+      if (item && item.price !== null) sel = add(sel, item, bits[1] || minOf(item));
     });
     return sel;
   }
@@ -119,7 +122,7 @@ window.NSG = window.NSG || {};
           <div class="addon-info">
             <h4 class="addon-name">${esc(a.name)}</h4>
             ${a.description ? `<p class="addon-desc">${esc(a.description)}</p>` : ''}
-            <p class="addon-price">${priced ? inr(a.price) + ' <span>' + esc(unitLabel(a.unit)) + '</span>' : esc((window.NSG.UI.labels || {}).priceOnRequest)}${a.confirmRequired ? ' · <em>' + esc(t.subjectToConfirmation) + '</em>' : ''}</p>
+            <p class="addon-price">${priced ? inr(a.price) + ' <span>' + esc(unitLabel(a.unit)) + '</span>' : esc((window.NSG.UI.labels || {}).priceOnRequest)}${a.unit === 'per_qty' && minOf(a) > 1 ? ' · <em>' + esc((t.minLabel || 'min {min}').replace('{min}', minOf(a))) + '</em>' : ''}${a.confirmRequired ? ' · <em>' + esc(t.subjectToConfirmation) + '</em>' : ''}</p>
           </div>
           <div class="addon-actions">${stepper}${action}</div>
         </article>`;
@@ -134,7 +137,7 @@ window.NSG = window.NSG || {};
     if (!target) return;
     const item = catalog.find((a) => a.id === target.getAttribute('data-id'));
     if (!item) return;
-    if (toggle) selection = selection[item.id] ? remove(selection, item.id) : add(selection, item, 1);
+    if (toggle) selection = selection[item.id] ? remove(selection, item.id) : add(selection, item);
     else selection = setQty(selection, item, (selection[item.id] || 0) + Number(step.getAttribute('data-step')));
     changed();
     const again = document.querySelector(`.addon-toggle[data-id="${CSS.escape(item.id)}"]`);
@@ -150,7 +153,7 @@ window.NSG = window.NSG || {};
       const kept = {};
       Object.keys(selection).forEach((id) => {
         const item = catalog.find((a) => a.id === id && a.price !== null);
-        if (item) kept[id] = item.unit === 'per_qty' ? Math.min(item.maxQty, selection[id]) : 1;
+        if (item) kept[id] = item.unit === 'per_qty' ? clamp(item, selection[id]) : 1;
       });
       const before = JSON.stringify(selection);
       selection = kept;

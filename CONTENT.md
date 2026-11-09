@@ -119,3 +119,8 @@ At the owner's request every policy now has a plain one-line draft (no [TBD]). C
 
 ## Policies: real-world drafts (2026-11-02)
 Policies were rewritten as full, realistic terms (cancellation tiers 7+ days / 3-6 days / under 72 h, refunds in 7 working days, pool 7 AM-8 PM, outdoor music until 10 PM, ID rules, security deposit for events, etc.). These are reasonable industry-standard defaults, not confirmed by the owner. The owner should read and approve every policy before launch.
+
+## Food packages (2026-11-09)
+| Key | Placeholder | Notes |
+|---|---|---|
+| dining.packages.notice | [TBD: X hours] | How much advance notice a food order needs. Hidden on the page until filled. |

@@ -167,7 +167,10 @@ window.NSG = window.NSG || {};
     { id: 'mock-dinner', category: 'food', name: 'Mock dinner package', description: 'Mock item for testing.', unit: 'per_guest', price: 400, maxQty: 10, confirmRequired: true, slot: '', details: '' },
     { id: 'mock-pickup', category: 'travel', name: 'Mock station pickup', description: 'Mock item for testing.', unit: 'flat', price: 1500, maxQty: 10, confirmRequired: false, slot: '', details: '' },
     { id: 'mock-car', category: 'car', name: 'Mock self-drive car', description: 'Mock item for testing.', unit: 'per_night', price: 3000, maxQty: 10, confirmRequired: true, slot: '', details: '' },
-    { id: 'mock-cake', category: 'food', name: 'Mock celebration cake', description: 'Mock item for testing.', unit: 'per_qty', price: 800, maxQty: 4, confirmRequired: false, slot: '', details: '' }
+    { id: 'mock-cake', category: 'food', name: 'Mock celebration cake', description: 'Mock item for testing.', unit: 'per_qty', price: 800, maxQty: 4, confirmRequired: false, slot: '', details: '' },
+    { id: 'food-biryani', category: 'food', name: 'Mock Biryani package', description: 'Mock item for testing.', unit: 'per_qty', price: 250, minQty: 8, maxQty: 100, confirmRequired: true, slot: 'food-biryani', details: '' },
+    { id: 'food-starters', category: 'food', name: 'Mock Starters package', description: 'Mock item for testing.', unit: 'per_qty', price: 250, minQty: 8, maxQty: 100, confirmRequired: true, slot: 'food-starters', details: '' },
+    { id: 'food-desserts', category: 'food', name: 'Mock Desserts package', description: 'Mock item for testing.', unit: 'per_qty', price: 250, minQty: 8, maxQty: 100, confirmRequired: true, slot: 'food-desserts', details: '' }
   ];
 
   function normaliseAddon(a) {
@@ -181,6 +184,7 @@ window.NSG = window.NSG || {};
       unit: String(a.unit || 'flat'),
       price: price !== null && isFinite(price) ? price : null,
       maxQty: Number(a.maxQty) > 0 ? Number(a.maxQty) : 10,
+      minQty: Number(a.minQty) >= 1 ? Math.floor(Number(a.minQty)) : 1,
       confirmRequired: a.confirmRequired === true || String(a.confirmRequired).toLowerCase() === 'true',
       slot: String(a.slot || ''),
       details: String(a.details || '')
@@ -229,7 +233,7 @@ window.NSG = window.NSG || {};
       let mult = 1;
       if (item.unit === 'per_qty') {
         qty = merged[item.id];
-        if (qty < 1 || qty > item.maxQty) return { error: true };
+        if (qty < (item.minQty || 1) || qty > item.maxQty) return { error: true };
         mult = qty;
       } else if (item.unit === 'per_guest') {
         mult = Number(guests) || 1;

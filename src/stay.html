@@ -157,11 +157,12 @@
               <p class="card-amenity-desc">{{stay.roomsTileText}}</p>
             </div>
           </article>
-          <a href="dining.html" class="card-amenity reveal" id="amenity-dining">
+          <a href="dining.html#packages" class="card-amenity reveal" id="amenity-dining">
             <div class="card-amenity-media">{{slot:amenity-dining}}</div>
             <div class="card-amenity-body">
               <h3 class="card-amenity-title">{{copy.common.dining}}</h3>
               <p class="card-amenity-desc">{{stay.diningTileText}}</p>
+              <p class="food-from" data-food-from data-template="{{dining.packages.fromLine}}" hidden></p>
             </div>
           </a>
         </div>

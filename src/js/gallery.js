@@ -8,6 +8,12 @@ window.NSG = window.NSG || {};
 (function () {
   'use strict';
 
+  // Runs now if the page has already loaded (this file may be loaded lazily on Home)
+  function onReady(fn) {
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  }
+
   const grid = document.getElementById('gallery-grid');
   const filters = document.querySelectorAll('#gallery-filters .chip');
   const comingSoon = document.getElementById('gallery-coming-soon');
@@ -273,8 +279,8 @@ window.NSG = window.NSG || {};
     cards.forEach((card) => card.addEventListener('click', () => openVideo(card)));
   }
 
-  document.addEventListener('DOMContentLoaded', initGallery);
-  document.addEventListener('DOMContentLoaded', initVideos);
+  onReady(initGallery);
+  onReady(initVideos);
 
   // Featured self-hosted video: muted loop while at least half visible; never autoplays
   // under reduced motion or Data Saver (poster + play button instead)
@@ -336,5 +342,5 @@ window.NSG = window.NSG || {};
       sync(tile);
     });
   }
-  document.addEventListener('DOMContentLoaded', initFeatureVideos);
+  onReady(initFeatureVideos);
 })();

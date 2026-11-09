@@ -48,3 +48,6 @@ Checks: build + check pass, no empty image frames on any page, add-on summary ve
 
 # Dining menu + real policies (2026-11-02)
 Aroma menu (173 dishes, 6 sections) transcribed from the PDF into src/assets/data/aroma-menu.json; menu.js renders tabs, veg/non-veg filter and search on dining.html; food photos and Aroma logo cut from the PDF. Policies rewritten as real-world terms (owner to approve); templates no longer use nested loops, so even the old dev server renders them.
+
+# Food packages first on Dining (2026-11-09)
+Dining: live food packages (api.addons, category food) with add/stepper/quick-picks, minQty..maxQty clamping, sessionStorage, summary card/bar, booking + WhatsApp links; Why packages strip; full menu below with a custom-order note; brand pair. Home/Stay/Amenities show the live "from" line linking to #packages. book.html add-ons respect minQty. Home loads gallery.js lazily (Home JS 56.1 KB).

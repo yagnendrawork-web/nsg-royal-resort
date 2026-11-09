@@ -585,5 +585,23 @@
     "focal": "50% 50%",
     "sizes": "(min-width: 768px) 33vw, 100vw",
     "alt": "Evening seating around the fire pit"
+  },
+  "food-biryani": {
+    "ratio": "4/3",
+    "alt": "Chicken biryani in a copper pot",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 30vw, 100vw"
+  },
+  "food-starters": {
+    "ratio": "4/3",
+    "alt": "Tandoori kebabs on skewers",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 30vw, 100vw"
+  },
+  "food-desserts": {
+    "ratio": "4/3",
+    "alt": "Gulab jamun",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 900px) 30vw, 100vw"
   }
 }

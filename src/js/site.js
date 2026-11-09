@@ -388,32 +388,20 @@ window.NSG = window.NSG || {};
   }
 
   // -------------------------------------------------------------------------
-  // 9b. Food package cards ([data-food-packages], live from api.addons; empty = hidden)
+  // 9b. "Food packages from ₹X per person, minimum N" ([data-food-from], live from api.addons)
   // -------------------------------------------------------------------------
   function initFoodPackages() {
-    const boxes = document.querySelectorAll('[data-food-packages]');
-    if (!boxes.length || !window.NSG.api || typeof window.NSG.api.addons !== 'function') return;
-    const labels = (window.NSG.UI && window.NSG.UI.labels) || {};
-    const config = window.NSG.CONFIG || {};
-    const wa = config.WHATSAPP && !String(config.WHATSAPP).startsWith('[TBD') ? 'https://wa.me/' + config.WHATSAPP : 'contact.html';
-    const units = { per_guest: labels.unitPerPerson, flat: labels.unitPerBooking, per_night: labels.unitPerNight, per_qty: labels.unitEach };
-    const esc = (v) => String(v).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    const els = document.querySelectorAll('[data-food-from]');
+    if (!els.length || !window.NSG.api || typeof window.NSG.api.addons !== 'function') return;
     window.NSG.api.addons().then((res) => {
-      const food = res && res.ok ? res.data.filter((a) => a.category === 'food') : [];
-      boxes.forEach((box) => {
-        const limit = parseInt(box.getAttribute('data-limit'), 10) || food.length;
-        box.innerHTML = food.slice(0, limit).map((a) => {
-          const priced = a.price !== null;
-          return `<article class="food-card">
-            <h3 class="food-card-title">${esc(a.name)}</h3>
-            <p class="food-card-desc">${esc(a.description)}</p>
-            <p class="food-card-price">${priced ? '₹' + a.price.toLocaleString('en-IN') + ' <span class="food-card-unit">' + esc(units[a.unit] || '') + '</span>' : esc(labels.priceOnRequest)}</p>
-            ${a.confirmRequired ? '<p class="food-card-note">' + esc(labels.subjectToConfirmation) + '</p>' : ''}
-            ${priced
-              ? '<a class="btn btn-secondary btn-sm" href="book.html?addons=' + encodeURIComponent(a.id) + '">' + esc(labels.addToBooking) + '</a>'
-              : '<a class="btn btn-secondary btn-sm" href="' + wa + '"' + (wa.startsWith('http') ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + esc(labels.askOnWhatsApp) + '</a>'}
-          </article>`;
-        }).join('');
+      const food = res && res.ok ? res.data.filter((a) => a.category === 'food' && a.price !== null) : [];
+      if (!food.length) return;
+      const cheapest = food.reduce((m, a) => (a.price < m.price ? a : m));
+      els.forEach((el) => {
+        el.textContent = (el.getAttribute('data-template') || '')
+          .replace('{price}', '₹' + cheapest.price.toLocaleString('en-IN'))
+          .replace('{min}', cheapest.minQty || 1);
+        el.hidden = false;
       });
     });
   }

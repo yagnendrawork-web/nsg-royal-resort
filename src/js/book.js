@@ -359,7 +359,7 @@ window.NSG = window.NSG || {};
     handleInvalidAddon(res, alertId) {
       const el = document.getElementById(alertId);
       if (el) {
-        el.textContent = res.error;
+        el.textContent = res.detail ? res.detail + ' ' + res.error : res.error;
         el.style.display = 'block';
       }
       if (window.NSG.Addons) window.NSG.Addons.reload();

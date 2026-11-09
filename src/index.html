@@ -36,7 +36,6 @@
   <script src="js/api.js" defer></script>
   <script src="js/site.js" defer></script>
   <script src="js/motion.js" defer></script>
-  <!--each:gallery.videoScript--><script src="js/gallery.js" defer></script><!--/each-->
 </head>
 <body class="page-home">
   <!-- Accessibility Skip Link -->
@@ -259,9 +258,9 @@
           <span class="section-tag">{{home.dining.tag}}</span>
           <h2 id="dining-title" class="section-title">{{home.dining.title}}</h2>
           <p class="home-dining-text">{{home.dining.text}}</p>
-          <a href="dining.html" class="btn btn-primary btn-md">{{home.dining.cta}}</a>
+          <p class="food-from" data-food-from data-template="{{dining.packages.fromLine}}" hidden></p>
+          <a href="dining.html#packages" class="btn btn-primary btn-md">{{home.dining.cta}}</a>
         </div>
-        <div class="food-cards" data-food-packages data-limit="3" aria-label="{{home.dining.cardsLabel}}"></div>
       </div>
     </section>
 
@@ -277,7 +276,7 @@
         <ul class="ev-type-list">
           <!--each:home.eventsBand.types--><li class="ev-type reveal"><h3 class="ev-type-title">{{.title}}</h3><p class="ev-type-text">{{.text}}</p></li><!--/each-->
         </ul>
-        <div class="video-block">
+        <div class="video-block" data-lazy-script="js/gallery.js">
           <h3 class="video-block-title reveal">{{home.eventsBand.videosTitle}}</h3>
           <!--each:gallery.fileVideos--><figure class="video-feature video-feature--{{.orient}} reveal" data-video-feature data-src="{{.file}}" data-poster="{{.poster}}" data-title="{{.title}}">
             <video muted loop playsinline preload="none" poster="{{.poster}}" width="{{.width}}" height="{{.height}}" aria-label="{{copy.videos.highlight}}"><source src="{{.file}}" type="video/mp4"></video>

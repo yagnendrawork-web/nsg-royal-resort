@@ -91,7 +91,8 @@
           <hr class="gold-hairline am-hairline-left" aria-hidden="true">
           <p class="am-lead">{{copy.amenities.foodText}}</p>
           <p class="am-detail" data-optional>{{copy.amenities.foodDetail}}</p>
-          <a href="dining.html" class="btn btn-primary btn-md">{{copy.amenities.foodMenuCta}}</a>
+          <p class="food-from" data-food-from data-template="{{dining.packages.fromLine}}" hidden></p>
+          <a href="dining.html#packages" class="btn btn-primary btn-md">{{dining.packages.fromCta}}</a>
           <a href="https://wa.me/{{config.WHATSAPP}}" class="btn btn-secondary btn-md" target="_blank" rel="noopener noreferrer">{{copy.amenities.foodCta}}</a>
         </div>
       </div>

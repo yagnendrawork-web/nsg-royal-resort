@@ -58,4 +58,27 @@
       btn.textContent = paused ? '▶' : '❚❚';
     });
   });
+
+  // 4. Load a section's script only when it comes near the screen (keeps Home JS small)
+  const lazy = document.querySelectorAll('[data-lazy-script]');
+  if (lazy.length) {
+    const load = function (el) {
+      const src = el.getAttribute('data-lazy-script');
+      el.removeAttribute('data-lazy-script');
+      if (document.querySelector('script[src="' + src + '"]')) return;
+      const s = document.createElement('script');
+      s.src = src;
+      document.body.appendChild(s);
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { io.unobserve(e.target); load(e.target); }
+        });
+      }, { rootMargin: '600px 0px' });
+      lazy.forEach(function (el) { io.observe(el); });
+    } else {
+      lazy.forEach(load);
+    }
+  }
 })();

@@ -133,7 +133,8 @@
       "decrease": "Fewer",
       "increase": "More",
       "statusTitle": "Add-ons",
-      "statusTotal": "Total for your stay"
+      "statusTotal": "Total for your stay",
+      "minLabel": "minimum {min}"
     },
     "cars": {
       "perDay": "per day",
@@ -438,7 +439,7 @@
       "title": "Good food, right here",
       "text": "Meals at the resort are served by Aroma Restaurant, so nobody has to cook or drive out.",
       "cardsLabel": "Food packages",
-      "cta": "See the menu"
+      "cta": "See food packages"
     },
     "eventsBand": {
       "tag": "Celebrations",
@@ -1245,7 +1246,70 @@
     "searchPlaceholder": "Search a dish, e.g. biryani",
     "menuLoading": "Loading the menu…",
     "menuNoJs": "Please turn on JavaScript to browse the menu, or ask us on WhatsApp.",
-    "menuFootnote": "Prices are from Aroma Restaurant's current menu and may change. Tell us what you would like and we will arrange it for your stay."
+    "menuFootnote": "Prices are from Aroma Restaurant's current menu and may change. Tell us what you would like and we will arrange it for your stay.",
+    "packages": {
+      "tag": "Food packages",
+      "title": "Food for your whole group",
+      "subtitle": "Aroma Restaurant is more than 30 km away, so we deliver food as group packages, hot and on time. Pick what you need and how many.",
+      "loading": "Loading food packages…",
+      "failed": "Food packages: prices on request. Message us and we will share today's options.",
+      "unitLabels": {
+        "food-biryani": "per pack",
+        "default": "per plate",
+        "per_guest": "per person"
+      },
+      "unitNouns": {
+        "food-biryani": [
+          "pack",
+          "packs"
+        ],
+        "default": [
+          "plate",
+          "plates"
+        ]
+      },
+      "add": "Add",
+      "remove": "Remove",
+      "qtyLabel": "Quantity",
+      "decrease": "Fewer",
+      "increase": "More",
+      "quickPick": "Quick pick",
+      "minHint": "Minimum {min} {noun}",
+      "maxHint": "Maximum {max} {noun}",
+      "summaryTitle": "Your food order",
+      "total": "Total",
+      "items": "items",
+      "delivery": "Free delivery to the resort · No extra charges",
+      "notice": "Order needs [TBD: X hours] advance notice",
+      "displayOnly": "This total is a guide. Your booking shows the final amount.",
+      "addToBooking": "Add to my booking",
+      "orderWhatsApp": "Order on WhatsApp",
+      "waIntro": "Hi, I would like to order food packages for my stay at NSG Royal Resort:",
+      "waTotal": "Total",
+      "waBooking": "Booking ID (if any): ____",
+      "whyTag": "Why packages",
+      "why": [
+        {
+          "icon": "i-value",
+          "title": "Better value",
+          "text": "Better value than eating out or ordering in."
+        },
+        {
+          "icon": "i-delivery",
+          "title": "Free delivery",
+          "text": "Free delivery to the resort."
+        },
+        {
+          "icon": "i-hot",
+          "title": "Hot and on time",
+          "text": "Hot food for the whole group, on time."
+        }
+      ],
+      "menuIntro": "Want something special? Pick from the full menu and we'll arrange a custom order.",
+      "menuIntroCta": "Ask us on WhatsApp",
+      "fromLine": "Food packages from {price} per person, minimum {min}",
+      "fromCta": "See food packages"
+    }
   },
   "policiesPage": {
     "intro": "These policies explain how bookings, payments and stays work at NSG Royal Resort. Please read them before you book; making a booking means you agree to them.",

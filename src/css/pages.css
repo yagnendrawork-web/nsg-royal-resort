@@ -3280,3 +3280,135 @@ html:not(.js-reveal) .steps-flow::before { transform: none; }
 .video-feature.no-autoplay:not(.is-playing) .vf-bigplay { opacity: 1; z-index: 2; }
 .lightbox-video--file { aspect-ratio: auto; width: auto; max-width: 92vw; max-height: 85vh; }
 .lightbox-video--file video { max-width: 92vw; max-height: 85vh; display: block; }
+
+/* ==========================================================================
+   24. FOOD PACKAGES (dining.html#packages)
+   ========================================================================== */
+.fp-section { scroll-margin-top: 80px; }
+.fp-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); align-items: start; }
+@media (min-width: 1024px) {
+  .fp-layout:has(.fp-summary:not([hidden])) { grid-template-columns: minmax(0, 1fr) 340px; }
+  .fp-summary { position: sticky; top: 96px; }
+}
+.fp-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+@media (min-width: 640px) { .fp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1024px) { .fp-layout:not(:has(.fp-summary:not([hidden]))) .fp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.fp-loading { color: var(--muted); }
+.fp-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--r-card);
+  background: #FFFDF8;
+  border: 1px solid rgba(194, 155, 74, 0.28);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--dur-fast) ease, box-shadow var(--dur) ease;
+}
+.fp-card.is-on { border-color: var(--gold); box-shadow: 0 0 0 1px var(--gold), var(--shadow-md); }
+.fp-media { aspect-ratio: 4 / 3; overflow: hidden; background: var(--sand); }
+.fp-media .slot-img, .fp-media .slot-ph { width: 100%; height: 100% !important; aspect-ratio: auto !important; object-fit: cover; display: block; }
+.fp-body { padding: var(--space-5); display: flex; flex-direction: column; gap: var(--space-2); flex: 1; }
+.fp-name { font-size: 1.45rem; margin: 0; }
+.fp-desc { color: var(--muted); margin: 0; font-size: 0.95rem; }
+.fp-price { margin: 0; font-weight: 600; font-size: 1.15rem; color: var(--emerald-900); }
+.fp-price span { font-weight: 400; font-size: 0.9rem; color: var(--muted); }
+.fp-add { align-self: flex-start; margin-top: auto; min-width: 120px; }
+.fp-qty-row { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); margin-top: var(--space-2); }
+.fp-stepper { display: inline-flex; align-items: center; border: 1px solid rgba(194, 155, 74, 0.55); border-radius: 999px; overflow: hidden; }
+.fp-step { width: 44px; height: 44px; border: 0; background: transparent; font-size: 1.3rem; color: var(--emerald-900); cursor: pointer; }
+.fp-step:disabled { opacity: 0.3; cursor: not-allowed; }
+.fp-input {
+  width: 64px;
+  height: 44px;
+  border: 0;
+  border-left: 1px solid rgba(194, 155, 74, 0.3);
+  border-right: 1px solid rgba(194, 155, 74, 0.3);
+  text-align: center;
+  font: 600 1.05rem/1 var(--font-body);
+  color: var(--emerald-900);
+  background: #fff;
+  -moz-appearance: textfield;
+}
+.fp-input::-webkit-outer-spin-button, .fp-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.fp-remove { border: 0; background: none; color: var(--muted); text-decoration: underline; font-size: 0.9rem; cursor: pointer; padding: 8px 4px; }
+.fp-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.fp-chip {
+  min-width: 44px;
+  min-height: 36px;
+  padding: 0 0.7rem;
+  border: 1px solid rgba(194, 155, 74, 0.45);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--emerald-900);
+  font: 500 0.85rem/1 var(--font-body);
+  cursor: pointer;
+}
+.fp-chip[aria-pressed="true"] { background: var(--emerald-900); border-color: var(--emerald-900); color: var(--ivory); }
+.fp-hint { margin: 0; min-height: 1.1em; font-size: 0.82rem; color: var(--warn); }
+.fp-line { margin: 0; padding-top: var(--space-2); border-top: 1px dashed rgba(194, 155, 74, 0.4); font-weight: 600; color: var(--emerald-900); }
+.fp-step:focus-visible, .fp-chip:focus-visible, .fp-remove:focus-visible, .fp-input:focus-visible { outline: var(--focus-ring); outline-offset: 2px; }
+.fp-failed { grid-column: 1 / -1; text-align: center; padding: var(--space-8); border: 1px dashed rgba(194, 155, 74, 0.6); border-radius: var(--r-card); }
+
+/* Summary: side card on desktop, bar on mobile */
+.fp-summary {
+  padding: var(--space-6);
+  border-radius: var(--r-card);
+  background-color: var(--emerald-900);
+  background-image: var(--pattern-lotus), var(--emerald-gradient);
+  color: var(--ivory);
+  box-shadow: var(--shadow-lg);
+}
+.fp-summary[hidden] { display: none; }
+.fp-sum-title { color: var(--gold-light); font-size: 1.4rem; margin-bottom: var(--space-4); }
+.fp-sum-lines { list-style: none; margin: 0 0 var(--space-4); padding: 0; display: grid; gap: var(--space-3); }
+.fp-sum-lines li { display: grid; gap: 2px; font-size: 0.92rem; }
+.fp-sum-lines li span:first-child { color: var(--gold-light); font-weight: 600; }
+.fp-sum-total { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 var(--space-3); padding-top: var(--space-3); border-top: 1px solid rgba(232, 213, 163, 0.3); }
+.fp-sum-total strong { font-size: 1.6rem; font-family: var(--font-heading); }
+.fp-sum-mobile { display: none; margin: 0; }
+.fp-note { margin: 0 0 var(--space-2); font-size: 0.85rem; color: rgba(251, 248, 242, 0.82); }
+.fp-note--gold { color: var(--gold-light); font-weight: 600; }
+.fp-note--small { font-size: 0.75rem; opacity: 0.75; margin-top: var(--space-3); }
+.fp-sum-actions { display: grid; gap: var(--space-2); margin-top: var(--space-4); }
+.fp-sum-actions .btn { width: 100%; justify-content: center; }
+@media (max-width: 1023px) {
+  .fp-summary {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 460;
+    border-radius: 18px 18px 0 0;
+    padding: var(--space-4) var(--space-4) calc(var(--space-4) + env(safe-area-inset-bottom));
+  }
+  .fp-sum-title, .fp-sum-lines, .fp-sum-total, .fp-note--small { display: none; }
+  .fp-sum-mobile { display: block; font-size: 1rem; }
+  .fp-sum-mobile strong { font-size: 1.3rem; color: var(--gold-light); }
+  .fp-note { margin: 2px 0 0; font-size: 0.78rem; }
+  .fp-sum-actions { grid-template-columns: 1fr 1fr; margin-top: var(--space-3); }
+  .fp-sum-actions .btn { padding-left: 0.6rem; padding-right: 0.6rem; font-size: 0.85rem; }
+  body.has-fp-summary .sticky-mobile-bar { display: none; }
+  body.has-fp-summary { padding-bottom: 170px; }
+}
+
+/* Why packages strip */
+.fp-why { background: var(--sand); padding: var(--space-8) 0; border-top: 1px solid rgba(194, 155, 74, 0.25); border-bottom: 1px solid rgba(194, 155, 74, 0.25); }
+.fp-why-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-5); }
+@media (min-width: 768px) { .fp-why-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+.fp-why-item { display: flex; align-items: center; gap: var(--space-4); }
+.fp-why-item > span { display: grid; gap: 2px; }
+.fp-why-item strong { font-family: var(--font-heading); font-size: 1.25rem; color: var(--emerald-900); }
+.fp-why-item > span > span { color: var(--muted); font-size: 0.92rem; }
+.fp-why-icon { flex: none; width: 48px; height: 48px; padding: 11px; border: 1px solid rgba(194, 155, 74, 0.55); border-radius: 50%; color: var(--gold-deep); stroke-width: 1.5; }
+.aroma-menu-custom { margin: var(--space-4) 0 0; color: var(--gold-light); }
+.aroma-menu-custom a { color: #F2C14E; font-weight: 600; text-decoration: underline; }
+.fp-brands { padding: var(--space-10) 0; }
+.fp-brands .brand-pair { margin: 0; }
+.fp-brands .brand-pair-logo { height: 88px; }
+
+/* Live "Food packages from ..." line (Home, Stay, Amenities) */
+.food-from { margin: 0 0 var(--space-4); font-weight: 600; color: var(--gold-deep); }
+.card-amenity .food-from { margin: var(--space-2) 0 0; font-size: 0.88rem; }
+.food-from[hidden] { display: none; }
+.fp-summary .btn-secondary { color: var(--ivory); border-color: var(--gold-light); background-color: rgba(251, 248, 242, 0.08); }
+.fp-summary .btn-secondary:hover { background-color: rgba(251, 248, 242, 0.18); color: var(--ivory); }
