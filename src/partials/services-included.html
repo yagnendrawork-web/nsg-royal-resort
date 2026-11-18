@@ -1,0 +1,17 @@
+<!-- Services: the "Included with your booking" group (part of partials/services.html) -->
+<section class="svc-group svc-group--inc" id="included" data-group="inc" aria-labelledby="svc-inc-title">
+  <div class="svc-group-head">
+    <h3 class="svc-group-title" id="svc-inc-title"><span class="svc-badge svc-badge--free"><svg aria-hidden="true"><use href="#svc-i-check"/></svg>{{services.includedGroup.badge}}</span>{{services.includedGroup.title}}</h3>
+    <p class="svc-sub">{{services.includedGroup.subline}}</p>
+    <p class="svc-count"><strong class="svc-count-n">{{services.included.length}}</strong> {{services.includedGroup.countText}}</p>
+  </div>
+  <ul class="svc-grid">
+    <!--each:services.included--><li class="svc-card svc-card--inc reveal" data-svc="{{.id}}" data-topic="{{.topic}}" data-icon="{{.icon}}">
+      <span class="svc-ic"><svg aria-hidden="true"><use href="#svc-i-{{.icon}}"/></svg></span>
+      <h4 class="svc-name">{{.name}}</h4>
+      <span class="svc-chip"><svg aria-hidden="true"><use href="#svc-i-clock"/></svg><span>{{.duration}}{{.durationNote}}</span></span>
+      <p class="svc-detail">{{.detail}}</p>
+      <span class="svc-tag"><svg viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M20 6 9 17l-5-5"/></svg>{{services.includedGroup.tag}}</span>
+    </li><!--/each-->
+  </ul>
+</section>

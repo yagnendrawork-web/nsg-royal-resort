@@ -9,6 +9,10 @@ window.NSG = window.NSG || {};
     }
   }
   const escHtml = (v) => String(v == null ? '' : v).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const fill = (s, vars) => String(s || '').replace(/\{(\w+)\}/g, (m, k) => (vars[k] !== undefined ? vars[k] : m));
+  const inr = (n) => '₹' + Number(n || 0).toLocaleString('en-IN');
+  // Package text and cards come from packages.js (site.json packageUi)
+  const pkgText = () => (window.NSG.Packages && window.NSG.Packages.text) || {};
   // Optional add-ons (addons.js); [] when the module is absent or nothing is selected
   const addonsList = () => (window.NSG.Addons ? window.NSG.Addons.list() : []);
   function cleanPhone(raw) {
@@ -22,7 +26,7 @@ window.NSG = window.NSG || {};
     constructor() {
       this.currentStep = 1;
       this.bookingType = 'stay';
-      this.selectedPackage = 'whole';
+      this.selectedPackage = '';
       this.selectedEventType = 'wedding';
       this.checkIn = null;
       this.checkOut = null;
@@ -68,19 +72,30 @@ window.NSG = window.NSG || {};
       } catch (e) {}
     }
     async loadInfoAndInit() {
-      try {
-        const res = await window.NSG.api.getInfo();
-        if (res.ok) this.infoData = res.data;
-      } catch (e) {}
+      // Info and availability load in parallel (each Apps Script call takes seconds); the picker shows as soon as info is in
+      const infoP = window.NSG.api.getInfo().catch(() => null);
+      const availP = window.NSG.api.getAvailability().catch(() => null);
+      const res = await infoP;
+      if (res && res.ok) this.infoData = res.data;
+      this.renderPackagePicker();
+      // Cached info was shown first: if the fresh copy differs, redraw the picker and the guest limits
+      if (window.NSG.api.infoChanged) {
+        window.NSG.api.infoChanged().then((d) => {
+          if (!d) return;
+          this.infoData = d;
+          this.renderPackagePicker();
+          this.capGuestsInput();
+          this.fetchQuote();
+        });
+      }
       let blockedDates = [];
-      try {
-        const availRes = await window.NSG.api.getAvailability();
-        if (availRes.ok) blockedDates = availRes.data;
-      } catch (e) {}
+      const availRes = await availP;
+      if (availRes && availRes.ok) blockedDates = availRes.data;
       const calContainer = document.getElementById('calendar-container');
       if (calContainer && window.NSG.Calendar) {
         this.calendar = new window.NSG.Calendar(calContainer, {
-          mode: this.bookingType === 'stay' ? 'range' : 'single',
+          // Stay dates only: events are enquiry-only on the website (staff send a pay link with the agreed price)
+          mode: 'range',
           blockedDates: blockedDates,
           checkIn: this.checkIn,
           checkOut: this.checkOut,
@@ -94,7 +109,7 @@ window.NSG = window.NSG || {};
       const type = getQueryParam('type');
       if (type === 'event' || type === 'stay') this.bookingType = type;
       const pkg = getQueryParam('package');
-      if (pkg === 'whole' || pkg === 'penthouse') this.selectedPackage = pkg;
+      if (pkg && (!this.infoData || this.infoData.packages.some((p) => p.id === pkg))) this.selectedPackage = pkg;
       const ev = getQueryParam('event');
       if (ev) this.selectedEventType = ev;
       const cIn = getQueryParam('checkIn');
@@ -113,10 +128,7 @@ window.NSG = window.NSG || {};
       if (evSelect && this.selectedEventType) evSelect.value = this.selectedEventType;
       const guestsInput = document.getElementById('guests-input');
       if (guestsInput) guestsInput.value = this.guests;
-      if (this.calendar) {
-        this.calendar.setMode(this.bookingType === 'stay' ? 'range' : 'single');
-        if (this.checkIn) this.calendar.setDates(this.checkIn, this.checkOut);
-      }
+      if (this.calendar && this.checkIn) this.calendar.setDates(this.checkIn, this.checkOut);
       this.updateFormFieldsForType();
       if (this.checkIn && this.checkOut) this.fetchQuote();
     }
@@ -124,31 +136,42 @@ window.NSG = window.NSG || {};
       document.querySelectorAll('input[name="bookingType"]').forEach((r) => {
         r.addEventListener('change', (e) => {
           this.bookingType = e.target.value;
-          this.calendar.setMode(this.bookingType === 'stay' ? 'range' : 'single');
           this.updateFormFieldsForType();
           this.fetchQuote();
         });
       });
-      document.querySelectorAll('input[name="packageSelect"]').forEach((r) => {
-        r.addEventListener('change', (e) => {
+      // One listener on the picker, so it keeps working when the cards are redrawn
+      const picker = document.getElementById('package-picker');
+      if (picker) {
+        picker.addEventListener('change', (e) => {
+          if (e.target.name !== 'packageSelect') return;
           this.selectedPackage = e.target.value;
           this.capGuestsInput();
           this.fetchQuote();
         });
-      });
+      }
       const evSelect = document.getElementById('event-type-select');
       if (evSelect) {
         evSelect.addEventListener('change', (e) => {
           this.selectedEventType = e.target.value;
-          this.fetchQuote();
+          this.updateFormFieldsForType();
         });
       }
       const guestsInput = document.getElementById('guests-input');
       if (guestsInput) {
         guestsInput.addEventListener('input', (e) => {
-          this.guests = parseInt(e.target.value, 10) || 1;
+          const max = parseInt(e.target.max, 10) || 100;
+          this.guests = Math.min(max, parseInt(e.target.value, 10) || 1);
+          if (parseInt(e.target.value, 10) > max) e.target.value = max;
+          this.updateExtraGuestNote();
           this.fetchQuote();
         });
+        // − / + stepper: changes the field, then the same input handler runs
+        document.querySelectorAll('[data-guests-step]').forEach((b) => b.addEventListener('click', () => {
+          const max = parseInt(guestsInput.max, 10) || 100;
+          guestsInput.value = Math.min(max, Math.max(1, (parseInt(guestsInput.value, 10) || 1) + Number(b.getAttribute('data-guests-step'))));
+          guestsInput.dispatchEvent(new Event('input', { bubbles: true }));
+        }));
       }
       const btnStep1 = document.getElementById('btn-step1-continue');
       if (btnStep1) btnStep1.addEventListener('click', () => this.handleStep1Continue());
@@ -167,24 +190,63 @@ window.NSG = window.NSG || {};
       const eventBlock = document.getElementById('event-options-block');
       if (stayBlock) stayBlock.style.display = this.bookingType === 'stay' ? 'block' : 'none';
       if (eventBlock) eventBlock.style.display = this.bookingType === 'stay' ? 'none' : 'block';
+      // Events are enquiry-only: hide the calendar and price summary, point the button at the enquiry form
+      const layout = document.getElementById('book-step-1-layout');
+      if (layout) layout.hidden = this.bookingType !== 'stay';
+      const enquire = document.getElementById('event-enquire-link');
+      if (enquire) enquire.href = `events.html?event=${encodeURIComponent(this.selectedEventType)}#enquire-form`;
       this.capGuestsInput();
     }
     capGuestsInput() {
       const guestsInput = document.getElementById('guests-input');
       const guestsHint = document.getElementById('guests-max-hint');
       if (!guestsInput || !this.infoData) return;
-      if (this.bookingType === 'stay') {
-        const pkg = this.infoData.packages.find((p) => p.id === this.selectedPackage) || this.infoData.packages[0];
-        guestsInput.max = pkg.maxGuests;
-        if (parseInt(guestsInput.value, 10) > pkg.maxGuests) {
-          guestsInput.value = pkg.maxGuests;
-          this.guests = pkg.maxGuests;
+      const T = pkgText();
+      const pkg = this.bookingType === 'stay' && this.currentPackage();
+      if (pkg) {
+        // Extra guests above maxGuests are allowed only when the package has an extra-guest fee
+        const extra = pkg.extraGuestFee ? pkg.maxExtraGuests : 0;
+        const cap = (pkg.maxGuests || 100) + extra;
+        guestsInput.max = cap;
+        if (parseInt(guestsInput.value, 10) > cap) {
+          guestsInput.value = cap;
+          this.guests = cap;
         }
-        if (guestsHint) guestsHint.textContent = `Max ${pkg.maxGuests} guests for ${pkg.name}`;
-      } else {
+        if (guestsHint) guestsHint.textContent = extra ? fill(T.guestsHintExtra, { max: pkg.maxGuests, extra: extra, fee: inr(pkg.extraGuestFee) }) : fill(T.guestsHint, { max: pkg.maxGuests });
+      } else if (this.bookingType !== 'stay') {
         guestsInput.max = 200;
-        if (guestsHint) guestsHint.textContent = 'Up to 200+ event attendees';
+        if (guestsHint) guestsHint.textContent = T.eventGuestsHint || '';
       }
+      this.updateExtraGuestNote();
+    }
+    currentPackage() {
+      const list = (this.infoData && this.infoData.packages) || [];
+      return list.find((p) => p.id === this.selectedPackage) || list[0] || null;
+    }
+    // Amber note when the guest count is above the package's included guests (rate from info; amounts from the quote)
+    updateExtraGuestNote() {
+      const note = document.getElementById('extra-guest-note');
+      if (!note) return;
+      const pkg = this.bookingType === 'stay' && this.currentPackage();
+      const show = !!(pkg && pkg.extraGuestFee && this.guests > pkg.maxGuests);
+      note.hidden = !show;
+      note.textContent = show ? fill(pkgText().extraNote, { fee: inr(pkg.extraGuestFee) }) : '';
+    }
+    // Package picker: compact cards from info (packages.js); radios keep name="packageSelect"
+    renderPackagePicker() {
+      const box = document.getElementById('package-picker');
+      const P = window.NSG.Packages;
+      const list = (this.infoData && this.infoData.packages) || [];
+      if (!box || !P) return;
+      if (!list.length) {
+        box.innerHTML = P.failHtml();
+        return;
+      }
+      box.innerHTML = list.map((p) => P.card(p, { compact: true })).join('');
+      box.classList.toggle('pk-row--few', list.length < 3);
+      if (!list.some((p) => p.id === this.selectedPackage)) this.selectedPackage = list[0].id;
+      const chosen = box.querySelector(`input[name="packageSelect"][value="${CSS.escape(this.selectedPackage)}"]`);
+      if (chosen) chosen.checked = true;
     }
     handleDatesSelected(dates) {
       this.checkIn = dates.checkIn;
@@ -200,6 +262,10 @@ window.NSG = window.NSG || {};
     }
     fetchQuote() {
       if (window.NSG.Addons) window.NSG.Addons.setReady(!!(this.checkIn && this.checkOut));
+      // Draft for the add-on WhatsApp message (services.js) only: dates and guests, never used for pricing
+      if (this.checkIn && this.checkOut) {
+        try { sessionStorage.setItem('nsg_booking_draft', JSON.stringify({ checkIn: this.checkIn, checkOut: this.checkOut, guests: this.guests })); } catch (e) {}
+      }
       if (!this.checkIn || !this.checkOut) {
         this.renderQuoteSummary(null);
         return;
@@ -213,9 +279,6 @@ window.NSG = window.NSG || {};
             const res = await window.NSG.api.getQuote(this.selectedPackage, this.checkIn, this.checkOut, this.guests, addonsList());
             if (res.ok) this.renderQuoteSummary(res.data);
             else if (res.code === 'INVALID_ADDON') this.handleInvalidAddon(res, 'step1-error-alert');
-          } else {
-            const ev = (this.infoData && this.infoData.eventTypes.find((e) => e.id === this.selectedEventType)) || { advance: 10000 };
-            this.renderQuoteSummary({ nights: 1, total: ev.advance, advance: ev.advance, balance: 0, isEvent: true });
           }
         } catch (e) {
         } finally {
@@ -241,6 +304,10 @@ window.NSG = window.NSG || {};
         ? window.NSG.Addons.summaryRows(quote, { isEvent: !!quote.isEvent, picked: quote.isEvent ? window.NSG.Addons.picked() : [] })
         : [];
       const addonUi = (window.NSG.UI && window.NSG.UI.addons) || {};
+      // Extra-guest line: count and amount exactly as the server quote returns them
+      const extraFee = quote.extraGuestFee || (this.currentPackage() || {}).extraGuestFee || 0;
+      const extraLabel = quote.extraGuestsLabel || fill(pkgText().extraLine, { n: quote.extraGuests, fee: inr(extraFee), nights: nights });
+      const extraHtml = !quote.isEvent && quote.extraGuests > 0 ? `<div class="quote-row quote-row--extra"><span>${escHtml(extraLabel)}</span>${quote.extraGuestsTotal ? `<span>${inr(quote.extraGuestsTotal)}</span>` : ''}</div>` : '';
       const addonHtml = addonRows.map((r) => `<div class="quote-row quote-row--addon${r.strong ? ' quote-row--addon-total' : ''}"><span>${escHtml(r.label)}${r.note ? ` <small>(${escHtml(r.note)})</small>` : ''}</span>${r.amount === null || r.amount === undefined ? '' : `<span>₹${Number(r.amount).toLocaleString('en-IN')}</span>`}</div>`).join('');
       card.innerHTML = `
         <div class="quote-header">
@@ -248,9 +315,10 @@ window.NSG = window.NSG || {};
           <span class="quote-dates">${this.checkIn} &rarr; ${this.checkOut}</span>
         </div>
         <div class="quote-rows">
+          ${extraHtml}
           ${addonHtml}
           <div class="quote-row"><span>Total Estimated Cost</span><strong>₹${totalAmount.toLocaleString('en-IN')}</strong></div>
-          <div class="quote-row quote-row--advance"><span>Advance Due Now (UPI)</span><strong style="color:var(--emerald-900);">₹${advanceDue.toLocaleString('en-IN')}</strong></div>
+          <div class="quote-row quote-row--advance"><span>Advance Due Now (UPI)</span><strong style="color:var(--heading);">₹${advanceDue.toLocaleString('en-IN')}</strong></div>
           <div class="quote-row"><span>Balance on Arrival</span><span>₹${balanceAmount.toLocaleString('en-IN')}</span></div>
         </div>
         <small class="text-muted" style="display:block;margin-top:8px;">*Advance required to secure hold. Balance collected at check-in.</small>
@@ -274,7 +342,8 @@ window.NSG = window.NSG || {};
       this.renderStepView();
       const step2Summ = document.getElementById('step2-booking-overview');
       if (step2Summ) {
-        step2Summ.innerHTML = `<strong>${this.bookingType === 'stay' ? (this.selectedPackage === 'whole' ? 'Whole Resort' : 'Penthouse Suite') : 'Event Booking'}</strong><span> · ${this.checkIn} to ${this.checkOut} · ${this.guests} Guests</span>`;
+        const pkg = this.currentPackage();
+        step2Summ.innerHTML = `<strong>${this.bookingType === 'stay' ? escHtml(pkg ? pkg.name : this.selectedPackage) : 'Event Booking'}</strong><span> · ${this.checkIn} to ${this.checkOut} · ${this.guests} Guests</span>`;
       }
     }
     async handleStep2Submit(e) {

@@ -73,7 +73,7 @@ window.NSG = window.NSG || {};
           <div class="upi-payment-layout">
             <div class="qr-box">
               <div id="upi-qr-container" class="qr-canvas-wrapper" aria-label="UPI Payment QR Code">
-                <div class="qr-loading">Generating secure QR...</div>
+                <div class="qr-loading nsg-loading">${window.NSG.loader ? window.NSG.loader('sm') : ''}<p>Generating secure QR...</p></div>
               </div>
               <p class="qr-caption">Scan with any UPI App (GPay, PhonePe, Paytm, BHIM)</p>
             </div>
@@ -87,6 +87,7 @@ window.NSG = window.NSG || {};
                   </button>
                 </div>
               </div>
+              <div class="rv-pay" data-reviews="strip card" data-featured data-topic-from="bookingType" aria-live="off"></div>
               ${
                 upiLink
                   ? `<div class="upi-mobile-pay">
@@ -256,4 +257,18 @@ window.NSG = window.NSG || {};
     }
   }
   window.NSG.PaymentHandler = PaymentHandler;
+  // Shared with pay.js: the lazy QR library and QR markup for a UPI link
+  window.NSG.Payment = {
+    loadQr: loadQrCodeLib,
+    qrHtml: function (link) {
+      try {
+        const qr = window.qrcode(0, 'M');
+        qr.addData(link);
+        qr.make();
+        return qr.createImgTag(5, 8);
+      } catch (e) {
+        return '';
+      }
+    }
+  };
 })();

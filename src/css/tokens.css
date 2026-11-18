@@ -66,6 +66,14 @@
   --warn: #B7791F;
   --err: #B3382C;
 
+  /* Booking status colours (pay page + staff app): hold, payment submitted, confirmed, closed, blocked, special price */
+  --status-hold: #B7791F;
+  --status-pending: #2B6CB0;
+  --status-confirmed: #2E7D5B;
+  --status-closed: #6B7280;
+  --status-blocked: #374151;
+  --status-special: #C29B4A;
+
   /* Typography */
   --font-heading: 'Cormorant Garamond', Georgia, serif;
   --font-body: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -117,7 +125,7 @@
   /* Gradients */
   --gold-gradient: linear-gradient(135deg, #DCBE78 0%, var(--gold) 48%, #A8843B 100%);
   --gold-line: linear-gradient(90deg, transparent 0%, var(--gold) 22%, var(--gold-light) 50%, var(--gold) 78%, transparent 100%);
-  --emerald-gradient: linear-gradient(160deg, var(--emerald-700) 0%, var(--emerald-900) 62%, #0A241F 100%);
+  --emerald-gradient: linear-gradient(160deg, var(--emerald-700) 0%, var(--emerald-900) 62%, var(--emerald-950) 100%);
   --hero-overlay: linear-gradient(180deg, rgba(10, 36, 31, 0.62) 0%, rgba(10, 36, 31, 0.30) 38%, rgba(10, 36, 31, 0.48) 64%, rgba(10, 36, 31, 0.86) 100%);
 
   /* Layered shadows */
@@ -128,6 +136,8 @@
   /* Ornaments (inline SVG, under 2 KB together) */
   --lotus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C29B4A' stroke-width='1.2' stroke-linejoin='round'%3E%3Cpath d='M12 4c2.6 3.2 2.6 8.3 0 12-2.6-3.7-2.6-8.8 0-12z'/%3E%3Cpath d='M12 16c-.9-3.9-4-6.6-8-6.8.3 4 3.6 6.8 8 6.8zM12 16c.9-3.9 4-6.6 8-6.8-.3 4-3.6 6.8-8 6.8z'/%3E%3Cpath d='M6 19h12'/%3E%3C/svg%3E");
   --pattern-lotus: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72' viewBox='0 0 72 72' fill='none' stroke='%23E8D5A3' stroke-opacity='.07' stroke-width='1'%3E%3Cpath d='M36 22c2.6 3.2 2.6 8.3 0 12-2.6-3.7-2.6-8.8 0-12zM36 34c-.9-3.9-4-6.6-8-6.8.3 4 3.6 6.8 8 6.8zM36 34c.9-3.9 4-6.6 8-6.8-.3 4-3.6 6.8-8 6.8z'/%3E%3Cpath d='M0 0l4 4M72 0l-4 4M0 72l4-4M72 72l-4-4'/%3E%3C/svg%3E");
+  --star-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 20'%3E%3Cpath d='M10 1l2.7 6 6.3.6-4.8 4.3 1.4 6.4L10 15l-5.6 3.3 1.4-6.4L1 7.6l6.3-.6z'/%3E%3C/svg%3E");
+  --icon-check-ink: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231E2421' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
   --wave-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 56' preserveAspectRatio='none'%3E%3Cpath d='M0 56V28C240 4 480 0 720 14s480 34 720 14v28z'/%3E%3C/svg%3E");
 
   /* Motion */
@@ -139,4 +149,91 @@
   /* Layout */
   --measure: 65ch;
   --header-h: 96px;
+
+  /* Fixed colours (never themed): QR tile and text on photos/coloured badges, video letterbox, dark-section shades,
+     the Aroma menu (always dark) and veg / non-veg markers */
+  --white: #FFFFFF;
+  --black: #000000;
+  --emerald-850: #153E34;
+  --emerald-950: #0A241F;
+  --aroma-bg: #1F2721;
+  --aroma-gold: #F2C14E;
+  --veg: #1E8E3E;
+  --nonveg: #B3261E;
+  --veg-on-dark: #3FB56B;
+  --nonveg-on-dark: #E0584B;
+  --veg-soft: #6DCB8E;
+  --nonveg-soft: #EE8478;
+
+  /* Theme roles. Light values are the palette above (the light theme is unchanged); the dark set below redefines
+     only these, on screens only, so print stays light. */
+  color-scheme: light;
+  --bg: var(--ivory);
+  --bg-rgb: 251, 248, 242;          /* glass bars: rgba(var(--bg-rgb), alpha) */
+  --bg-alt: var(--sand);
+  --surface: #FFFDF8;
+  --surface-alt: var(--sand);       /* insets inside cards: code chips, tracks, table head */
+  --surface-raised: #FFFFFF;        /* fields, tiles, buttons on surfaces */
+  --text: var(--ink);
+  --text-muted: var(--muted);
+  --heading: var(--emerald-900);
+  --link: var(--emerald-700);
+  --accent: var(--gold-deep);       /* small gold text and icons */
+  --on-gold: var(--ink);            /* text on gold fills (dark in both themes) */
+  --line: rgba(194, 155, 74, 0.28);
+  --line-strong: var(--gold-light);
+  --err-bg: #FFF6F4;
+  --ph-gradient: linear-gradient(140deg, var(--sand) 0%, #E9DEC6 55%, rgba(27, 77, 65, 0.16) 100%);
+  --glow-text: none;
+  --glow-box: none;
+  --toggle-track: var(--ivory);
+  --toggle-knob: #FFFFFF;
+}
+
+/* Dark theme (data-theme="dark" is set by partials/theme-head.html before this file loads) */
+@media screen {
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0B1512;
+    --bg-rgb: 11, 21, 18;
+    --bg-alt: #0F1C17;
+    --surface: #12201B;
+    --surface-alt: #0E1A16;
+    --surface-raised: #182A24;
+    --emerald-accent: #2F6B59;      /* secondary surfaces and borders only (not behind small gold or muted text) */
+    --text: #F3EEE3;                /* 14.5:1 on surface */
+    --text-muted: #B9B3A6;          /* 8.1:1 on surface */
+    --heading: #F3EEE3;
+    --link: #F0CF7E;
+    --accent: #E2BE6A;              /* 9.5:1 on surface, 8.5:1 on raised */
+    --on-gold: #1E2421;             /* 8.9:1 on #E2BE6A */
+    --gold: #E2BE6A;
+    --gold-bright: #F0CF7E;
+    --gold-gradient: linear-gradient(135deg, #F0CF7E 0%, #C29B4A 100%);
+    --line: rgba(232, 213, 163, 0.18);
+    --line-strong: rgba(232, 213, 163, 0.28);
+    --ok: #5CC08F;
+    --warn: #E2A33B;
+    --err: #F07B6E;
+    --err-bg: rgba(240, 123, 110, 0.12);
+    --status-hold: #E2A33B;
+    --status-pending: #7DB3F2;
+    --status-confirmed: #5CC08F;
+    --status-closed: #A3AAB3;
+    --status-blocked: #8B95A3;
+    --status-special: #E2BE6A;
+    --ph-gradient: linear-gradient(140deg, #12201B 0%, #183029 55%, rgba(47, 107, 89, 0.35) 100%);
+    /* Cards get a soft inner gold hairline instead of drop shadows */
+    --shadow-soft: inset 0 0 0 1px rgba(232, 213, 163, 0.08);
+    --shadow-card: inset 0 0 0 1px rgba(232, 213, 163, 0.12);
+    --shadow-sm: inset 0 0 0 1px rgba(232, 213, 163, 0.08);
+    --shadow-md: inset 0 0 0 1px rgba(232, 213, 163, 0.10);
+    --shadow-lg: inset 0 0 0 1px rgba(232, 213, 163, 0.14), 0 18px 40px -20px rgba(0, 0, 0, 0.7);
+    --focus-ring: 2px solid #F0CF7E;
+    /* Glow only on the hero H1, primary buttons and price numbers */
+    --glow-text: 0 0 18px rgba(240, 207, 126, 0.28);
+    --glow-box: 0 0 0 1px rgba(240, 207, 126, 0.25), 0 6px 22px -8px rgba(240, 207, 126, 0.45);
+    --toggle-track: #0B1512;
+    --toggle-knob: #182A24;
+  }
 }

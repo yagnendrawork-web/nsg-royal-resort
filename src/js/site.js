@@ -27,7 +27,8 @@ window.NSG = window.NSG || {};
   // -------------------------------------------------------------------------
   window.NSG.img = function (slotName, alt, className) {
     const manifest = (window.NSG && window.NSG.IMG) || {};
-    const widths = manifest[slotName];
+    const file = ((window.NSG && window.NSG.IMG_USE) || {})[slotName] || slotName;
+    const widths = manifest[file];
     const safeAlt = alt || slotName;
     const safeClass = className ? ` ${className}` : '';
 
@@ -35,8 +36,8 @@ window.NSG = window.NSG || {};
       if (slotName === 'og-image') {
         return `<img class="slot-img${safeClass}" src="assets/img/og-image.jpg" width="1200" height="630" alt="${safeAlt}">`;
       }
-      const srcset = widths.map((w) => `assets/img/${slotName}-${w}.webp ${w}w`).join(', ');
-      const src = `assets/img/${slotName}-${widths[0]}.webp`;
+      const srcset = widths.map((w) => `assets/img/${file}-${w}.webp ${w}w`).join(', ');
+      const src = `assets/img/${file}-${widths[0]}.webp`;
       return `<img class="slot-img${safeClass}" src="${src}" srcset="${srcset}" alt="${safeAlt}" loading="lazy" decoding="async">`;
     }
 
@@ -46,6 +47,79 @@ window.NSG = window.NSG || {};
       </div>
     </div>`;
   };
+
+  // Brand loader markup for scripts (cloned from the footer's <template>; partials/loader.html); size 'sm' = 30px
+  window.NSG.loader = function (size) {
+    const tpl = document.getElementById('nsg-loader-tpl');
+    const html = tpl ? tpl.innerHTML.trim() : '';
+    return size === 'sm' ? html.replace('class="nsg-loader"', 'class="nsg-loader nsg-loader--sm"') : html;
+  };
+
+  // A photo that fails to load becomes the branded frame (logo and name), same size and alt text
+  function initBrokenImages() {
+    const swap = function (img) {
+      if (!img || img.tagName !== 'IMG' || !img.classList.contains('slot-img') || img.dataset.broken) return;
+      img.dataset.broken = '1';
+      const ph = document.createElement('div');
+      ph.className = img.className.replace('slot-img', 'slot-ph');
+      ph.setAttribute('role', 'img');
+      if (img.alt) ph.setAttribute('aria-label', img.alt);
+      ph.style.cssText = img.style.cssText;
+      ph.innerHTML = '<div class="slot-ph-content"></div>';
+      img.replaceWith(ph);
+    };
+    document.addEventListener('error', function (e) { swap(e.target); }, true);
+    document.querySelectorAll('img.slot-img').forEach(function (img) {
+      if (img.complete && img.naturalWidth === 0 && img.currentSrc) swap(img);
+    });
+  }
+
+  // [data-wa-text] links open WhatsApp with that message (the contact page while the number is not set)
+  function initWhatsAppText() {
+    const n = String((window.NSG.CONFIG || {}).WHATSAPP || '');
+    document.querySelectorAll('[data-wa-text]').forEach(function (a) {
+      a.href = n && n.indexOf('[TBD') !== 0 ? 'https://wa.me/' + n + '?text=' + encodeURIComponent(a.getAttribute('data-wa-text')) : 'contact.html';
+    });
+  }
+
+  // Car nudge: once per visit, from the second page and after a short read, a small card suggests the cars page.
+  // Not on the cars, booking, pay, staff or status pages; never over an open sheet, lightbox or selection bar.
+  // "Dismiss" hides it for 7 days. Text: site.json ui.carNudge.
+  function initCarNudge() {
+    const t = window.NSG.UI && window.NSG.UI.carNudge;
+    const cfg = window.NSG.CONFIG || {};
+    if (!t || !(cfg.FEATURES && cfg.FEATURES.cars)) return;
+    if (/(^|\/)(cars|book|pay|staff|status)\.html$/.test(location.pathname)) return;
+    let off = 0;
+    let views = 0;
+    try {
+      off = Number(localStorage.getItem('nsg_car_nudge_off')) || 0;
+      views = Number(sessionStorage.getItem('nsg_views') || 0) + 1;
+      sessionStorage.setItem('nsg_views', String(views));
+      if (sessionStorage.getItem('nsg_car_nudge_shown')) return;
+    } catch (e) { return; }
+    if (views < 2 || Date.now() < off) return;
+    setTimeout(function () {
+      const b = document.body;
+      if (b.classList.contains('has-svc-sheet') || b.classList.contains('has-svc-bar') || b.classList.contains('has-fp-summary') || document.querySelector('.lightbox[aria-hidden="false"]')) return;
+      try { sessionStorage.setItem('nsg_car_nudge_shown', '1'); } catch (e) {}
+      const el = document.createElement('aside');
+      el.className = 'car-nudge';
+      el.setAttribute('aria-labelledby', 'car-nudge-title');
+      el.innerHTML = '<span class="car-nudge-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 16v-3.5L6 7h12l2 5.5V16M4 16h16M4 16v2.5h3V16M17 16v2.5h3V16M4 12.5h16"/></svg></span>'
+        + '<div class="car-nudge-body"><p class="car-nudge-title" id="car-nudge-title"></p><p class="car-nudge-text"></p><a class="btn btn-primary btn-sm" href="cars.html" data-cta="nudge:cars"></a></div>'
+        + '<button type="button" class="car-nudge-x"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>';
+      el.querySelector('.car-nudge-title').textContent = t.title;
+      el.querySelector('.car-nudge-text').textContent = t.text;
+      el.querySelector('a').textContent = t.cta;
+      el.querySelector('.car-nudge-x').setAttribute('aria-label', t.close);
+      el.querySelector('.car-nudge-x').addEventListener('click', function () {
+        try { localStorage.setItem('nsg_car_nudge_off', String(Date.now() + 7 * 864e5)); } catch (e) {}
+        el.remove();
+      });
+      b.appendChild(el);
+    }, 7000);
+  }
 
   // -------------------------------------------------------------------------
   // 3. Header Scroll State
@@ -338,7 +412,6 @@ window.NSG = window.NSG || {};
 
       const query = new URLSearchParams({
         type: 'stay',
-        package: 'whole',
         checkIn: checkIn,
         checkOut: checkOut,
         guests: guests
@@ -349,42 +422,11 @@ window.NSG = window.NSG || {};
   }
 
   // -------------------------------------------------------------------------
-  // 9. Live Package Prices on Home, Stay and Book ([data-pkg] cards, from api.getInfo)
+  // 9. Package info: pages with package cards start the (slow) Apps Script call at once, before packages.js
+  //    loads (Home loads it lazily); api.getInfo() shares the one request and the localStorage copy
   // -------------------------------------------------------------------------
-  function initPackagePrices() {
-    const cards = document.querySelectorAll('[data-pkg]');
-    const guestEls = document.querySelectorAll('[data-pkg-guests]');
-    if (!cards.length && !guestEls.length) return;
-    const labels = (window.NSG.UI && window.NSG.UI.labels) || {};
-    const config = window.NSG.CONFIG || {};
-    const wa = config.WHATSAPP && !String(config.WHATSAPP).startsWith('[TBD') ? 'https://wa.me/' + config.WHATSAPP : '';
-    const waLink = `<a href="${wa || 'contact.html'}"${wa ? ' target="_blank" rel="noopener noreferrer"' : ''}>${labels.askOnWhatsApp} &rarr;</a>`;
-
-    function render(packages) {
-      const byId = {};
-      (packages || []).forEach((p) => { byId[p.id] = p; });
-      cards.forEach((card) => {
-        const pkg = byId[card.getAttribute('data-pkg')];
-        const live = !!(pkg && pkg.weekdayRate);
-        const price = card.querySelector('[data-pkg-price]');
-        const adv = card.querySelector('[data-pkg-advance]');
-        card.classList.remove('is-loading');
-        card.classList.toggle('is-on-request', !live);
-        if (price) price.textContent = live ? pkg.weekdayRate.toLocaleString('en-IN') : labels.priceOnRequest;
-        if (adv) {
-          if (live && pkg.advance) adv.textContent = '₹' + pkg.advance.toLocaleString('en-IN') + ' ' + labels.advanceRequired;
-          else adv.innerHTML = waLink;
-        }
-      });
-      guestEls.forEach((el) => {
-        const pkg = byId[el.getAttribute('data-pkg-guests')];
-        const text = el.getAttribute('data-text') || '';
-        el.textContent = pkg && pkg.maxGuests ? text.replace(/\[TBD:[^\]]*\]/, pkg.maxGuests) : text.split(' · ')[0];
-      });
-    }
-
-    if (!window.NSG.api || typeof window.NSG.api.getInfo !== 'function') return render(null);
-    window.NSG.api.getInfo().then((res) => render(res && res.ok && res.data ? res.data.packages : null), () => render(null));
+  function initPackageInfoEarly() {
+    if (document.querySelector('[data-packages]') && window.NSG.api && window.NSG.api.getInfo) window.NSG.api.getInfo();
   }
 
   // -------------------------------------------------------------------------
@@ -623,13 +665,16 @@ window.NSG = window.NSG || {};
   document.addEventListener('DOMContentLoaded', function () {
     const modules = [
       ['slotLabels', initSlotLabels],
+      ['brokenImages', initBrokenImages],
+      ['whatsAppText', initWhatsAppText],
+      ['carNudge', initCarNudge],
       ['headerScroll', initHeaderScroll],
       ['mobileMenu', initMobileMenu],
       ['packageSliders', initPackageSliders],
+      ['packageInfoEarly', initPackageInfoEarly],
       ['scrollReveal', initScrollReveal],
       ['clickToLoadMap', initClickToLoadMap],
       ['dateBar', initDateBar],
-      ['packagePrices', initPackagePrices],
       ['foodPackages', initFoodPackages],
       ['contactForm', initContactForm],
       ['eventForm', initEventForm]

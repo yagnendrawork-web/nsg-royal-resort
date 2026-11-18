@@ -31,6 +31,11 @@ window.NSG = window.NSG || {};
       this.onSelect = options.onSelect || function () {};
       this.onError = options.onError || function () {};
       this.blockedDates = new Set(options.blockedDates || []);
+      // Staff app hooks: extra class per day (availability colour), tap on an unavailable day, legend/months
+      this.dayClass = options.dayClass || null;
+      this.onBlockedClick = options.onBlockedClick || null;
+      this.showLegend = options.legend !== false;
+      this.months = options.months === 1 ? 1 : 2;
       this.today = getTodayKolkata();
       this.checkIn = options.checkIn || null;
       this.checkOut = options.checkOut || null;
@@ -85,11 +90,16 @@ window.NSG = window.NSG || {};
       }
       this.render();
     }
+    /** An unavailable day was tapped: tell the caller who holds it, or show the error text */
+    blockedTap(dateStr, message) {
+      if (this.onBlockedClick) this.onBlockedClick(dateStr);
+      else this.onError(message);
+    }
     handleDayClick(dateStr) {
       if (dateStr < this.today) return;
       if (this.mode === 'single') {
         if (this.blockedDates.has(dateStr)) {
-          this.onError('The selected date is blocked and not available.');
+          this.blockedTap(dateStr, 'The selected date is blocked and not available.');
           return;
         }
         this.checkIn = dateStr;
@@ -101,7 +111,7 @@ window.NSG = window.NSG || {};
       }
       if (!this.checkIn || (this.checkIn && this.checkOut)) {
         if (this.blockedDates.has(dateStr)) {
-          this.onError('A blocked date cannot be selected as check-in.');
+          this.blockedTap(dateStr, 'A blocked date cannot be selected as check-in.');
           return;
         }
         this.checkIn = dateStr;
@@ -112,7 +122,7 @@ window.NSG = window.NSG || {};
       }
       if (dateStr <= this.checkIn) {
         if (this.blockedDates.has(dateStr)) {
-          this.onError('A blocked date cannot be selected as check-in.');
+          this.blockedTap(dateStr, 'A blocked date cannot be selected as check-in.');
           return;
         }
         this.checkIn = dateStr;
@@ -167,22 +177,26 @@ window.NSG = window.NSG || {};
       const monthsGrid = document.createElement('div');
       monthsGrid.className = 'calendar-months-grid';
       monthsGrid.appendChild(this.buildMonthDOM(this.currentYear, this.currentMonth));
-      let m2Year = this.currentYear;
-      let m2Month = this.currentMonth + 1;
-      if (m2Month > 11) {
-        m2Month = 0;
-        m2Year++;
+      if (this.months === 2) {
+        let m2Year = this.currentYear;
+        let m2Month = this.currentMonth + 1;
+        if (m2Month > 11) {
+          m2Month = 0;
+          m2Year++;
+        }
+        monthsGrid.appendChild(this.buildMonthDOM(m2Year, m2Month));
       }
-      monthsGrid.appendChild(this.buildMonthDOM(m2Year, m2Month));
       wrapper.appendChild(monthsGrid);
-      const legend = document.createElement('div');
-      legend.className = 'calendar-legend';
-      legend.innerHTML = `
-        <div class="legend-item"><span class="legend-dot legend-dot--available"></span> Available</div>
-        <div class="legend-item"><span class="legend-dot legend-dot--blocked"></span> Unavailable</div>
-        <div class="legend-item"><span class="legend-dot legend-dot--selected"></span> Selected</div>
-      `;
-      wrapper.appendChild(legend);
+      if (this.showLegend) {
+        const legend = document.createElement('div');
+        legend.className = 'calendar-legend';
+        legend.innerHTML = `
+          <div class="legend-item"><span class="legend-dot legend-dot--available"></span> Available</div>
+          <div class="legend-item"><span class="legend-dot legend-dot--blocked"></span> Unavailable</div>
+          <div class="legend-item"><span class="legend-dot legend-dot--selected"></span> Selected</div>
+        `;
+        wrapper.appendChild(legend);
+      }
       this.container.appendChild(wrapper);
     }
     buildMonthDOM(year, month) {
@@ -233,9 +247,13 @@ window.NSG = window.NSG || {};
         } else if (isBlocked) {
           cell.classList.add('calendar-day--blocked');
           cellLabel += ', unavailable';
-          if (!this.checkIn || (this.checkIn && this.checkOut)) {
+          if (!this.onBlockedClick && (!this.checkIn || (this.checkIn && this.checkOut))) {
             cell.disabled = true;
           }
+        }
+        if (this.dayClass) {
+          const extra = this.dayClass(dateStr);
+          if (extra) extra.split(' ').forEach((c) => c && cell.classList.add(c));
         }
         if (isCheckIn) {
           cell.classList.add('calendar-day--selected', 'calendar-day--checkin');

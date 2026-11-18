@@ -1,0 +1,20 @@
+<!-- Services: the "Add-ons" group (part of partials/services.html) -->
+<section class="svc-group svc-group--ext" id="addons" data-group="ext" aria-labelledby="svc-ext-title">
+  <div class="svc-group-head">
+    <h3 class="svc-group-title" id="svc-ext-title"><span class="svc-badge svc-badge--extra"><svg aria-hidden="true"><use href="#svc-i-plus"/></svg>{{services.extrasGroup.badge}}</span>{{services.extrasGroup.title}}</h3>
+    <p class="svc-sub">{{services.extrasGroup.subline}}</p>
+  </div>
+  <ul class="svc-grid">
+    <!--each:services.extras--><li class="svc-card svc-card--ext reveal" data-svc="{{.id}}" data-topic="{{.topic}}" data-icon="{{.icon}}">
+      <span class="svc-ic"><svg aria-hidden="true"><use href="#svc-i-{{.icon}}"/></svg></span>
+      <h4 class="svc-name">{{.name}}</h4>
+      <span class="svc-chip"><svg aria-hidden="true"><use href="#svc-i-clock"/></svg><span>{{.duration}}{{.durationNote}}</span></span>
+      <p class="svc-detail">{{.detail}}</p>
+      <p class="svc-price">{{services.extrasGroup.priceOnRequest}}</p>
+      <div class="svc-actions">
+        <a class="btn btn-secondary btn-sm svc-enquire" href="https://wa.me/{{config.WHATSAPP}}" target="_blank" rel="noopener noreferrer" data-cta="services:enquire-{{.id}}">{{services.extrasGroup.enquire}}</a>
+        <button type="button" class="svc-pick" aria-pressed="false" hidden><svg aria-hidden="true"><use href="#svc-i-plus"/></svg></button>
+      </div>
+    </li><!--/each-->
+  </ul>
+</section>

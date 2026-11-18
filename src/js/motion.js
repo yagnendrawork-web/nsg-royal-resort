@@ -59,7 +59,26 @@
     });
   });
 
-  // 4. Load a section's script only when it comes near the screen (keeps Home JS small)
+  // 4. Home showcase: on phones the swipe row starts on the centre card; the dots follow the scroll
+  const sc = document.querySelector('[data-showcase]');
+  if (sc) {
+    const items = sc.children;
+    const dots = document.querySelectorAll('.sc-dots span');
+    const mid = sc.querySelector('.sc-item--centre');
+    const off = function (el) { return Math.abs(el.offsetLeft + el.offsetWidth / 2 - sc.scrollLeft - sc.clientWidth / 2); };
+    if (mid && sc.scrollWidth > sc.clientWidth) sc.scrollLeft = mid.offsetLeft + mid.offsetWidth / 2 - sc.clientWidth / 2;
+    let raf = 0;
+    const mark = function () {
+      raf = 0;
+      let best = 0;
+      for (let i = 1; i < items.length; i++) if (off(items[i]) < off(items[best])) best = i;
+      dots.forEach(function (d, i) { d.classList.toggle('is-active', i === best); });
+    };
+    sc.addEventListener('scroll', function () { if (!raf) raf = window.requestAnimationFrame(mark); }, { passive: true });
+    mark();
+  }
+
+  // 5. Load a section's script only when it comes near the screen (keeps Home JS small)
   const lazy = document.querySelectorAll('[data-lazy-script]');
   if (lazy.length) {
     const load = function (el) {

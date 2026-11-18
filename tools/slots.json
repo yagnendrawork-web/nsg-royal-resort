@@ -24,7 +24,8 @@
     "ratio": "21/9",
     "alt": "Self-drive cars",
     "focal": "50% 50%",
-    "sizes": "100vw"
+    "sizes": "100vw",
+    "use": "amenity-cars"
   },
   "banner-gallery": {
     "ratio": "21/9",
@@ -49,6 +50,13 @@
     "focal": "50% 50%",
     "sizes": "(min-width: 768px) 50vw, 100vw",
     "alt": "Penthouse bedroom with a view of the hills"
+  },
+  "pkg-ground": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 84vw",
+    "alt": "Grand Suite bedroom with a sofa",
+    "use": "gallery-26"
   },
   "pkg-whole-rooms": {
     "ratio": "4/3",
@@ -603,5 +611,155 @@
     "alt": "Gulab jamun",
     "focal": "50% 50%",
     "sizes": "(min-width: 900px) 30vw, 100vw"
+  },
+  "showcase-private": {
+    "ratio": "4/5",
+    "focal": "45% 50%",
+    "sizes": "(min-width: 768px) 33vw, 78vw",
+    "alt": "The resort lit up at night, with the lawn in front",
+    "use": "gallery-02"
+  },
+  "showcase-pool": {
+    "ratio": "4/5",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 78vw",
+    "alt": "Children playing in the private pool at a birthday party",
+    "use": "gallery-05"
+  },
+  "showcase-rooms": {
+    "ratio": "4/5",
+    "focal": "62% 50%",
+    "sizes": "(min-width: 768px) 33vw, 78vw",
+    "alt": "Penthouse suite with a bed, sofa and a terrace view",
+    "use": "gallery-19"
+  },
+  "svc-bbq": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Barbecue grill on the lawn",
+    "use": "gallery-16"
+  },
+  "svc-campfire": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Campfire at night",
+    "use": "gallery-16"
+  },
+  "svc-dj": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "DJ setup",
+    "use": "gallery-13"
+  },
+  "svc-led": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "LED screen setup",
+    "use": "gallery-02"
+  },
+  "svc-seating": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Round tables and chairs",
+    "use": "gallery-09"
+  },
+  "svc-cricket": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Box cricket on the turf",
+    "use": "gallery-08"
+  },
+  "svc-tent": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Tent house setup",
+    "use": "gallery-04"
+  },
+  "svc-stage": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Stage setup",
+    "use": "gallery-18"
+  },
+  "svc-photo": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Photo and video shoot",
+    "use": "gallery-15"
+  },
+  "svc-decor": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Event decoration",
+    "use": "gallery-20"
+  },
+  "svc-buffet": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Buffet service",
+    "use": "gallery-10"
+  },
+  "svc-sports": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Sports and games equipment",
+    "use": "gallery-17"
+  },
+  "amenity-lighting": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Landscape lighting at night",
+    "use": "banner-gallery"
+  },
+  "amenity-water": {
+    "ratio": "4/3",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "The signature water feature",
+    "use": "gallery-05"
+  },
+  "car-audi-a6": {
+    "ratio": "4/3",
+    "focal": "50% 55%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Audi A6"
+  },
+  "car-nexon-ev": {
+    "ratio": "4/3",
+    "focal": "50% 55%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Tata Nexon EV"
+  },
+  "car-jeep": {
+    "ratio": "4/3",
+    "focal": "50% 55%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Jeep"
+  },
+  "car-ciaz": {
+    "ratio": "4/3",
+    "focal": "50% 55%",
+    "sizes": "(min-width: 768px) 33vw, 90vw",
+    "alt": "Maruti Suzuki Ciaz"
+  },
+  "explore-wide": {
+    "ratio": "16/9",
+    "focal": "50% 50%",
+    "sizes": "(min-width: 768px) 50vw, 50vw",
+    "alt": "Wide view of NSG Royal Resort",
+    "use": "gallery-06"
   }
 }

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FBF8F2" data-dark="#0B1512">
+  {{include:theme-head}}
+  {{include:api-preconnect}}
   <title>{{seo.amenities.title}}</title>
   <meta name="description" content="{{seo.amenities.description}}">
 
@@ -30,8 +33,14 @@
   <script src="js/config.js" defer></script>
   <script src="js/content.ui.js" defer></script>
   <script src="js/api.js" defer></script>
+  <script src="assets/img/manifest.js" defer></script>
   <script src="js/site.js" defer></script>
+  <script src="js/services.js" defer></script>
+  <script src="js/reviews.js" defer></script>
   <script src="js/amenities.js" defer></script>
+  <script src="js/gallery.js" defer></script>
+  <script type="application/json" id="reviews-text">{{reviews}}</script>
+  <script src="js/theme.js" defer></script>
 </head>
 <body class="page-amenities">
   <!-- Accessibility Skip Link -->
@@ -40,129 +49,139 @@
   <!-- Header Partial -->
   {{include:header}}
 
-  <!-- Line icons used on this page -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
-    <symbol id="am-food" viewBox="0 0 24 24"><path d="M5 3v8a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V3M7 13v8M17 21V3c-2 1-3.5 3.5-3.5 7 0 2 1 3 3.5 3"/></symbol>
-    <symbol id="am-bar" viewBox="0 0 24 24"><path d="M6 3h12l-6 8-6-8zM12 11v8M8 21h8M8.5 6.5h7"/></symbol>
-    <symbol id="am-snacks" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="9" cy="9.5" r="1"/><circle cx="14.5" cy="8.5" r=".8"/><circle cx="15" cy="14" r="1"/><circle cx="10" cy="15" r=".8"/></symbol>
-    <symbol id="am-fridge" viewBox="0 0 24 24"><rect x="6" y="2.5" width="12" height="19" rx="2"/><path d="M6 9.5h12M9 5.5v2M9 12.5v3"/></symbol>
-    <symbol id="am-car" viewBox="0 0 24 24"><path d="M4 16v-3.5L6 7h12l2 5.5V16M4 16h16M4 16v2.5h3V16M17 16v2.5h3V16M4 12.5h16"/><circle cx="7.5" cy="14" r=".6"/><circle cx="16.5" cy="14" r=".6"/></symbol>
-  </svg>
-
   <main id="main-content">
-    <!-- Hero -->
-    <section class="hero-section hero-section--banner" aria-label="{{copy.amenities.heroStrapline}}">
+    {{include:pkg-icons}}
+    {{include:svc-icons}}
+    <!-- Compact hero -->
+    <section class="hero-section hero-section--banner compact-hero" aria-label="{{amenitiesPage.title}}">
       <div class="hero-backdrop" aria-hidden="true">
         {{slot:banner-amenities}}
       </div>
       <div class="hero-overlay" aria-hidden="true"></div>
       <div class="container hero-content">
-        <span class="hero-strapline">{{copy.amenities.heroStrapline}}</span>
-        <h1 class="hero-title">{{copy.amenities.heroTitle}}</h1>
-        <p class="hero-lead">{{copy.amenities.heroLead}}</p>
+        <h1 class="hero-title">{{amenitiesPage.title}}</h1>
+        <p class="hero-lead">{{amenitiesPage.heroLine}}</p>
+        <a href="book.html" class="btn btn-primary btn-lg" data-cta="amenities:hero-check">{{amenitiesPage.ctaCheck}}</a>
       </div>
     </section>
 
-    <!-- Jump bar: sticks under the header and lights up the section in view -->
-    <nav class="am-jump" aria-label="{{copy.amenities.jumpLabel}}">
+    <!-- Jump bar: sticks under the header; amenities.js lights the section in view -->
+    <nav class="am-jump" aria-label="{{amenitiesPage.jumpLabel}}">
       <div class="container">
         <ul class="am-jump-list">
-          <li><a href="#am-food" class="am-jump-link"><svg class="am-icon" aria-hidden="true"><use href="#am-food"/></svg>{{copy.amenities.food}}</a></li>
-          <li><a href="#am-bar" class="am-jump-link"><svg class="am-icon" aria-hidden="true"><use href="#am-bar"/></svg>{{copy.amenities.bar}}</a></li>
-          <li><a href="#am-snacks" class="am-jump-link"><svg class="am-icon" aria-hidden="true"><use href="#am-snacks"/></svg>{{copy.amenities.snacks}}</a></li>
-          <li><a href="#am-fridge" class="am-jump-link"><svg class="am-icon" aria-hidden="true"><use href="#am-fridge"/></svg>{{copy.amenities.fridge}}</a></li>
-          <!--feature:cars-->
-          <li><a href="#am-cars" class="am-jump-link"><svg class="am-icon" aria-hidden="true"><use href="#am-car"/></svg>{{copy.amenities.cars}}</a></li>
-          <!--/feature-->
+          <li><a href="#addons" class="am-jump-link">{{amenitiesPage.jump.addons}}</a></li>
+          <li><a href="#included" class="am-jump-link">{{amenitiesPage.jump.included}}</a></li>
+          <li><a href="#outdoors" class="am-jump-link">{{amenitiesPage.jump.outdoors}}</a></li>
+          <li><a href="#food" class="am-jump-link">{{amenitiesPage.jump.food}}</a></li>
+          <li><a href="#rules" class="am-jump-link">{{amenitiesPage.jump.rules}}</a></li>
         </ul>
       </div>
     </nav>
 
-    <!-- Food partner -->
-    <section class="section bg-ivory am-food" id="am-food" aria-labelledby="am-food-title">
-      <div class="container am-split">
-        <div class="am-split-media reveal">
-          {{slot:amenity-dining}}
-          <span class="am-badge" aria-hidden="true"><svg class="am-icon"><use href="#am-food"/></svg></span>
-        </div>
-        <div class="am-split-body reveal">
-          <span class="section-tag">{{copy.amenities.foodTag}}</span>
-          <h2 id="am-food-title" class="section-title">{{copy.amenities.foodTitle}}</h2>
-          <hr class="gold-hairline am-hairline-left" aria-hidden="true">
-          <p class="am-lead">{{copy.amenities.foodText}}</p>
-          <p class="am-detail" data-optional>{{copy.amenities.foodDetail}}</p>
-          <p class="food-from" data-food-from data-template="{{dining.packages.fromLine}}" hidden></p>
-          <a href="dining.html#packages" class="btn btn-primary btn-md">{{dining.packages.fromCta}}</a>
-          <a href="https://wa.me/{{config.WHATSAPP}}" class="btn btn-secondary btn-md" target="_blank" rel="noopener noreferrer">{{copy.amenities.foodCta}}</a>
+    <!-- Services: Add-ons first, then what is included free -->
+    <section class="section bg-ivory svc" id="services" aria-labelledby="services-title" data-services="full" data-topic="stay">
+      <div class="container">
+        {{include:services-head}}
+        {{include:services-extras}}
+        {{include:services-included}}
+        {{include:services-tail}}
+      </div>
+    </section>
+
+    <!-- Outdoors: tiles open the lightbox with that area's photos (gallery.js); without JS they open the gallery -->
+    <section class="section bg-sand" id="outdoors" aria-labelledby="outdoors-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{amenitiesPage.outdoorsTag}}</span>
+          <h2 id="outdoors-title" class="section-title">{{amenitiesPage.outdoorsTitle}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{amenitiesPage.outdoorsSubtitle}}</p>
+        </header>
+        <div class="out-bento reveal">
+          <a href="gallery.html" class="out-tile out-tile--lg" id="pool" data-photos="amenity-pool,gallery-17,gallery-03,gallery-05" data-cta="amenities:outdoors-pool">
+            {{slot:amenity-pool}}
+            <span class="out-cap"><svg class="pk-ic" aria-hidden="true"><use href="#pk-i-pool"/></svg><strong>{{amenitiesPage.outdoors.pool.title}}</strong><span>{{amenitiesPage.outdoors.pool.text}}</span></span>
+          </a>
+          <a href="gallery.html" class="out-tile" id="turf" data-photos="amenity-turf,gallery-08" data-cta="amenities:outdoors-turf">
+            {{slot:amenity-turf}}
+            <span class="out-cap"><svg class="pk-ic" aria-hidden="true"><use href="#pk-i-turf"/></svg><strong>{{amenitiesPage.outdoors.turf.title}}</strong><span>{{amenitiesPage.outdoors.turf.text}}</span></span>
+          </a>
+          <a href="gallery.html" class="out-tile" id="garden" data-photos="amenity-gardens,gallery-11,gallery-16" data-cta="amenities:outdoors-garden">
+            {{slot:amenity-gardens}}
+            <span class="out-cap"><svg class="pk-ic" aria-hidden="true"><use href="#pk-i-garden"/></svg><strong>{{amenitiesPage.outdoors.garden.title}}</strong><span>{{amenitiesPage.outdoors.garden.text}}</span></span>
+          </a>
+          <!--ifslot:amenity-lighting-->
+          <a href="gallery.html" class="out-tile" id="lighting" data-photos="amenity-lighting" data-cta="amenities:outdoors-lighting">
+            {{slot:amenity-lighting}}
+            <span class="out-cap"><svg class="pk-ic" aria-hidden="true"><use href="#svc-i-sparkles"/></svg><strong>{{amenitiesPage.outdoors.lighting.title}}</strong><span>{{amenitiesPage.outdoors.lighting.text}}</span></span>
+          </a>
+          <!--/ifslot-->
+          <!--ifslot:amenity-water-->
+          <a href="gallery.html" class="out-tile" id="water" data-photos="amenity-water" data-cta="amenities:outdoors-water">
+            {{slot:amenity-water}}
+            <span class="out-cap"><svg class="pk-ic" aria-hidden="true"><use href="#pk-i-pool"/></svg><strong>{{amenitiesPage.outdoors.water.title}}</strong><span>{{amenitiesPage.outdoors.water.text}}</span></span>
+          </a>
+          <!--/ifslot-->
         </div>
       </div>
     </section>
 
-    <!-- In-house comforts: bento grid -->
-    <section class="section bg-sand am-comforts" aria-labelledby="am-comforts-title">
-      <div class="container">
-        <header class="section-header reveal">
-          <span class="section-tag">{{copy.amenities.comfortsTag}}</span>
-          <h2 id="am-comforts-title" class="section-title">{{copy.amenities.comfortsTitle}}</h2>
-          <hr class="gold-hairline" aria-hidden="true">
-        </header>
-        <div class="am-bento">
-          <article class="am-card am-card--photo am-card--wide reveal" id="am-bar">
-            <div class="am-card-media">{{slot:amenity-bar}}</div>
-            <div class="am-card-body">
-              <svg class="am-icon am-card-icon" aria-hidden="true"><use href="#am-bar"/></svg>
-              <h3 class="am-card-title">{{copy.amenities.bar}}</h3>
-              <p class="am-card-text">{{copy.amenities.barText}}</p>
-              <p class="am-detail" data-optional>{{copy.amenities.barDetail}}</p>
-            </div>
-          </article>
-          <article class="am-card am-card--icon reveal" id="am-snacks">
-            <div class="am-card-body">
-              <svg class="am-icon am-card-icon am-card-icon--lg" aria-hidden="true"><use href="#am-snacks"/></svg>
-              <h3 class="am-card-title">{{copy.amenities.snacks}}</h3>
-              <p class="am-card-text">{{copy.amenities.snacksText}}</p>
-              <p class="am-detail" data-optional>{{copy.amenities.snacksDetail}}</p>
-            </div>
-          </article>
-          <article class="am-card am-card--photo reveal" id="am-fridge">
-            <div class="am-card-media">{{slot:amenity-fridge}}</div>
-            <div class="am-card-body">
-              <svg class="am-icon am-card-icon" aria-hidden="true"><use href="#am-fridge"/></svg>
-              <h3 class="am-card-title">{{copy.amenities.fridge}}</h3>
-              <p class="am-card-text">{{copy.amenities.fridgeText}}</p>
-              <p class="am-detail" data-optional>{{copy.amenities.fridgeDetail}}</p>
-            </div>
-          </article>
+    <!-- Food (packages from api.addons) -->
+    <section class="section bg-ivory home-dining" id="food" aria-labelledby="food-title">
+      <div class="container home-dining-inner">
+        <div class="home-dining-intro reveal">
+          {{include:brand-pair}}
+          <span class="section-tag">{{home.dining.tag}}</span>
+          <h2 id="food-title" class="section-title">{{home.dining.title}}</h2>
+          <p class="home-dining-text">{{home.dining.text}}</p>
+          <p class="food-from" data-food-from data-template="{{dining.packages.fromLine}}" hidden></p>
+          <a href="dining.html#packages" class="btn btn-primary btn-md" data-cta="amenities:food">{{home.dining.cta}}</a>
         </div>
       </div>
     </section>
 
     <!--feature:cars-->
-    <!-- Self-drive cars -->
-    <section class="section bg-emerald am-cars" id="am-cars" aria-labelledby="am-cars-title">
-      <div class="container am-cars-inner reveal">
-        <div class="am-cars-art" aria-hidden="true">
-          <svg class="am-icon"><use href="#am-car"/></svg>
-          <span class="am-road"></span>
-        </div>
-        <div class="am-cars-body">
-          <span class="section-tag">{{copy.amenities.carsTag}}</span>
-          <h2 id="am-cars-title" class="section-title">{{copy.amenities.carsTitle}}</h2>
-          <p class="am-lead">{{cars.intro}}</p>
-          <p class="am-cars-terms">{{cars.terms}}</p>
-          <a href="stay.html#car-rental" class="btn btn-primary btn-md">{{copy.amenities.carsCta}}</a>
+    <!-- Cars are an amenity too: one small card pointing to the cars page -->
+    <section class="cars-teaser-wrap" id="cars" aria-labelledby="cars-teaser-title">
+      <div class="container">
+        <div class="cars-teaser reveal">
+          <span class="cars-teaser-ic" aria-hidden="true"><svg><use href="#svc-i-car"/></svg></span>
+          <div class="cars-teaser-body">
+            <span class="section-tag">{{amenitiesPage.cars.tag}}</span>
+            <h2 id="cars-teaser-title" class="cars-teaser-title">{{amenitiesPage.cars.title}}</h2>
+            <p>{{amenitiesPage.cars.text}}</p>
+            <ul class="cars-teaser-list"><!--each:carsPage.cars--><li>{{.name}}</li><!--/each--></ul>
+          </div>
+          <a href="cars.html" class="btn btn-primary btn-md" data-cta="amenities:cars">{{amenitiesPage.cars.cta}}</a>
         </div>
       </div>
     </section>
     <!--/feature-->
 
-    <!-- Final call to action -->
-    <section class="section bg-ivory am-final" aria-labelledby="am-final-title">
-      <div class="container am-final-inner reveal">
-        <h2 id="am-final-title" class="section-title">{{copy.amenities.finalTitle}}</h2>
-        <hr class="gold-hairline" aria-hidden="true">
-        <p class="section-subtitle">{{copy.amenities.finalText}}</p>
-        <a href="book.html" class="btn btn-primary btn-lg">{{copy.amenities.finalCta}}</a>
+    <!-- House rules (short; the full text is on the policies page) -->
+    <section class="section bg-sand" id="rules" aria-labelledby="rules-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{amenitiesPage.rulesTag}}</span>
+          <h2 id="rules-title" class="section-title">{{amenitiesPage.rulesTitle}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+        </header>
+        <ul class="rule-chips reveal">
+          <!--each:amenitiesPage.rules--><li><svg aria-hidden="true"><use href="#svc-i-{{.icon}}"/></svg>{{.text}}</li><!--/each-->
+        </ul>
+        <p class="rules-more"><a href="policies.html#house-rules" data-cta="amenities:rules-policies">{{amenitiesPage.rulesLink}}</a></p>
+      </div>
+    </section>
+
+    <!-- Next step -->
+    <section class="next-band" aria-labelledby="am-final-title">
+      <div class="container next-band-inner reveal">
+        <h2 id="am-final-title" class="next-band-title">{{amenitiesPage.finalTitle}}</h2>
+        <div class="next-band-actions">
+          <a href="book.html" class="btn btn-primary btn-lg" data-cta="amenities:final-check">{{amenitiesPage.ctaCheck}}</a>
+          <a href="https://wa.me/{{config.WHATSAPP}}" class="btn btn-secondary btn-lg" target="_blank" rel="noopener noreferrer" data-cta="amenities:final-whatsapp">{{amenitiesPage.finalWhatsApp}}</a>
+        </div>
+        <div class="next-band-review" data-reviews="card" data-topic="stay"></div>
       </div>
     </section>
   </main>
@@ -172,5 +191,7 @@
 
   <!-- Sticky Mobile Bar Partial -->
   {{include:sticky-bar}}
+
+  {{include:lightbox}}
 </body>
 </html>

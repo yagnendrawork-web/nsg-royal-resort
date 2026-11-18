@@ -64,22 +64,24 @@ function renderSlot(slotName, slotsRegistry, imgAssetsDir) {
   const sizes = slot.sizes || '100vw';
   const isPriority = !!slot.priority;
   const dims = getRatioDimensions(ratio);
+  // "use": reuse another slot's image files (e.g. a Home card showing a gallery photo with its own crop and alt)
+  const file = slot.use || slotName;
 
   // Check if image files exist
-  const candidate480 = path.join(imgAssetsDir, `${slotName}-480.webp`);
-  const candidate1200 = path.join(imgAssetsDir, `${slotName}.jpg`);
-  const candidateWebp = path.join(imgAssetsDir, `${slotName}-960.webp`);
+  const candidate480 = path.join(imgAssetsDir, `${file}-480.webp`);
+  const candidate1200 = path.join(imgAssetsDir, `${file}.jpg`);
+  const candidateWebp = path.join(imgAssetsDir, `${file}-960.webp`);
 
   const hasFiles = fs.existsSync(candidate480) || fs.existsSync(candidateWebp) || fs.existsSync(candidate1200);
 
   if (hasFiles) {
     let srcset = '';
-    const src = fs.existsSync(candidateWebp) ? `assets/img/${slotName}-960.webp` : `assets/img/${slotName}-480.webp`;
+    const src = fs.existsSync(candidateWebp) ? `assets/img/${file}-960.webp` : `assets/img/${file}-480.webp`;
     const widths = [480, 960, 1600];
-    const existingWidths = widths.filter((w) => fs.existsSync(path.join(imgAssetsDir, `${slotName}-${w}.webp`)));
+    const existingWidths = widths.filter((w) => fs.existsSync(path.join(imgAssetsDir, `${file}-${w}.webp`)));
 
     if (existingWidths.length > 0) {
-      srcset = existingWidths.map((w) => `assets/img/${slotName}-${w}.webp ${w}w`).join(', ');
+      srcset = existingWidths.map((w) => `assets/img/${file}-${w}.webp ${w}w`).join(', ');
     }
 
     const priorityAttrs = isPriority ? 'fetchpriority="high"' : 'loading="lazy"';
@@ -99,11 +101,6 @@ function renderSlot(slotName, slotsRegistry, imgAssetsDir) {
   const label = `${slotName} · ${ratio}`;
   return `<div class="slot-ph" data-slot="${slotName}" data-label="${label}" style="aspect-ratio:${ratio};">
   <div class="slot-ph-content">
-    <svg class="slot-ph-logo" viewBox="0 0 48 48" width="36" height="36" aria-hidden="true" fill="none" stroke="currentColor">
-      <path d="M24 6L6 20L10 40H38L42 20L24 6Z" stroke="var(--gold)" stroke-width="1.5" stroke-linejoin="round"/>
-      <path d="M24 16L16 26H32L24 16Z" fill="var(--gold-light)" opacity="0.6"/>
-      <circle cx="24" cy="32" r="3" fill="var(--gold)"/>
-    </svg>
     <span class="slot-ph-label">${label}</span>
   </div>
 </div>`;
@@ -172,7 +169,19 @@ function generateJsonLd(siteData, configData) {
 }
 
 function processTemplate(content, siteData, configData, slotsRegistry, imgAssetsDir, currentFile) {
-  // 0. Repeated blocks: <!--each:PATH-->...<!--/each-->
+  // 0. Resolve {{include:name}} first, so partials can hold <!--each--> blocks (up to 3 levels deep)
+  for (let depth = 0; depth < 3 && /\{\{include:/.test(content); depth++) {
+    content = content.replace(/\{\{include:([a-zA-Z0-9_-]+)\}\}/g, (match, name) => {
+      const partialPath = path.join(srcDir, 'partials', `${name}.html`);
+      if (fs.existsSync(partialPath)) {
+        return fs.readFileSync(partialPath, 'utf8');
+      }
+      console.warn(`[MISSING PARTIAL: ${name}] referenced in ${currentFile}`);
+      return `<!-- missing partial: ${name} -->`;
+    });
+  }
+
+  // 1. Repeated blocks: <!--each:PATH-->...<!--/each-->
   // PATH is a dot path to an array in siteData, or "@slots:PREFIX" for slots.json entries
   content = content.replace(/<!--each:([-a-zA-Z0-9_.:@]+)-->([\s\S]*?)<!--\/each-->/g, (match, path, inner) => {
     let items = [];
@@ -215,22 +224,17 @@ function processTemplate(content, siteData, configData, slotsRegistry, imgAssets
     }).join('');
   });
 
-  // 1. Resolve {{include:name}} (partials may include other partials, up to 3 levels)
-  for (let depth = 0; depth < 3 && /\{\{include:/.test(content); depth++) {
-    content = content.replace(/\{\{include:([a-zA-Z0-9_-]+)\}\}/g, (match, name) => {
-      const partialPath = path.join(srcDir, 'partials', `${name}.html`);
-      if (fs.existsSync(partialPath)) {
-        return fs.readFileSync(partialPath, 'utf8');
-      }
-      console.warn(`[MISSING PARTIAL: ${name}] referenced in ${currentFile}`);
-      return `<!-- missing partial: ${name} -->`;
-    });
-  }
-
   // 2. Feature blocks: <!--feature:NAME-->...<!--/feature-->
   content = content.replace(/<!--feature:([a-zA-Z0-9_-]+)-->([\s\S]*?)<!--\/feature-->/g, (match, featureName, inner) => {
     const isEnabled = configData.FEATURES && !!configData.FEATURES[featureName];
     return isEnabled ? inner : '';
+  });
+
+  // 2b. <!--ifslot:NAME-->...<!--/ifslot-->: dropped in --prod builds while slot NAME has no photo
+  content = content.replace(/<!--ifslot:([a-zA-Z0-9_-]+)-->([\s\S]*?)<!--\/ifslot-->/g, (match, slotName, inner) => {
+    const file = (slotsRegistry[slotName] || {}).use || slotName;
+    const has = ['-480.webp', '-960.webp', '.jpg'].some((ext) => fs.existsSync(path.join(imgAssetsDir, file + ext)));
+    return isProd && !has ? '' : inner;
   });
 
   // 3. Resolve {{preload:slotName}}
@@ -465,20 +469,21 @@ window.NSG.UI = ${JSON.stringify(siteData.ui || {}, null, 2)};
     if (f.endsWith('.html') && !emittedPages.includes(f)) fs.unlinkSync(path.join(distDir, f));
   });
 
-  // Emit sitemap.xml (status.html excluded per spec)
+  // Emit sitemap.xml (private pages excluded: status, guest pay page, staff app)
   const siteUrl = (configData.SITE_URL && !configData.SITE_URL.startsWith('[TBD'))
     ? configData.SITE_URL.replace(/\/$/, '')
     : 'https://nsgroyalresort.com';
 
-  const sitemapPages = emittedPages.filter((p) => p !== 'status.html');
+  const NOINDEX_PAGES = ['status.html', 'pay.html', 'staff.html'];
+  const sitemapPages = emittedPages.filter((p) => !NOINDEX_PAGES.includes(p));
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${sitemapPages
-  .map((p) => {
-    const loc = p === 'index.html' ? `${siteUrl}/` : `${siteUrl}/${p}`;
-    return `  <url>\n    <loc>${loc}</loc>\n    <changefreq>weekly</changefreq>\n  </url>`;
-  })
-  .join('\n')}
+      .map((p) => {
+        const loc = p === 'index.html' ? `${siteUrl}/` : `${siteUrl}/${p}`;
+        return `  <url>\n    <loc>${loc}</loc>\n    <changefreq>weekly</changefreq>\n  </url>`;
+      })
+      .join('\n')}
 </urlset>
 `;
   fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapXml, 'utf8');

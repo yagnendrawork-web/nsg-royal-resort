@@ -1,7 +1,9 @@
 /**
  * NSG ROYAL RESORT — API CLIENT & NORMALISER
  * api.js: Only file that knows raw response shapes (SPEC Section 7 & 9, docs/api.md)
- * Methods: getInfo, getAvailability, getQuote, addons, cars, createBooking, submitPayment, getBooking, eventEnquiry
+ * Methods: getInfo, getAvailability, getQuote, addons, cars, createBooking, submitPayment, getBooking, eventEnquiry, reviews
+ * Pay-link and staff actions (getByToken, staffLogin … staffResendMessage) live in api.link.js,
+ * loaded only by pay.html and staff.html so the Home JS budget is untouched.
  */
 
 window.NSG = window.NSG || {};
@@ -77,7 +79,7 @@ window.NSG = window.NSG || {};
         email: 'demo@example.com',
         bookingType: 'stay',
         packageId: 'whole',
-        packageName: 'Whole Resort',
+        packageName: MOCK_INFO.packages[0].name,
         checkIn: addDays(today, 15),
         checkOut: addDays(today, 18),
         nights: 3,
@@ -100,17 +102,24 @@ window.NSG = window.NSG || {};
     } catch (e) {}
   }
 
-  // Seed 6+ blocked nights: 2-night block, single night between free days, and 3-night block
-  function getSeedBlockedNights() {
+  // Mock manual blocks (staff can block/unblock them in mock mode): a 2-night block (+4, +5),
+  // a single night between free days (+9) and a 3-night block (+18, +19, +20)
+  const MOCK_STORAGE_KEY_BLOCKS = 'nsg_mock_blocks';
+  function getMockBlocks() {
+    try {
+      const v = JSON.parse(localStorage.getItem(MOCK_STORAGE_KEY_BLOCKS));
+      if (Array.isArray(v)) return v;
+    } catch (e) {}
     const today = getTodayKolkataStr();
-    const b1 = addDays(today, 4);
-    const b2 = addDays(today, 5); // 2-night block: +4, +5
-    const b3 = addDays(today, 9); // single night: +9 (+8 and +10 are free)
-    const b4 = addDays(today, 18);
-    const b5 = addDays(today, 19);
-    const b6 = addDays(today, 20); // 3-night block: +18, +19, +20
+    return [4, 5, 9, 18, 19, 20].map((n) => ({ date: addDays(today, n), reason: 'Mock block', addedBy: '' }));
+  }
+  function saveMockBlocks(list) {
+    try { localStorage.setItem(MOCK_STORAGE_KEY_BLOCKS, JSON.stringify(list)); } catch (e) {}
+  }
 
-    const blocked = new Set([b1, b2, b3, b4, b5, b6]);
+  // Blocked nights = manual blocks + nights of active bookings
+  function getSeedBlockedNights() {
+    const blocked = new Set(getMockBlocks().map((b) => b.date));
 
     // Also include active bookings from mock storage
     const bookings = getMockBookings();
@@ -136,22 +145,25 @@ window.NSG = window.NSG || {};
     checkOutTime: '10:00',
     minNights: 2,
     cancellationPolicy: 'Free cancellation up to 48 hours before check-in.',
+    // MOCK packages (backend seed shape). Names, guest limits (20 / 16 / 4) and features are MOCK until the live API sends them.
     packages: [
       {
-        id: 'whole',
-        name: 'Whole Resort',
-        weekdayRate: 40000,
-        weekendRate: 50000,
-        advance: 10000,
-        maxGuests: 100
+        id: 'whole', name: 'Entire Resort (MOCK)', subtitle: 'Whole property · 4 Bedrooms', order: 1,
+        bedrooms: 4, bathrooms: 4, maxGuests: 20, weekdayRate: 25000, weekendRate: 28000, advance: 10000,
+        extraGuestFee: 500, maxExtraGuests: 5, popular: false,
+        includes: ['bedrooms', 'lounge', 'penthouse-lounge', 'terrace', 'kitchen', 'bar', 'home-theatre', 'pool', 'turf', 'garden', 'wifi', 'parking'], excludes: []
       },
       {
-        id: 'penthouse',
-        name: 'Penthouse + Pool, Turf & Garden',
-        weekdayRate: 15000,
-        weekendRate: 20000,
-        advance: 5000,
-        maxGuests: 20
+        id: 'ground', name: 'Ground Floor (MOCK)', subtitle: 'Ground Floor · 3 Bedrooms', order: 2,
+        bedrooms: 3, bathrooms: 3, maxGuests: 16, weekdayRate: 13000, weekendRate: 15000, advance: 2000,
+        extraGuestFee: 500, maxExtraGuests: 4, popular: true,
+        includes: ['bedrooms', 'lounge', 'pool', 'turf', 'garden', 'wifi', 'parking'], excludes: ['kitchen', 'bar', 'home-theatre']
+      },
+      {
+        id: 'penthouse', name: 'Penthouse (MOCK)', subtitle: 'Rooftop · 1 Bedroom', order: 3,
+        bedrooms: 1, bathrooms: 1, maxGuests: 4, weekdayRate: 10000, weekendRate: 12000, advance: 5000,
+        extraGuestFee: 500, maxExtraGuests: 2, popular: false,
+        includes: ['bedrooms', 'penthouse-lounge', 'terrace', 'kitchen', 'bar', 'home-theatre', 'pool', 'turf', 'garden', 'wifi', 'parking'], excludes: ['lounge']
       }
     ],
     eventTypes: [
@@ -251,16 +263,41 @@ window.NSG = window.NSG || {};
   // -------------------------------------------------------------------------
   // 1. GET info
   // -------------------------------------------------------------------------
-  // Shared by every caller on a page; a failed result is not cached so a later call retries
+  // Shared by every caller on a page; a failed result is not cached so a later call retries.
+  // Apps Script takes seconds per call, so the last good info is kept in localStorage (12 h) and returned at once,
+  // while a fresh copy is always fetched; infoChanged() resolves with it only if it differs. Display only: quotes
+  // and bookings are always priced live by the server.
+  const INFO_KEY = 'nsg_info';
   let infoPromise = null;
+  let infoChangedPromise = null;
+  function readCachedInfo(config) {
+    try {
+      const c = JSON.parse(localStorage.getItem(INFO_KEY));
+      if (c && c.url === config.API_URL && Date.now() - c.at < 12 * 3600e3 && c.data && c.data.packages && c.data.packages.length) return c.data;
+    } catch (e) {}
+    return null;
+  }
   function getInfo() {
-    if (!infoPromise) {
-      infoPromise = loadInfo().then(function (r) {
-        if (!r.ok) infoPromise = null;
-        return r;
-      });
-    }
+    if (infoPromise) return infoPromise;
+    const config = getConfig();
+    const cached = config.USE_MOCK ? null : readCachedInfo(config);
+    const fresh = loadInfo().then(function (r) {
+      if (r.ok && !config.USE_MOCK) {
+        try { localStorage.setItem(INFO_KEY, JSON.stringify({ at: Date.now(), url: config.API_URL, data: r.data })); } catch (e) {}
+      }
+      if (!r.ok && !cached) infoPromise = null;
+      return r;
+    });
+    infoChangedPromise = cached
+      ? fresh.then((r) => (r.ok && JSON.stringify(r.data) !== JSON.stringify(cached) ? r.data : null))
+      : Promise.resolve(null);
+    infoPromise = cached ? Promise.resolve({ ok: true, data: cached, cached: true }) : fresh;
     return infoPromise;
+  }
+  // Fresh info when it differs from the cached copy getInfo() returned; null when nothing changed
+  function infoChanged() {
+    if (!infoChangedPromise) getInfo();
+    return infoChangedPromise;
   }
 
   function toAmount(v) {
@@ -268,23 +305,49 @@ window.NSG = window.NSG || {};
     return n > 0 ? n : 0;
   }
 
-  // Accepts packages as an array or as an object keyed by id
+  // includes[] / excludes[]: array or comma text of ids or { id, label }; ids lower-case with dashes, common spellings merged
+  const FEATURE_ALIASES = { 'wi-fi': 'wifi', 'home-theater': 'home-theatre', 'theatre': 'home-theatre', 'gardens': 'garden', 'swimming-pool': 'pool', 'cricket-turf': 'turf', 'bedroom': 'bedrooms', 'living-room': 'lounge' };
+  function normaliseFeatures(raw) {
+    return (Array.isArray(raw) ? raw : String(raw || '').split(',')).map((f) => {
+      const obj = f && typeof f === 'object';
+      const label = String((obj ? f.label || f.name || f.id : f) || '').trim();
+      const id = String((obj ? f.id || label : f) || '').trim().toLowerCase().replace(/[\s_]+/g, '-');
+      return id ? { id: FEATURE_ALIASES[id] || id, label: label } : null;
+    }).filter(Boolean);
+  }
+
+  // Accepts packages as an array or as an object keyed by id. Fields added later (subtitle, includes, excludes,
+  // bedrooms, bathrooms, extraGuestFee, maxExtraGuests, popular, order) are optional, so the older response still works.
   function normalisePackages(raw) {
     const list = Array.isArray(raw) ? raw : Object.keys(raw || {}).map((k) => Object.assign({ id: k }, raw[k]));
-    return list.map((p) => ({
-      id: String(p.id || p.packageId || '').trim().toLowerCase(),
-      name: p.name || p.title || '',
-      weekdayRate: toAmount(p.weekdayRate ?? p.weekday ?? p.rateWeekday),
-      weekendRate: toAmount(p.weekendRate ?? p.weekend ?? p.rateWeekend),
-      advance: toAmount(p.advance ?? p.advanceAmount ?? p.deposit),
-      maxGuests: toAmount(p.maxGuests ?? p.capacity ?? p.guests)
-    }));
+    return list.map((p, i) => {
+      const fee = toAmount(p.extraGuestFee);
+      const order = Number(p.order);
+      return {
+        id: String(p.id || p.packageId || '').trim().toLowerCase(),
+        name: p.name || p.title || '',
+        subtitle: String(p.subtitle || '').trim(),
+        description: String(p.description || '').trim(),
+        weekdayRate: toAmount(p.weekdayRate ?? p.weekday ?? p.rateWeekday),
+        weekendRate: toAmount(p.weekendRate ?? p.weekend ?? p.rateWeekend),
+        advance: toAmount(p.advance ?? p.advanceAmount ?? p.deposit),
+        maxGuests: toAmount(p.maxGuests ?? p.capacity ?? p.guests),
+        bedrooms: toAmount(p.bedrooms) || null,
+        bathrooms: toAmount(p.bathrooms) || null,
+        extraGuestFee: fee,
+        maxExtraGuests: fee ? toAmount(p.maxExtraGuests) : 0,
+        popular: p.popular === true || String(p.popular).toLowerCase() === 'true',
+        includes: normaliseFeatures(p.includes),
+        excludes: normaliseFeatures(p.excludes),
+        order: p.order !== '' && p.order != null && isFinite(order) ? order : 1e6 + i
+      };
+    }).sort((a, b) => a.order - b.order);
   }
 
   async function loadInfo() {
     const config = getConfig();
     if (config.USE_MOCK) {
-      return { ok: true, data: MOCK_INFO };
+      return { ok: true, data: Object.assign({}, MOCK_INFO, { packages: normalisePackages(MOCK_INFO.packages) }) };
     }
 
     try {
@@ -392,10 +455,13 @@ window.NSG = window.NSG || {};
       }
 
       const advance = pkg.advance;
+      const extraGuests = Math.max(0, (Number(guests) || 1) - pkg.maxGuests);
+      if (extraGuests > (pkg.extraGuestFee ? pkg.maxExtraGuests : 0)) return { ok: false, code: 'MAX_GUESTS', error: getErrorMessage('MAX_GUESTS') };
+      const extraGuestsTotal = extraGuests * pkg.extraGuestFee * nights;
       const priced = mockPriceAddons(addons, guests, nights);
       if (priced.error) return { ok: false, code: 'INVALID_ADDON', error: getErrorMessage('INVALID_ADDON') };
       const baseTotal = total;
-      total = baseTotal + priced.total;
+      total = baseTotal + extraGuestsTotal + priced.total;
       const balance = Math.max(0, total - advance);
 
       return {
@@ -405,6 +471,9 @@ window.NSG = window.NSG || {};
           nights: nights,
           breakdown: breakdown,
           baseTotal: baseTotal,
+          extraGuests: extraGuests,
+          extraGuestFee: pkg.extraGuestFee,
+          extraGuestsTotal: extraGuestsTotal,
           addonsBreakdown: priced.lines,
           addonsTotal: priced.total,
           total: total,
@@ -441,6 +510,11 @@ window.NSG = window.NSG || {};
           nights: json.nights || json.data?.nights,
           breakdown: json.breakdown || json.data?.breakdown || [],
           baseTotal: Number(json.baseTotal ?? json.data?.baseTotal ?? json.total ?? 0),
+          // extraGuests is { count, fee, nights, total, label } or null (docs/api.md, Extra guests)
+          extraGuests: Number(json.extraGuests?.count) || 0,
+          extraGuestFee: Number(json.extraGuests?.fee) || 0,
+          extraGuestsTotal: Number(json.extraGuestsTotal ?? json.extraGuests?.total) || 0,
+          extraGuestsLabel: String(json.extraGuests?.label || ''),
           addonsBreakdown: normaliseAddonLines(json.addonsBreakdown || json.data?.addonsBreakdown),
           addonsTotal: Number(json.addonsTotal ?? json.data?.addonsTotal ?? 0),
           total: json.total || json.data?.total || 0,
@@ -498,7 +572,7 @@ window.NSG = window.NSG || {};
       const guestsCount = Number(payload.guests) || 1;
 
       // Guests validation against package max
-      if (!isEvent && guestsCount > pkg.maxGuests) {
+      if (!isEvent && guestsCount > pkg.maxGuests + (pkg.extraGuestFee ? pkg.maxExtraGuests : 0)) {
         return { ok: false, code: 'MAX_GUESTS', error: getErrorMessage('MAX_GUESTS') };
       }
 
@@ -678,11 +752,13 @@ window.NSG = window.NSG || {};
   }
 
   // -------------------------------------------------------------------------
-  // 6. POST submitPayment (bookingId, utr)
+  // 6. POST submitPayment (ref, utr) — ref is a booking ID (website) or { token } (pay-link page)
   // -------------------------------------------------------------------------
-  async function submitPayment(bookingId, utr) {
+  async function submitPayment(ref, utr) {
     const config = getConfig();
     const cleanUtr = String(utr || '').trim();
+    const token = ref && typeof ref === 'object' ? String(ref.token || '') : '';
+    const bookingId = ref && typeof ref === 'object' ? String(ref.bookingId || '') : String(ref || '');
 
     if (config.USE_MOCK) {
       // UTR containing "DUP" -> DUPLICATE_UTR
@@ -696,13 +772,16 @@ window.NSG = window.NSG || {};
       }
 
       const allBookings = getMockBookings();
-      const booking = allBookings[bookingId];
+      const booking = token ? Object.values(allBookings).find((b) => b.linkToken === token) : allBookings[bookingId];
       if (!booking) {
         return { ok: false, code: 'NOT_FOUND', error: getErrorMessage('NOT_FOUND') };
       }
+      if (booking.status !== 'HOLD' && booking.status !== 'EXPIRED') {
+        return { ok: false, code: 'INVALID_STATUS', error: getErrorMessage('INVALID_STATUS') };
+      }
 
       booking.status = 'PAYMENT_SUBMITTED';
-      booking.utr = cleanUtr;
+      booking.utr = cleanUtr.toUpperCase();
       // Flips to CONFIRMED 20 seconds later
       booking.autoConfirmAt = Date.now() + 20000;
       saveMockBookings(allBookings);
@@ -710,7 +789,7 @@ window.NSG = window.NSG || {};
       return {
         ok: true,
         data: {
-          bookingId: bookingId,
+          bookingId: booking.bookingId,
           message: 'Payment reference received. Staff will verify and confirm shortly.'
         }
       };
@@ -722,11 +801,9 @@ window.NSG = window.NSG || {};
         res = await fetchWithTimeout(config.API_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify({
-            action: 'submitPayment',
-            bookingId: bookingId,
-            utr: cleanUtr
-          })
+          body: JSON.stringify(token
+            ? { action: 'submitPayment', token: token, utr: cleanUtr }
+            : { action: 'submitPayment', bookingId: bookingId, utr: cleanUtr })
         }, 8000);
       } catch (err) {
         return { ok: false, code: 'NETWORK', error: getErrorMessage('NETWORK') };
@@ -971,8 +1048,74 @@ window.NSG = window.NSG || {};
     };
   }
 
+  // -------------------------------------------------------------------------
+  // 10. GET reviews (cached in sessionStorage for 10 minutes, no throw)
+  // -------------------------------------------------------------------------
+  const REVIEWS_KEY = 'nsg_reviews';
+  let reviewsPromise = null;
+
+  // MOCK only (USE_MOCK, or ?mockreviews=1 for one page view): sample rows, never shown as real reviews
+  function mockReviews() {
+    const today = getTodayKolkataStr();
+    return {
+      mock: true, rating: 4.8, count: 120, url: 'https://example.com/mock-reviews',
+      reviews: ['stay', 'event', 'food', 'stay', 'event', 'general'].map((topic, i) => ({
+        id: 'mock-' + (i + 1), name: 'Mock Reviewer', rating: i === 3 ? 4 : 5, date: addDays(today, -35 * i),
+        text: `MOCK review ${i + 1} (${topic}), layout test only.` + (i % 2 ? ' A longer sample so the card wraps onto several lines and shows the more button.' : ''),
+        source: i === 2 ? 'whatsapp' : 'google', link: '', topic: topic, featured: i === 0
+      }))
+    };
+  }
+
+  function normaliseReviews(json) {
+    const num = (v) => (v === null || v === undefined || v === '' || !isFinite(Number(v)) ? null : Number(v));
+    const httpUrl = (v) => (/^https?:\/\//i.test(String(v || '')) ? String(v) : '');
+    return {
+      rating: num(json.rating),
+      count: num(json.count) === null ? null : Math.floor(num(json.count)),
+      url: httpUrl(json.url) || null,
+      // Text is passed through exactly as sent; rows without text are skipped
+      reviews: (Array.isArray(json.reviews) ? json.reviews : []).filter((r) => r && String(r.text || '').trim()).map((r) => ({
+        id: String(r.id || ''), name: String(r.name || ''), rating: num(r.rating), text: String(r.text),
+        date: /^\d{4}-\d{2}-\d{2}$/.test(String(r.date || '')) ? String(r.date) : '',
+        source: String(r.source || 'other'), link: httpUrl(r.link), topic: String(r.topic || 'general'),
+        featured: r.featured === true || String(r.featured).toLowerCase() === 'true'
+      }))
+    };
+  }
+
+  function reviews() {
+    const config = getConfig();
+    if (config.USE_MOCK || /[?&]mockreviews=1\b/.test(location.search)) return Promise.resolve({ ok: true, data: mockReviews() });
+    try {
+      const hit = JSON.parse(sessionStorage.getItem(REVIEWS_KEY));
+      if (hit && Date.now() - hit.at < 600000) return Promise.resolve({ ok: true, data: hit.data });
+    } catch (e) {}
+    if (!reviewsPromise) {
+      reviewsPromise = (async function () {
+        let json;
+        try {
+          const res = await fetchWithTimeout(`${config.API_URL}?action=reviews`, undefined, 15000);
+          json = await res.json();
+        } catch (err) {
+          json = null;
+        }
+        if (!json || !json.ok) {
+          reviewsPromise = null;
+          const code = (json && json.code) || 'NETWORK';
+          return { ok: false, code: code, error: getErrorMessage(code) };
+        }
+        const data = normaliseReviews(json.data && json.data.reviews ? json.data : json);
+        try { sessionStorage.setItem(REVIEWS_KEY, JSON.stringify({ at: Date.now(), data: data })); } catch (e) {}
+        return { ok: true, data: data };
+      })();
+    }
+    return reviewsPromise;
+  }
+
   window.NSG.api = {
     getInfo: getInfo,
+    infoChanged: infoChanged,
     getAvailability: getAvailability,
     getQuote: getQuote,
     cars: cars,
@@ -980,6 +1123,13 @@ window.NSG = window.NSG || {};
     createBooking: createBooking,
     submitPayment: submitPayment,
     getBooking: getBooking,
-    eventEnquiry: eventEnquiry
+    eventEnquiry: eventEnquiry,
+    reviews: reviews
+  };
+
+  // Mock internals shared with api.link.js (pay-link and staff actions); unused in live mode
+  window.NSG.api._mock = {
+    bookings: getMockBookings, save: saveMockBookings, blocks: getMockBlocks, saveBlocks: saveMockBlocks,
+    info: MOCK_INFO, addons: MOCK_ADDONS, price: mockPriceAddons, today: getTodayKolkataStr, addDays: addDays
   };
 })();

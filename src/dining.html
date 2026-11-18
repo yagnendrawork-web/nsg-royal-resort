@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FBF8F2" data-dark="#0B1512">
+  {{include:theme-head}}
+  {{include:api-preconnect}}
   <title>{{seo.dining.title}}</title>
   <meta name="description" content="{{seo.dining.description}}">
 
@@ -34,6 +37,9 @@
   <script src="js/site.js" defer></script>
   <script src="js/food-packages.js" defer></script>
   <script src="js/menu.js" defer></script>
+  <script src="js/reviews.js" defer></script>
+  <script type="application/json" id="reviews-text">{{reviews}}</script>
+  <script src="js/theme.js" defer></script>
 </head>
 <body class="page-dining">
   <!-- Accessibility Skip Link -->
@@ -73,9 +79,10 @@
           <p class="section-subtitle">{{dining.packages.subtitle}}</p>
         </header>
         <div class="fp-layout" id="food-packages-app">
-          <div class="fp-grid"><p class="fp-loading">{{dining.packages.loading}}</p></div>
+          <div class="fp-grid"><div class="fp-loading nsg-loading" role="status">{{include:loader}}<p>{{dining.packages.loading}}</p></div></div>
           <aside class="fp-summary" aria-label="{{dining.packages.summaryTitle}}" aria-live="polite" hidden></aside>
         </div>
+        <div class="rv-dining" data-reviews="card" data-topic="food"></div>
         <script type="application/json" id="fp-text">{{dining.packages}}</script>
       </div>
     </section>
@@ -115,7 +122,7 @@
             </div>
           </div>
           <div class="menu-panel" id="menu-panel" role="tabpanel" aria-labelledby="menu-title">
-            <p class="menu-empty">{{dining.menuLoading}}</p>
+            <div class="menu-empty nsg-loading" role="status">{{include:loader}}<p>{{dining.menuLoading}}</p></div>
           </div>
           <p class="menu-live visually-hidden" aria-live="polite"></p>
           <noscript><p class="menu-empty">{{dining.menuNoJs}}</p></noscript>
@@ -125,6 +132,17 @@
     </section>
 
     <!-- Our food partner -->
+    <!-- Next step -->
+    <section class="next-band" aria-labelledby="dining-next-title">
+      <div class="container next-band-inner reveal">
+        <h2 id="dining-next-title" class="next-band-title">{{dining.nextTitle}}</h2>
+        <div class="next-band-actions">
+          <a href="stay.html" class="btn btn-primary btn-lg" data-cta="dining:band-amenities">{{dining.nextAmenities}}</a>
+          <a href="book.html" class="btn btn-secondary btn-lg" data-cta="dining:band-check">{{dining.nextCheck}}</a>
+        </div>
+      </div>
+    </section>
+
     <section class="section bg-ivory fp-brands" aria-label="NSG Royal Resort and Aroma Restaurant">
       <div class="container">
         {{include:brand-pair}}

@@ -99,7 +99,7 @@
       "PAST_DATE": "That date has passed. Please pick a date from today onwards.",
       "INVALID_RANGE": "Check-out must be after check-in. Please pick your dates again.",
       "MIN_NIGHTS": "This stay is shorter than our minimum. Please add a night.",
-      "MAX_GUESTS": "That is more guests than this package allows. Please lower the number or choose the Whole Resort.",
+      "MAX_GUESTS": "That is more guests than this package allows. Please lower the number or choose a bigger package.",
       "INVALID_GUESTS": "Please enter how many guests are coming.",
       "INVALID_EMAIL": "That email doesn't look right. Please check it, or leave it empty.",
       "INVALID_UTR": "The UTR should be 8 to 22 letters or numbers. You will find it in your UPI app under payment details.",
@@ -112,7 +112,20 @@
       "HONEYPOT": "Something went wrong with the form. Please refresh the page and try again.",
       "LOCK_TIMEOUT": "We are a little busy right now. Please try again in a moment.",
       "SERVER_ERROR": "Something went wrong on our side. Please WhatsApp us and we will help you book.",
-      "INVALID_ADDON": "One of your add-ons is no longer available, so we refreshed the list. Please check your choices and try again."
+      "INVALID_ADDON": "One of your add-ons is no longer available, so we refreshed the list. Please check your choices and try again.",
+      "AUTH": "Please sign in again.",
+      "LOCKED": "Too many wrong PINs. Please wait 15 minutes and try again.",
+      "INVALID_ADVANCE": "The advance must be a whole amount within the allowed range.",
+      "INVALID_PRICE": "Please enter a valid price.",
+      "SPECIAL_TOTAL_REQUIRED": "Events need an agreed total price.",
+      "INVALID_HOLD_HOURS": "Hold time must be 6, 12, 24 or 48 hours.",
+      "NOTE_REQUIRED": "Please add a note explaining why no advance is needed.",
+      "INVALID_AMOUNT": "Please check the amount.",
+      "INVALID_METHOD": "Please choose how the balance was paid.",
+      "NOT_A_LINK": "This works only for bookings made with a pay link.",
+      "INVALID_PACKAGE": "Please choose a package.",
+      "PRICE_NOT_SET": "Prices are not set for these dates yet. Please contact us.",
+      "DATES_TAKEN": "These dates were taken in the meantime."
     },
     "addons": {
       "title": "Make it special",
@@ -143,6 +156,12 @@
       "enquireWhatsApp": "Enquire on WhatsApp",
       "addToBooking": "Add to booking",
       "priceOnRequest": "Price on request"
+    },
+    "carNudge": {
+      "title": "Need a car during your stay?",
+      "text": "Self-drive cars from our partners. Ask for a price on WhatsApp.",
+      "cta": "See cars",
+      "close": "Dismiss"
     }
   },
   "seo": {
@@ -173,7 +192,7 @@
     },
     "stay": {
       "title": "Stay at NSG Royal Resort, Bheemili",
-      "description": "Book the whole resort, or the penthouse with pool, turf and garden. One booking per date, so the place is all yours.",
+      "description": "Compare our packages and book the one that fits your group. One booking per date, so the place is all yours.",
       "ogImage": "og-image.jpg"
     },
     "events": {
@@ -210,6 +229,16 @@
       "title": "Dining at NSG Royal Resort, Bheemili",
       "description": "Food at NSG Royal Resort is served by Aroma Restaurant. See the food packages and the menu, and add food to your booking.",
       "ogImage": "og-image.jpg"
+    },
+    "pay": {
+      "title": "Your booking at NSG Royal Resort",
+      "description": "Check your booking details and pay the advance by UPI.",
+      "ogImage": "og-image.jpg"
+    },
+    "staff": {
+      "title": "NSG Staff",
+      "description": "Staff booking tools for NSG Royal Resort.",
+      "ogImage": "og-image.jpg"
     }
   },
   "home": {
@@ -218,7 +247,7 @@
       "strapline": "Weddings · Celebrations · Getaways",
       "ctaStay": "Check availability",
       "ctaEvent": "Plan an event",
-      "h1": "Your Own Royal Resort in Bheemili",
+      "h1": "Your Royal Retreat in Bheemili",
       "eyebrow": "Private resort · Bheemili, near Visakhapatnam",
       "subline": "Book the whole resort for your family, friends or celebration. Pool, turf, gardens and a penthouse, just for your group.",
       "reassure": "Small advance by UPI · Balance at the resort · Confirmed on WhatsApp"
@@ -244,32 +273,8 @@
       ]
     },
     "packages": {
-      "title": "Two ways to stay",
-      "subtitle": "Book the whole resort, or the penthouse with the pool, turf and garden. We take one booking per date, so it's all yours.",
-      "whole": {
-        "name": "Whole Resort",
-        "tagline": "Every room, the penthouse, the pool, the turf and the gardens. Just for your group.",
-        "fallbackPrice": "[TBD: whole resort weekday rate]",
-        "fallbackAdvance": "[TBD: whole resort advance]",
-        "inclusions": [
-          "The whole property, only for you",
-          "All rooms and the penthouse",
-          "Swimming pool and cricket turf",
-          "Gardens and open lawns"
-        ]
-      },
-      "penthouse": {
-        "name": "Penthouse + Pool, Turf & Garden",
-        "tagline": "The rooftop penthouse with the pool, turf and garden. Ground-floor rooms are not included.",
-        "fallbackPrice": "[TBD: penthouse weekday rate]",
-        "fallbackAdvance": "[TBD: penthouse advance]",
-        "inclusions": [
-          "The rooftop penthouse",
-          "Use of the pool, turf and garden",
-          "Ground-floor rooms not included",
-          "Good for small groups and families"
-        ]
-      }
+      "title": "Choose your stay",
+      "subtitle": "Pick the part of the resort that fits your group. We take one booking per date, so it's all yours."
     },
     "amenities": {
       "title": "Everything in one place",
@@ -412,25 +417,25 @@
           "slot": "event-birthday",
           "title": "Swimming pool",
           "text": "Splash, float and relax by the water.",
-          "href": "stay.html#amenity-pool"
+          "href": "amenities.html#pool"
         },
         {
           "slot": "amenity-turf",
           "title": "Cricket turf",
           "text": "Box cricket for the whole group, day or evening.",
-          "href": "stay.html#amenity-turf"
+          "href": "amenities.html#turf"
         },
         {
           "slot": "amenity-gardens",
           "title": "Gardens and lawns",
           "text": "Lawns and a garden gazebo for games, photos and evenings by the fire.",
-          "href": "stay.html#amenity-gardens"
+          "href": "amenities.html#garden"
         },
         {
           "slot": "pkg-penthouse",
           "title": "The penthouse",
           "text": "The top-floor suite with views over the hills.",
-          "href": "stay.html#amenity-penthouse"
+          "href": "stay.html#accommodation"
         }
       ]
     },
@@ -462,7 +467,83 @@
         }
       ]
     },
-    "stepsLabel": "How booking works"
+    "stepsLabel": "How booking works",
+    "showcase": {
+      "cards": [
+        {
+          "slot": "showcase-private",
+          "variant": "side",
+          "icon": "i-key",
+          "title": "A private property",
+          "line": "One booking at a time, only your group",
+          "href": "stay.html",
+          "chip": ""
+        },
+        {
+          "slot": "showcase-pool",
+          "variant": "centre",
+          "icon": "i-pool",
+          "title": "Pool & leisure",
+          "line": "Your own pool and cricket turf",
+          "href": "stay.html#pool",
+          "chip": "Most loved"
+        },
+        {
+          "slot": "showcase-rooms",
+          "variant": "side",
+          "icon": "i-bed",
+          "title": "Guest accommodation",
+          "line": "Penthouse and rooms for your group",
+          "href": "stay.html#accommodation",
+          "chip": ""
+        }
+      ]
+    },
+    "mosaic": {
+      "tag": "See the property",
+      "title": "Explore the property",
+      "subtitle": "Tap a photo to see it full size.",
+      "photos": "gallery-03,gallery-02,gallery-17,gallery-11,gallery-12,gallery-16,explore-wide",
+      "items": [
+        {
+          "slot": "gallery-03",
+          "caption": "Pool, turf and lawns",
+          "i": 0
+        },
+        {
+          "slot": "gallery-02",
+          "caption": "The resort at night",
+          "i": 1
+        },
+        {
+          "slot": "gallery-17",
+          "caption": "By the pool",
+          "i": 2
+        },
+        {
+          "slot": "gallery-11",
+          "caption": "Garden gazebo",
+          "i": 3
+        },
+        {
+          "slot": "gallery-12",
+          "caption": "Penthouse living room",
+          "i": 4
+        },
+        {
+          "slot": "gallery-16",
+          "caption": "Fire pit at dusk",
+          "i": 5
+        },
+        {
+          "slot": "explore-wide",
+          "caption": "The resort, wide",
+          "i": 6
+        }
+      ],
+      "galleryCta": "View full gallery",
+      "servicesCta": "See amenities & services"
+    }
   },
   "offers": {
     "default": "Book directly on our website · WhatsApp us to ask about current offers"
@@ -491,7 +572,12 @@
     "holdExpiredText": "Your hold has ended and the dates are free again.",
     "requestReceivedHeading": "We've got your payment details",
     "requestReceivedText": "Thank you! We'll check your payment and confirm your booking on WhatsApp. Save your booking ID to check the status any time.",
-    "eventEnquiryLinkText": "Want to talk about decor, food or space first? Ask us on the Events page."
+    "eventEnquiry": {
+      "title": "Events are planned with our team",
+      "text": "Tell us your date, guest count and what you have in mind. We reply within 24 hours with a price and a link to pay the advance and hold your date.",
+      "cta": "Enquire about your event"
+    },
+    "calendarLoading": "Checking available dates…"
   },
   "status": {
     "title": "Check your booking",
@@ -541,7 +627,43 @@
     "pastEventsTitle": "Past celebrations",
     "holdDate": "Hold your date",
     "enquireFirst": "Ask us first",
-    "ctaBook": "Book this event"
+    "ctaBook": "Book this event",
+    "tiersTag": "Group sizes",
+    "tiersTitle": "Pick your group size",
+    "tiersSubtitle": "Starting prices for celebrations. We confirm the final price with you.",
+    "tierWhatsApp": "Enquire on WhatsApp",
+    "tiersNext": "Choose your occasion",
+    "tiers": [
+      {
+        "id": "group",
+        "guests": "25–50 guests",
+        "name": "Group Celebration",
+        "price": "From ₹45,000",
+        "note": "[TBD: confirm price and what it includes]",
+        "enquiryNote": "Interested in: Group Celebration (25–50 guests)",
+        "whatsappText": "Hi! I'm interested in a Group Celebration (25–50 guests) at NSG Royal Resort. Please share details and price."
+      },
+      {
+        "id": "signature",
+        "guests": "51–75 guests",
+        "name": "Signature Gathering",
+        "price": "From ₹55,000",
+        "note": "[TBD: confirm price and what it includes]",
+        "enquiryNote": "Interested in: Signature Gathering (51–75 guests)",
+        "whatsappText": "Hi! I'm interested in a Signature Gathering (51–75 guests) at NSG Royal Resort. Please share details and price."
+      },
+      {
+        "id": "grand",
+        "guests": "75+ guests",
+        "name": "Grand Celebration",
+        "price": "From ₹65,000",
+        "note": "[TBD: confirm price and what it includes]",
+        "enquiryNote": "Interested in: Grand Celebration (75+ guests)",
+        "whatsappText": "Hi! I'm interested in a Grand Celebration (75+ guests) at NSG Royal Resort. Please share details and price."
+      }
+    ],
+    "planTitle": "Plan your event",
+    "planWhatsApp": "WhatsApp us"
   },
   "gallery": {
     "title": "Photos",
@@ -562,7 +684,10 @@
         "file": "assets/videos/event-highlight.mp4",
         "poster": "assets/videos/event-highlight.jpg"
       }
-    ]
+    ],
+    "nextTitle": "Loved what you see? See what's included",
+    "nextServices": "See what's included",
+    "nextCheck": "Check availability"
   },
   "contact": {
     "title": "Contact us",
@@ -575,7 +700,8 @@
     "mapNote": "Tap to load the map.",
     "formTitle": "Send us a message",
     "formNote": "Tell us what you need. We'll reply on WhatsApp or by phone.",
-    "ctaSend": "Send message"
+    "ctaSend": "Send message",
+    "servicesLink": "See what's included with your stay"
   },
   "policies": {
     "title": "Policies",
@@ -660,12 +786,6 @@
       "n3Payment": "3. Advance",
       "n4Confirmation": "4. Done",
       "step1ChooseDates": "Step 1: Choose dates and package",
-      "wholeResort": "Whole Resort",
-      "allSuitesPenthousePool": "All rooms, penthouse, pool, turf and gardens · Up to [TBD: whole resort max guests] guests",
-      "n10000AdvanceRequired": "Advance: [TBD: whole resort advance]",
-      "penthousePoolTurf": "Penthouse + Pool, Turf & Garden",
-      "rooftopSuiteWithPool": "Rooftop penthouse with pool, turf and garden · Up to [TBD: penthouse max guests] guests",
-      "n5000AdvanceRequired": "Advance: [TBD: penthouse advance]",
       "occasionEventType": "Type of event",
       "weddingReception10000": "Wedding or reception",
       "birthdayPrivateCelebration5": "Birthday or party",
@@ -913,15 +1033,6 @@
       "eventCapacity": "Events",
       "weddingsGatherings": "[TBD: event capacity]",
       "exclusiveStays": "Stays",
-      "fullPrivateAccessTo": "The whole property, only for your group",
-      "privateSwimmingPoolFloodlit": "Swimming pool and cricket turf",
-      "expansiveManicuredPartyLawns": "Gardens and open lawns",
-      "rooftopPenthouseWithPanoramic": "All rooms and the penthouse",
-      "luxuryRooftopPenthouseSuite": "The rooftop penthouse",
-      "exclusiveAccessToPrivate": "Use of the swimming pool",
-      "fullAccessToCricket": "Use of the cricket turf and gardens",
-      "groundFloorRoomsExcluded": "Ground-floor rooms not included",
-      "penthouseShort": "Penthouse",
       "signatureFacilities": "Amenities",
       "crystalClearWaterWith": "Swim and relax by the water with your group.",
       "boxCricketTurfEquipped": "Play box cricket with family and friends.",
@@ -1011,14 +1122,6 @@
     },
     "stay": {
       "packages": "Packages",
-      "wholeResort": "Whole Resort",
-      "completeEstatePrivacyIncluding": "Every room, the penthouse, the pool, the turf and the gardens. Just for your group.",
-      "tbdWholeResortRate": "[TBD: whole resort rate]",
-      "tbdWholeResortAdvance": "[TBD: whole resort advance]",
-      "penthousePoolTurfGarden": "Penthouse + Pool, Turf & Garden",
-      "privateRooftopPenthouseSuite": "The rooftop penthouse with pool, turf and garden. Ground-floor rooms not included.",
-      "tbdPenthouseRate": "[TBD: penthouse rate]",
-      "tbdPenthouseAdvance": "[TBD: penthouse advance]",
       "amenities": "Amenities",
       "swimmingPool": "Swimming Pool",
       "privateLeisurePoolWith": "Just for your group.",
@@ -1028,7 +1131,7 @@
       "manicuredEventLawnsAnd": "Lawns and a garden gazebo for functions and games.",
       "luxuryPenthouse": "Penthouse",
       "rooftopSuiteWithPanoramic": "Top-floor suite opening onto the terrace.",
-      "fullPrivateAccessTo": "The whole property for your group (Whole Resort)",
+      "fullPrivateAccessTo": "The whole property for your group",
       "privateSwimmingPoolCricket": "Swimming pool and cricket turf",
       "expansivePartyLawnsGardens": "Gardens and open lawns",
       "luxuryPenthouseSuiteAccess": "The penthouse",
@@ -1043,57 +1146,6 @@
       "musicMustEndBy": "[TBD: house rule 3]",
       "guestsAreResponsibleFor": "[TBD: house rule 4]",
       "transport": "Getting around"
-    },
-    "packages": {
-      "photosLabel": "Package photos. Swipe or use the arrows to see more.",
-      "wholeSlides": [
-        {
-          "slot": "pkg-whole",
-          "caption": "The whole resort, lit up at night"
-        },
-        {
-          "slot": "pkg-whole-rooms",
-          "caption": "Bedrooms"
-        },
-        {
-          "slot": "amenity-penthouse",
-          "caption": "The penthouse suite"
-        },
-        {
-          "slot": "amenity-pool",
-          "caption": "Swimming pool"
-        },
-        {
-          "slot": "amenity-turf",
-          "caption": "Cricket turf"
-        },
-        {
-          "slot": "amenity-gardens",
-          "caption": "Garden gazebo and lawns"
-        }
-      ],
-      "penthouseSlides": [
-        {
-          "slot": "pkg-penthouse",
-          "caption": "Penthouse bedroom with a view"
-        },
-        {
-          "slot": "penthouse-lounge",
-          "caption": "Penthouse living room"
-        },
-        {
-          "slot": "amenity-pool",
-          "caption": "Swimming pool"
-        },
-        {
-          "slot": "amenity-turf",
-          "caption": "Cricket turf"
-        },
-        {
-          "slot": "amenity-gardens",
-          "caption": "Garden and lawns"
-        }
-      ]
     },
     "amenities": {
       "heroStrapline": "Amenities",
@@ -1309,7 +1361,10 @@
       "menuIntroCta": "Ask us on WhatsApp",
       "fromLine": "Food packages from {price} per person, minimum {min}",
       "fromCta": "See food packages"
-    }
+    },
+    "nextTitle": "Planning your stay?",
+    "nextAmenities": "See all amenities",
+    "nextCheck": "Check availability"
   },
   "policiesPage": {
     "intro": "These policies explain how bookings, payments and stays work at NSG Royal Resort. Please read them before you book; making a booking means you agree to them.",
@@ -1423,5 +1478,741 @@
       }
     ],
     "sectionTitle": "Before you book"
+  },
+  "pay": {
+    "title": "Your booking",
+    "steps": [
+      {
+        "icon": "i-list",
+        "label": "Check details"
+      },
+      {
+        "icon": "i-upi",
+        "label": "Pay advance"
+      },
+      {
+        "icon": "i-check",
+        "label": "Confirmed"
+      }
+    ],
+    "greeting": "Hi {name} 👋",
+    "intro": "Check your details, then pay the advance to lock your dates.",
+    "nightsOne": "1 night",
+    "nightsMany": "{n} nights",
+    "guests": "{n} guests",
+    "specialTag": "Special price for you",
+    "payNow": "Pay now",
+    "balanceAtResort": "Balance at resort",
+    "total": "Total",
+    "advanceLabel": "Advance",
+    "heldFor": "Dates held for {time}",
+    "heldEnding": "Less than 1 hour left",
+    "heldEnded": "Hold ended",
+    "policyLabel": "I agree to the cancellation policy and house rules.",
+    "policyLink": "Read them",
+    "policyRequired": "Please tick the box first.",
+    "payBtn": "Pay {amount} with UPI",
+    "scanPrompt": "Scan with any UPI app",
+    "upiIdLabel": "UPI ID",
+    "copyUpi": "Copy UPI ID",
+    "copied": "Copied",
+    "miniSteps": [
+      "Pay in your UPI app",
+      "Copy the UTR number",
+      "Paste it here"
+    ],
+    "utrLabel": "UTR / reference number",
+    "utrExample": "Example: 412345678901",
+    "utrHelpToggle": "Where do I find this?",
+    "utrHelp": "Open your UPI app and go to History or Transactions. Tap this payment. The 12-digit number called UTR, UPI Ref No or Transaction ID is what we need.",
+    "utrError": "Please enter the 8 to 22 character UTR from your UPI app.",
+    "submitUtr": "I have paid, submit UTR",
+    "submitting": "Sending…",
+    "checkingTitle": "We’re checking your payment",
+    "checkingText": "You’ll see ‘Confirmed’ here and on WhatsApp.",
+    "refresh": "Refresh now",
+    "updatedJustNow": "Updated just now",
+    "updatedAgo": "Updated {n} s ago",
+    "confirmedTitle": "Your booking is confirmed",
+    "bookingId": "Booking ID",
+    "copyId": "Copy ID",
+    "advanceReceived": "Advance received",
+    "noAdvance": "No advance needed. Pay at the resort.",
+    "saveBtn": "Save confirmation",
+    "calendarBtn": "Add to calendar",
+    "directionsBtn": "Directions",
+    "bringTitle": "What to bring",
+    "bring": [
+      "Government photo ID for every adult (Aadhaar, passport, driving licence or voter ID)",
+      "This confirmation on your phone",
+      "The balance amount, paid at check-in",
+      "Swimwear for the pool"
+    ],
+    "closed": {
+      "EXPIRED": "This pay link has expired. Message us and we’ll make a new one.",
+      "REJECTED": "We couldn’t match this payment. Message us and we’ll sort it out.",
+      "CANCELLED": "This booking was cancelled.",
+      "NOT_FOUND": "We couldn’t find this booking. Please check the link or message us."
+    },
+    "whatsappUs": "WhatsApp us",
+    "help": "Need help?",
+    "helpMessage": "Hi, I need help with my booking {id}.",
+    "closedMessage": "Hi, this is about my booking {id}.",
+    "loading": "Loading your booking…",
+    "loadError": "We couldn’t load your booking. Please check your connection and try again.",
+    "retry": "Try again",
+    "eventNames": {
+      "wedding": "Wedding",
+      "birthday": "Birthday or party",
+      "corporate": "Corporate event",
+      "getaway": "Getaway",
+      "other": "Celebration"
+    },
+    "checkIn": "Check-in",
+    "checkOut": "Check-out",
+    "fromTime": "from {time}",
+    "untilTime": "until {time}",
+    "icsTitle": "NSG Royal Resort – {package}",
+    "confirmationTitle": "Booking confirmation"
+  },
+  "staff": {
+    "app": "NSG Staff",
+    "refresh": "Refresh",
+    "logout": "Log out",
+    "pin": {
+      "title": "Enter your PIN",
+      "hint": "6 digits",
+      "wrong": "Wrong PIN. Try again.",
+      "locked": "Too many tries. Locked for {n} min.",
+      "delete": "Delete",
+      "checking": "Checking…"
+    },
+    "home": {
+      "arriving": "Arriving today",
+      "awaiting": "Awaiting payment",
+      "toConfirm": "To confirm",
+      "balance": "Balance to collect",
+      "newLink": "New booking link",
+      "block": "Block dates",
+      "bookings": "Bookings & calendar",
+      "updated": "Updated {time}",
+      "justNow": "just now",
+      "secondsAgo": "{n} s ago",
+      "minutesAgo": "{n} min ago",
+      "loading": "Loading…",
+      "refreshed": "Refreshed"
+    },
+    "nav": {
+      "back": "Back",
+      "home": "Home",
+      "cancel": "Cancel",
+      "save": "Save",
+      "close": "Close",
+      "retry": "Retry",
+      "yes": "Yes",
+      "no": "No"
+    },
+    "status": {
+      "HOLD": "Hold",
+      "PAYMENT_SUBMITTED": "Payment submitted",
+      "CONFIRMED": "Confirmed",
+      "EXPIRED": "Expired",
+      "CANCELLED": "Cancelled",
+      "REJECTED": "Rejected",
+      "BLOCKED": "Blocked",
+      "free": "Free"
+    },
+    "source": {
+      "web": "Website",
+      "link": "Pay link",
+      "walkin": "Walk-in",
+      "block": "Block"
+    },
+    "special": "Special price",
+    "specialOff": "{amount} off",
+    "specialUp": "{amount} extra",
+    "eventNames": {
+      "wedding": "Wedding",
+      "birthday": "Birthday or party",
+      "corporate": "Corporate event",
+      "getaway": "Getaway",
+      "other": "Celebration"
+    },
+    "form": {
+      "title": "New booking link",
+      "editTitle": "Edit booking",
+      "phone": "Guest phone",
+      "phoneHint": "10 digits, any format",
+      "lookup": "Returning guest: {name} · {visits} visits",
+      "newGuest": "New guest",
+      "name": "Guest name",
+      "type": "Stay or event",
+      "stay": "Stay",
+      "event": "Event",
+      "eventDate": "Event date",
+      "dates": "Dates",
+      "datesHint": "Tap check-in, then check-out. Tap a coloured date to see who holds it.",
+      "guests": "Guests",
+      "guestsMax": "Up to {max}",
+      "guestsN": "{n} guests",
+      "food": "Food add-ons",
+      "noFood": "No food add-ons set up yet.",
+      "add": "Add",
+      "min": "min {min}",
+      "price": "Price",
+      "standard": "Standard {amount}",
+      "specialToggle": "Special price",
+      "specialField": "Agreed total (₹)",
+      "eventTotalRequired": "Events have no standard price",
+      "eventSpecialHint": "Enter the total agreed with the guest.",
+      "advance": "Advance",
+      "defaultChip": "Default {amount}",
+      "custom": "Custom amount (₹)",
+      "advanceRange": "Advance must be {min} to {max}",
+      "noAdvance": "Confirm without advance (trusted guest)",
+      "noAdvanceNote": "Why no advance? (required)",
+      "hold": "Hold for",
+      "hours": "{n}h",
+      "note": "Staff note (optional)",
+      "noteHint": "Only staff see this",
+      "check": "Check details",
+      "total": "Total",
+      "balance": "Balance",
+      "nightsOne": "1 night",
+      "nightsMany": "{n} nights",
+      "whoHolds": "{date}: {status} · {name} ({source})",
+      "blockedDay": "{date}: blocked",
+      "legend": {
+        "free": "Free",
+        "hold": "Hold",
+        "pending": "Pending",
+        "confirmed": "Confirmed",
+        "blocked": "Blocked"
+      }
+    },
+    "check": {
+      "title": "Check and create",
+      "create": "Create link",
+      "saveChanges": "Save changes",
+      "creating": "Creating…",
+      "saving": "Saving…",
+      "holdFor": "Hold for {n} hours",
+      "noAdvanceLabel": "No advance · confirm now",
+      "linkFor": "Link for {name}",
+      "confirmWalkin": "This books {name} straight away with no advance. Continue?"
+    },
+    "result": {
+      "title": "Link ready",
+      "updated": "Booking updated",
+      "send": "Send on WhatsApp",
+      "copyLink": "Copy link",
+      "copyMessage": "Copy message",
+      "copied": "Copied",
+      "another": "Create another",
+      "home": "Home",
+      "holdUntil": "Dates held till {time}",
+      "confirmedNow": "Confirmed. No advance needed."
+    },
+    "list": {
+      "title": "Bookings & calendar",
+      "all": "All",
+      "empty": "Nothing here for this filter",
+      "by": "by {name}"
+    },
+    "detail": {
+      "utr": "UTR",
+      "expected": "Expected",
+      "received": "Amount received (₹)",
+      "notes": "Guest notes",
+      "staffNote": "Staff note",
+      "priceNote": "Price note",
+      "holdTill": "Held till {time}",
+      "remaining": "Remaining",
+      "balancePaid": "Balance paid",
+      "resend": "Send again on WhatsApp",
+      "edit": "Edit",
+      "extend6": "Extend +6h",
+      "extend24": "Extend +24h",
+      "cancel": "Cancel booking",
+      "confirm": "Confirm payment",
+      "reject": "Reject",
+      "collect": "Collect balance",
+      "viewGuest": "View guest page",
+      "newSame": "New link, same details",
+      "cash": "Cash",
+      "upi": "UPI",
+      "other": "Other",
+      "amount": "Amount (₹)",
+      "confirmCancel": "Cancel {name}, {dates}?",
+      "confirmReject": "Reject the payment from {name} ({amount})?",
+      "confirmConfirm": "Confirm {name}, {dates}, received {amount}?",
+      "confirmCollect": "Collect {amount} by {method} from {name}?",
+      "confirmExtend": "Extend the hold for {name} by {n}h?",
+      "revived": "Hold revived till {time}",
+      "extended": "Hold extended till {time}",
+      "confirmed": "Confirmed",
+      "rejected": "Rejected",
+      "cancelled": "Cancelled",
+      "collected": "Collected. Remaining {amount}",
+      "conflict": "{date} is taken: {status} · {name} ({source})"
+    },
+    "block": {
+      "title": "Block dates",
+      "hint": "Tap free dates to select them. Tap a blocked date to unblock it.",
+      "note": "Note (e.g. maintenance)",
+      "save": "Block {n} dates",
+      "saved": "Blocked {n} dates",
+      "unblockAsk": "Unblock {date}?",
+      "unblocked": "Unblocked {date}"
+    },
+    "errors": {
+      "generic": "Something went wrong.",
+      "network": "No connection. Check your internet and try again."
+    }
+  },
+  "reviews": {
+    "onGoogle": "{rating} on Google",
+    "count": "{n} reviews",
+    "readAll": "Read all",
+    "seeAll": "See all reviews",
+    "more": "more",
+    "less": "less",
+    "starsLabel": "Rated {rating} out of 5",
+    "summary": "Guests rate NSG Royal Resort {rating} out of 5 on Google, from {n} reviews.",
+    "summaryNoRating": "Reviews from guests of NSG Royal Resort.",
+    "sources": {
+      "google": "Google review",
+      "whatsapp": "Shared on WhatsApp"
+    },
+    "home": {
+      "tag": "Guest reviews",
+      "title": "What our guests say"
+    },
+    "staff": {
+      "ask": "Ask for review",
+      "noUrl": "The Google review link is not set yet. Add it as googleWriteReviewUrl in the Config sheet, then try again."
+    }
+  },
+  "packageUi": {
+    "pickerLabel": "Choose a package",
+    "from": "From",
+    "perNight": "/ night",
+    "weekend": "Weekend {price}",
+    "advance": "Advance {price}",
+    "bedrooms": "{n} bedrooms",
+    "bedroomOne": "1 bedroom",
+    "bathrooms": "{n} bathrooms",
+    "bathroomOne": "1 bathroom",
+    "guests": "Up to {n} guests",
+    "popular": "Most popular",
+    "choose": "Choose this",
+    "included": "Included",
+    "notIncluded": "Not included:",
+    "onRequest": "Price on request.",
+    "askWhatsApp": "Ask us on WhatsApp",
+    "loadError": "We could not load the packages just now.",
+    "features": {
+      "bedrooms": "Bedrooms",
+      "lounge": "Lounge",
+      "penthouse-lounge": "Penthouse lounge",
+      "terrace": "Terrace",
+      "kitchen": "Kitchen",
+      "bar": "Bar",
+      "home-theatre": "Home theatre",
+      "pool": "Pool",
+      "turf": "Cricket turf",
+      "garden": "Garden",
+      "wifi": "Wi-Fi",
+      "parking": "Parking"
+    },
+    "compare": {
+      "title": "Compare packages",
+      "caption": "Package comparison",
+      "feature": "Feature",
+      "bedrooms": "Bedrooms",
+      "bathrooms": "Bathrooms",
+      "guests": "Guests included",
+      "extraGuests": "Extra guests",
+      "extraFee": "Up to {n} more, {fee} each per night",
+      "weekday": "Weekday night",
+      "weekend": "Weekend night (Fri, Sat)",
+      "advance": "Advance to book",
+      "yes": "Included",
+      "no": "Not included",
+      "unknown": "–"
+    },
+    "fewerGuests": "Fewer guests",
+    "moreGuests": "More guests",
+    "guestsHint": "Up to {max} guests",
+    "guestsHintExtra": "{max} guests included, up to {extra} more at {fee} per person per night",
+    "eventGuestsHint": "Up to 200+ event attendees",
+    "extraNote": "Extra guests: {fee} per person per night",
+    "extraLine": "Extra guests ({n} × {fee} per night)"
+  },
+  "theme": {
+    "label": "Dark mode"
+  },
+  "services": {
+    "eyebrow": "Make the most of your stay",
+    "title": "Everything you get at NSG Royal Resort",
+    "filters": {
+      "label": "Show services",
+      "all": "All",
+      "included": "Included",
+      "extras": "Add-ons"
+    },
+    "includedGroup": {
+      "title": "Included with your booking",
+      "badge": "FREE",
+      "subline": "No extra charge. Just tell us when you want it.",
+      "countText": "services included free",
+      "tag": "Included"
+    },
+    "extrasGroup": {
+      "title": "Add-ons for your celebration",
+      "badge": "EXTRA",
+      "subline": "Arranged on request. Ask us for a quote.",
+      "priceOnRequest": "Price on request",
+      "enquire": "Enquire",
+      "addToBooking": "Add to booking",
+      "select": "Add {name} to my quote",
+      "selected": "{n} selected",
+      "askQuote": "Ask for a quote on WhatsApp",
+      "clear": "Clear"
+    },
+    "whatsapp": "Hi! I'm interested in {items} at NSG Royal Resort{when}. Please share details and price.",
+    "whatsappWhen": " for {dates} · {guests} guests",
+    "and": "and",
+    "sheet": {
+      "close": "Close",
+      "appliesTo": "Applies to",
+      "duration": "Duration",
+      "topics": {
+        "stay": "Stays",
+        "event": "Events",
+        "both": "Stays and events"
+      }
+    },
+    "teaser": {
+      "title": "Included with your booking",
+      "link": "See everything included"
+    },
+    "booking": {
+      "summary": "Included free with your booking",
+      "link": "See all services"
+    },
+    "included": [
+      {
+        "id": "inc-bbq",
+        "name": "Barbecue",
+        "detail": "Grill setup by the lawn",
+        "duration": "2 hours",
+        "durationNote": null,
+        "icon": "grill",
+        "topic": "both",
+        "photoSlot": "svc-bbq"
+      },
+      {
+        "id": "inc-campfire",
+        "name": "Campfire",
+        "detail": "A warm fire under the stars",
+        "duration": "2 hours",
+        "durationNote": null,
+        "icon": "flame",
+        "topic": "both",
+        "photoSlot": "svc-campfire"
+      },
+      {
+        "id": "inc-dj",
+        "name": "DJ",
+        "detail": "Music for your party",
+        "duration": "Available",
+        "durationNote": null,
+        "icon": "music",
+        "topic": "both",
+        "photoSlot": "svc-dj"
+      },
+      {
+        "id": "inc-led",
+        "name": "LED screen",
+        "detail": "Big screen for photos or matches",
+        "duration": null,
+        "durationNote": "On request",
+        "icon": "screen",
+        "topic": "event",
+        "photoSlot": "svc-led"
+      },
+      {
+        "id": "inc-seating",
+        "name": "Tables & chairs",
+        "detail": "Round tables with chairs for your group",
+        "duration": null,
+        "durationNote": null,
+        "icon": "table",
+        "topic": "event",
+        "photoSlot": "svc-seating"
+      },
+      {
+        "id": "inc-cricket",
+        "name": "Box cricket",
+        "detail": "Play on our box cricket turf",
+        "duration": "[TBD: confirm hours]",
+        "durationNote": null,
+        "icon": "bat",
+        "topic": "stay",
+        "photoSlot": "svc-cricket"
+      }
+    ],
+    "extras": [
+      {
+        "id": "ext-tent",
+        "name": "Tent house",
+        "detail": "Tent setup on request",
+        "duration": null,
+        "durationNote": "On request",
+        "icon": "tent",
+        "topic": "event",
+        "photoSlot": "svc-tent"
+      },
+      {
+        "id": "ext-stage",
+        "name": "Stage setup",
+        "detail": "Custom stage for your event",
+        "duration": null,
+        "durationNote": "Custom",
+        "icon": "stage",
+        "topic": "event",
+        "photoSlot": "svc-stage"
+      },
+      {
+        "id": "ext-photo",
+        "name": "Photo & video",
+        "detail": "Shoot packages on enquiry",
+        "duration": null,
+        "durationNote": null,
+        "icon": "camera",
+        "topic": "both",
+        "photoSlot": "svc-photo"
+      },
+      {
+        "id": "ext-decor",
+        "name": "Decoration",
+        "detail": "Custom themes for your day",
+        "duration": null,
+        "durationNote": "Custom",
+        "icon": "sparkles",
+        "topic": "both",
+        "photoSlot": "svc-decor"
+      },
+      {
+        "id": "ext-buffet",
+        "name": "Buffet service",
+        "detail": "Menu and headcount based",
+        "duration": null,
+        "durationNote": null,
+        "icon": "dish",
+        "topic": "both",
+        "photoSlot": "svc-buffet"
+      },
+      {
+        "id": "ext-sports",
+        "name": "Sports equipment",
+        "detail": "Rent equipment for games and sports",
+        "duration": null,
+        "durationNote": null,
+        "icon": "ball",
+        "topic": "stay",
+        "photoSlot": "svc-sports"
+      }
+    ]
+  },
+  "amenitiesPage": {
+    "title": "Amenities & services",
+    "heroLine": "Free extras, paid add-ons, the outdoors, food and house rules in one place.",
+    "ctaCheck": "Check availability",
+    "jumpLabel": "Jump to a section",
+    "jump": {
+      "addons": "Add-ons",
+      "included": "Included",
+      "outdoors": "Outdoors",
+      "food": "Food",
+      "rules": "Rules"
+    },
+    "cars": {
+      "tag": "Getting around",
+      "title": "Self-drive cars for your stay",
+      "text": "Partner cars, self-drive only. Ask us for the price on WhatsApp.",
+      "cta": "See the cars"
+    },
+    "outdoorsTag": "Outdoors",
+    "outdoorsTitle": "The grounds are yours",
+    "outdoorsSubtitle": "Tap a tile to see the photos.",
+    "outdoors": {
+      "pool": {
+        "title": "Pool & leisure",
+        "text": "A private pool for your group"
+      },
+      "turf": {
+        "title": "Cricket turf",
+        "text": "Box cricket on your own turf"
+      },
+      "garden": {
+        "title": "Garden & lawn",
+        "text": "Lawns and a garden gazebo"
+      },
+      "lighting": {
+        "title": "Landscape & lighting",
+        "text": "The grounds after dark"
+      },
+      "water": {
+        "title": "Signature water feature",
+        "text": "A favourite photo spot"
+      }
+    },
+    "rulesTag": "Good to know",
+    "rulesTitle": "House rules",
+    "rules": [
+      {
+        "icon": "clock",
+        "text": "Check-in 11 AM"
+      },
+      {
+        "icon": "clock",
+        "text": "Check-out 10 AM"
+      },
+      {
+        "icon": "music",
+        "text": "Outdoor music until 10 PM"
+      },
+      {
+        "icon": "nosmoke",
+        "text": "No smoking indoors"
+      },
+      {
+        "icon": "pool",
+        "text": "Pool 7 AM to 8 PM"
+      },
+      {
+        "icon": "id",
+        "text": "Photo ID for every adult"
+      }
+    ],
+    "rulesLink": "Read all house rules",
+    "finalTitle": "Ready to make it yours?",
+    "finalWhatsApp": "WhatsApp us"
+  },
+  "carsPage": {
+    "title": "Self-drive cars",
+    "heroLine": "Partner cars for your stay. Self-drive only.",
+    "listTag": "Our cars",
+    "listTitle": "Pick a car",
+    "listSubtitle": "Ask us for the price and availability on WhatsApp.",
+    "priceNote": "Price on WhatsApp",
+    "cta": "Get the price on WhatsApp",
+    "nextTitle": "Planning your stay?",
+    "nextAmenities": "See amenities",
+    "nextCheck": "Check availability",
+    "cars": [
+      {
+        "id": "audi-a6",
+        "name": "Audi A6",
+        "type": "Luxury sedan",
+        "slot": "car-audi-a6",
+        "specs": [
+          {
+            "icon": "fuel",
+            "text": "Diesel"
+          },
+          {
+            "icon": "gear",
+            "text": "Automatic"
+          },
+          {
+            "icon": "seat",
+            "text": "5 seats"
+          },
+          {
+            "icon": "drive",
+            "text": "Sedan"
+          }
+        ],
+        "whatsappText": "Hi! I'd like the price and availability of the Audi A6 (self-drive) for my stay at NSG Royal Resort."
+      },
+      {
+        "id": "nexon-ev",
+        "name": "Tata Nexon EV",
+        "type": "Electric SUV",
+        "slot": "car-nexon-ev",
+        "specs": [
+          {
+            "icon": "fuel",
+            "text": "Electric"
+          },
+          {
+            "icon": "gear",
+            "text": "Automatic"
+          },
+          {
+            "icon": "seat",
+            "text": "5 seats"
+          },
+          {
+            "icon": "drive",
+            "text": "Compact SUV"
+          }
+        ],
+        "whatsappText": "Hi! I'd like the price and availability of the Tata Nexon EV (self-drive) for my stay at NSG Royal Resort."
+      },
+      {
+        "id": "jeep",
+        "name": "Jeep",
+        "type": "4x4 SUV",
+        "slot": "car-jeep",
+        "specs": [
+          {
+            "icon": "fuel",
+            "text": "Diesel"
+          },
+          {
+            "icon": "gear",
+            "text": "Manual"
+          },
+          {
+            "icon": "seat",
+            "text": "5 seats"
+          },
+          {
+            "icon": "drive",
+            "text": "4WD"
+          }
+        ],
+        "whatsappText": "Hi! I'd like the price and availability of the Jeep (self-drive) for my stay at NSG Royal Resort."
+      },
+      {
+        "id": "ciaz",
+        "name": "Maruti Suzuki Ciaz",
+        "type": "Sedan",
+        "slot": "car-ciaz",
+        "specs": [
+          {
+            "icon": "fuel",
+            "text": "Petrol"
+          },
+          {
+            "icon": "gear",
+            "text": "Manual"
+          },
+          {
+            "icon": "seat",
+            "text": "5 seats"
+          },
+          {
+            "icon": "drive",
+            "text": "Sedan"
+          }
+        ],
+        "whatsappText": "Hi! I'd like the price and availability of the Maruti Suzuki Ciaz (self-drive) for my stay at NSG Royal Resort."
+      }
+    ]
   }
 }

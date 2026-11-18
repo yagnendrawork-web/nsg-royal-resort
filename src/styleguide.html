@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FBF8F2" data-dark="#0B1512">
+  {{include:theme-head}}
+  {{include:api-preconnect}}
   <title>{{seo.styleguide.title}}</title>
   <meta name="description" content="{{seo.styleguide.description}}">
 
@@ -69,6 +72,7 @@
   <script src="assets/img/manifest.js" defer></script>
   <script src="js/api.js" defer></script>
   <script src="js/site.js" defer></script>
+  <script src="js/theme.js" defer></script>
 </head>
 <body>
   <!-- Header Partial -->
@@ -248,7 +252,7 @@
               <button class="chip" aria-pressed="false">Swimming Pool</button>
               <button class="chip" aria-pressed="false">Cricket Turf</button>
               <button class="chip" aria-pressed="false">Lush Gardens</button>
-              <button class="chip" aria-pressed="false">Penthouse Suite</button>
+              <button class="chip" aria-pressed="false">Penthouse</button>
             </div>
           </div>
 
@@ -398,8 +402,8 @@
           <div class="form-group">
             <label class="form-label" for="sg-select">Select Experience</label>
             <select id="sg-select" class="form-select">
-              <option>Whole Resort Stay</option>
-              <option>Penthouse Suite</option>
+              <option>Stay package</option>
+              <option>Another stay package</option>
               <option>Wedding / Reception Event</option>
             </select>
           </div>

@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FBF8F2" data-dark="#0B1512">
+  {{include:theme-head}}
+  {{include:api-preconnect}}
   <title>{{seo.stay.title}}</title>
   <meta name="description" content="{{seo.stay.description}}">
 
@@ -30,8 +33,11 @@
   <script src="js/config.js" defer></script>
   <script src="js/content.ui.js" defer></script>
   <script src="js/api.js" defer></script>
+  <script src="assets/img/manifest.js" defer></script>
   <script src="js/site.js" defer></script>
-  <!--feature:cars--><script src="js/cars.js" defer></script><!--/feature-->
+  <script src="js/packages.js" defer></script>
+  <script type="application/json" id="package-text">{{packageUi}}</script>
+  <script src="js/theme.js" defer></script>
 </head>
 <body class="page-stay">
   <!-- Accessibility Skip Link -->
@@ -41,6 +47,7 @@
   {{include:header}}
 
   <main id="main-content">
+    {{include:pkg-icons}}
     <!-- Hero Section -->
     <section class="hero-section hero-section--banner" aria-label="Stay">
       <div class="hero-backdrop" aria-hidden="true">
@@ -63,52 +70,8 @@
           <hr class="gold-hairline" aria-hidden="true">
           <p class="section-subtitle">{{stay.packagesSubtitle}}</p>
         </header>
-        <div class="packages-grid" id="stay-packages-container">
-          <article class="card-package reveal">
-            <div class="card-package-media">
-              <div class="pkg-slider">
-                <div class="pkg-slides" role="region" tabindex="0" aria-label="{{copy.packages.photosLabel}}">
-                  <!--each:copy.packages.wholeSlides--><figure class="pkg-slide">{{slot:.slot}}<figcaption class="pkg-slide-caption">{{.caption}}</figcaption></figure><!--/each-->
-                </div>
-              </div>
-            </div>
-            <div class="card-package-body">
-              <h3 class="card-package-title">{{copy.stay.wholeResort}}</h3>
-              <p class="card-package-tagline">{{copy.stay.completeEstatePrivacyIncluding}}</p>
-              <div class="card-package-pricing is-loading" data-pkg="whole">
-                <div class="price-row">
-                  <span class="price-currency">₹</span>
-                  <span class="price-val" id="stay-pkg-price-whole" data-pkg-price data-fallback-price="{{copy.stay.tbdWholeResortRate}}"></span>
-                  <span class="price-period">{{ui.labels.perNight}}</span>
-                </div>
-                <div class="price-advance" id="stay-pkg-advance-whole" data-pkg-advance data-fallback-advance="{{copy.stay.tbdWholeResortAdvance}}"></div>
-              </div>
-              <a href="book.html?type=stay&package=whole" class="btn btn-primary btn-md">{{stay.ctaBook}}</a>
-            </div>
-          </article>
-          <article class="card-package reveal">
-            <div class="card-package-media">
-              <div class="pkg-slider">
-                <div class="pkg-slides" role="region" tabindex="0" aria-label="{{copy.packages.photosLabel}}">
-                  <!--each:copy.packages.penthouseSlides--><figure class="pkg-slide">{{slot:.slot}}<figcaption class="pkg-slide-caption">{{.caption}}</figcaption></figure><!--/each-->
-                </div>
-              </div>
-            </div>
-            <div class="card-package-body">
-              <h3 class="card-package-title">{{copy.stay.penthousePoolTurfGarden}}</h3>
-              <p class="card-package-tagline">{{copy.stay.privateRooftopPenthouseSuite}}</p>
-              <div class="card-package-pricing is-loading" data-pkg="penthouse">
-                <div class="price-row">
-                  <span class="price-currency">₹</span>
-                  <span class="price-val" id="stay-pkg-price-penthouse" data-pkg-price data-fallback-price="{{copy.stay.tbdPenthouseRate}}"></span>
-                  <span class="price-period">{{ui.labels.perNight}}</span>
-                </div>
-                <div class="price-advance" id="stay-pkg-advance-penthouse" data-pkg-advance data-fallback-advance="{{copy.stay.tbdPenthouseAdvance}}"></div>
-              </div>
-              <a href="book.html?type=stay&package=penthouse" class="btn btn-primary btn-md">{{stay.ctaBook}}</a>
-            </div>
-          </article>
-        </div>
+        <div class="pk-row" data-packages="cards"><div class="pk-card pk-skel" aria-hidden="true">{{include:loader}}</div><div class="pk-card pk-skel" aria-hidden="true">{{include:loader}}</div><div class="pk-card pk-skel" aria-hidden="true">{{include:loader}}</div></div>
+        <div class="pk-compare-mount" data-packages="compare"></div>
       </div>
     </section>
 
@@ -122,7 +85,7 @@
           <p class="section-subtitle">{{stay.amenitiesSubtitle}}</p>
         </header>
         <div class="amenities-grid">
-          <article class="card-amenity reveal">
+          <article class="card-amenity reveal" id="pool">
             <div class="card-amenity-media">{{slot:amenity-pool}}</div>
             <div class="card-amenity-body">
               <h3 class="card-amenity-title">{{copy.stay.swimmingPool}}</h3>
@@ -151,6 +114,7 @@
             </div>
           </article>
           <article class="card-amenity reveal" id="amenity-rooms">
+            <span id="accommodation" aria-hidden="true"></span>
             <div class="card-amenity-media">{{slot:amenity-rooms}}</div>
             <div class="card-amenity-body">
               <h3 class="card-amenity-title">{{stay.roomsTileTitle}}</h3>
@@ -217,34 +181,6 @@
         </div>
       </div>
     </section>
-
-    <!-- Car rental (feature flagged): partner self-drive cars; live list from cars.js replaces the known cars below -->
-    <!--feature:cars-->
-    <section class="section bg-ivory" id="car-rental" aria-labelledby="cars-title">
-      <div class="container">
-        <header class="section-header reveal">
-          <span class="section-tag">{{copy.stay.transport}}</span>
-          <h2 id="cars-title" class="section-title">{{stay.carsTitle}}</h2>
-          <hr class="gold-hairline" aria-hidden="true">
-          <p class="section-subtitle">{{cars.intro}}</p>
-        </header>
-        <div class="car-cards-grid" id="cars-container">
-          <!--each:cars.known--><article class="card-car reveal">
-            <div class="card-car-media">{{slot:.slot}}</div>
-            <div class="card-car-body">
-              <h3 class="card-car-title">{{.name}}</h3>
-              <p class="car-desc">{{.description}}</p>
-              <div class="car-rate"><span class="rate-val rate-val--request">{{ui.labels.priceOnRequest}}</span></div>
-              <p class="car-terms">{{ui.cars.terms}}</p>
-              <p class="car-availability">{{ui.cars.availabilityNote}}</p>
-              <p class="car-credit">{{.credit}}</p>
-              <div class="car-actions"><a href="https://wa.me/{{config.WHATSAPP}}" class="btn btn-secondary btn-sm" target="_blank" rel="noopener noreferrer">{{ui.cars.enquireWhatsApp}}</a></div>
-            </div>
-          </article><!--/each-->
-        </div>
-      </div>
-    </section>
-    <!--/feature-->
   </main>
 
   <!-- Footer Partial -->

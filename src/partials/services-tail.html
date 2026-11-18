@@ -1,0 +1,7 @@
+<!-- Services: quote bar and the data services.js reads (part of partials/services.html) -->
+<div class="svc-bar" role="region" aria-label="{{services.extrasGroup.askQuote}}" hidden>
+  <span class="svc-bar-n" aria-live="polite"></span>
+  <a class="btn btn-primary btn-sm svc-bar-wa" href="https://wa.me/{{config.WHATSAPP}}" target="_blank" rel="noopener noreferrer" data-cta="services:quote-selected">{{services.extrasGroup.askQuote}}</a>
+  <button type="button" class="btn btn-ghost btn-sm svc-bar-clear">{{services.extrasGroup.clear}}</button>
+</div>
+<script type="application/json" id="services-text">{{services}}</script>

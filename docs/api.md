@@ -1,607 +1,451 @@
-# NSG Royal Resort – Booking Backend
+# NSG Royal Resort backend API (Code.merged.gs)
 
-> **Stack:** Google Apps Script (V8) · Google Sheets (database) · Telegram Bot (staff alerts) · MailApp (guest email)
+One Google Apps Script web app. GET uses query parameters. POST sends JSON as the body with `Content-Type: text/plain` (this avoids a CORS preflight). Every response is JSON:
 
----
-
-## Assumptions
-
-All items below were unspecified and were assumed. Every value is stored in the **Config sheet** so you can change it without touching code.
-
-| # | Assumption | Default value |
-|---|-----------|--------------|
-| 1 | Whole property is rented per booking (no room selection) | — |
-| 2 | Weekday = Sun, Mon, Tue, Wed, Thu nights; Weekend = Fri & Sat nights | — |
-| 3 | Weekday nightly rate | Rs 5,000 |
-| 4 | Weekend (Fri/Sat) nightly rate | Rs 7,000 |
-| 5 | Minimum stay | 2 nights |
-| 6 | Maximum guests per booking | 100 |
-| 7 | Hold duration before UTR submission | 20 minutes |
-| 8 | Hold duration after UTR submitted (while staff verify) | 360 minutes (6 h) |
-| 9 | Check-in is inclusive; check-out is exclusive (standard hotel model) | — |
-| 10 | Two bookings conflict if newIn < existingOut AND newOut > existingIn | — |
-| 11 | Rate limiting: max 3 HOLD attempts per phone number per hour | — |
-| 12 | UTR format: 8-22 alphanumeric characters (covers UPI/IMPS references) | — |
-| 13 | A new HOLD does NOT generate a Telegram alert by default (notifyOnNewHold = false). Alert fires only when the guest submits the UTR. | — |
-| 14 | Guest confirmation email is sent automatically on Confirm tap (if email provided) | — |
-| 15 | WhatsApp notifications are stubbed (logs only) — plug in Interakt/Wati/Meta Cloud API when ready | — |
-| 16 | The Telegram bot receives updates via webhook (not polling) | — |
-| 17 | Multiple staff can share one group chat; ALLOWED_CHAT_IDS is a comma-separated list | — |
-| 18 | Resort address configurable via Config key `resortAddress` | — |
-| 19 | Hold duration after UTR submitted (default 1440 min = 24h) | — |
-| 20 | Packages: `whole` (Rs 40k/50k) and `penthouse` (Rs 15k/20k) configurable via Config | — |
-
----
-
-## Manual Setup Steps
-
-### Step 1 - Create the Google Sheet
-
-1. Go to sheets.google.com and create a Blank spreadsheet.
-2. Name it `NSG Royal Resort - Bookings`.
-3. Note the spreadsheet URL; you will bind the script to it in Step 2.
-
----
-
-### Step 2 - Create the Apps Script project
-
-1. Inside the sheet, click **Extensions -> Apps Script**.
-2. The script editor opens, already bound to your sheet.
-3. **Delete** the default `Code.gs` content.
-4. **Copy-paste** `Code.gs` from this repository into the editor.
-5. Click **Project Settings** (gear icon) and check **Show "appsscript.json" in editor**.
-6. Open `appsscript.json` in the editor and replace its content with the `appsscript.json` from this repo.
-7. Save with Ctrl+S (or Cmd+S on Mac).
-
----
-
-### Step 3 - Set Script Properties (secrets)
-
-Script Properties are never visible to the public and are not stored in the sheet.
-
-1. In the Apps Script editor, click **Project Settings -> Script Properties**.
-2. Add the following properties:
-
-| Property key | Value | Notes |
-|---|---|---|
-| BOT_TOKEN | 7123456789:AAF... | From BotFather (see Step 5) |
-| ALLOWED_CHAT_IDS | -1001234567890 | Comma-separated chat/group IDs (see Step 6) |
-| WEBHOOK_SECRET | any random string | e.g. nsgR3s0rt-2025 -- authenticates Telegram webhook |
-| WEB_APP_URL | filled in Step 4 | The deployed web app URL |
-
----
-
-### Step 4 - Run setup functions
-
-In the Apps Script editor, select the function name from the dropdown and click Run (triangle button):
-
-```
-1. setupSheets()       -- creates all sheets and default Config rows
-2. installTriggers()   -- installs the 5-minute expiry trigger
-```
-
-After setupSheets(), go back to your sheet and verify five tabs exist:
-Bookings, Events, Config, ManualBlocks, Log.
-
----
-
-### Step 5 - Create the Telegram bot
-
-1. Open Telegram and search for @BotFather.
-2. Send `/newbot` and follow the prompts. BotFather gives you a bot token like `7123456789:AAFxyz...`.
-3. Copy the token into the BOT_TOKEN Script Property.
-
----
-
-### Step 6 - Find your Telegram chat ID
-
-**Option A - Personal chat:**
-1. Send any message to @userinfobot on Telegram.
-2. It replies with your chat ID (a positive number).
-
-**Option B - Group chat (recommended for a team):**
-1. Add your new bot to the group.
-2. Send a message in the group.
-3. Visit `https://api.telegram.org/bot<BOT_TOKEN>/getUpdates` in your browser.
-4. Look for `"chat":{"id":-100...}` -- the group's chat ID (negative, starts with -100).
-5. Copy it into ALLOWED_CHAT_IDS.
-
-For multiple staff getting independent alerts, use comma-separated IDs:
-`-1001234567890,-1009876543210`
-
----
-
-### Step 7 - Deploy as a Web App
-
-1. Click **Deploy -> New deployment**.
-2. Click the gear next to "Select type" and choose **Web app**.
-3. Settings:
-   - Execute as: Me (your Google account)
-   - Who has access: Anyone (anonymous -- required for the frontend)
-4. Click Deploy.
-5. Copy the **Web App URL** (e.g. `https://script.google.com/macros/s/AKfycb.../exec`).
-6. Paste it into the WEB_APP_URL Script Property.
-
-**Important:** Every time you edit Code.gs, you must create a New version via Deploy -> Manage deployments -> Edit -> New version -> Deploy.
-
----
-
-### Step 8 - Register the Telegram webhook
-
-Run `setWebhook()` from the Apps Script editor.
-Check the execution log -- you should see `{"ok":true,"result":true,"description":"Webhook was set"}`.
-
----
-
-### Step 9 - Test end-to-end
-
-1. Open `test.html` in your browser (double-click the file).
-2. Paste the Web App URL into the first field.
-3. Walk through all 5 steps on the page.
-4. Check Telegram -- you should receive an alert with Confirm and Reject buttons.
-5. Tap Confirm -- verify the sheet shows CONFIRMED and a confirmation email was sent (if email was supplied).
-
----
-
-### Step 10 - Block dates manually
-
-1. Open the **ManualBlocks** sheet.
-2. Add rows: blockId (any string), blockDate (YYYY-MM-DD), reason, createdAt.
-3. Those dates immediately appear as unavailable via the availability endpoint.
-
----
-
-## API Reference
-
-Base URL: `https://script.google.com/macros/s/<DEPLOYMENT_ID>/exec`
-
-### CORS Note
-
-Apps Script does NOT support custom response headers or CORS preflight (OPTIONS).
-The frontend MUST POST with Content-Type: text/plain (not application/json).
-The JSON body is read from e.postData.contents server-side.
-GET requests work normally from fetch().
-
----
-
-### GET ?action=availability
-
-Returns blocked dates in the given range and current nightly rates.
-
-**Parameters:**
-
-| Param | Type | Required | Example |
-|---|---|---|---|
-| from | YYYY-MM-DD | Yes | 2025-12-01 |
-| to | YYYY-MM-DD | Yes | 2025-12-31 |
-
-**Example request:**
-```
-GET /exec?action=availability&from=2025-12-01&to=2025-12-31
-```
-
-**Example response:**
 ```json
-{
-  "ok": true,
-  "blockedDates": ["2025-12-14", "2025-12-15", "2025-12-16"],
-  "weekdayRate": 5000,
-  "weekendRate": 7000,
-  "minNights": 2,
-  "maxGuests": 100
-}
+{ "ok": true, "...": "..." }
+{ "ok": false, "error": "Readable message", "code": "ERROR_CODE" }
 ```
 
+Contents: [Public: website](#public-website) · [Packages](#packages) · [Add-ons](#add-ons) · [Reviews](#reviews) · [Guest pay page](#guest-pay-page) · [Staff app](#staff-app) · [Telegram](#telegram) · [Sheets](#sheets) · [Error codes](#error-codes)
+
 ---
+
+## Public: website
+
+| Action | Method | Purpose |
+|---|---|---|
+| `info` | GET | Resort name, minNights, maxGuests, active packages |
+| `availability&from&to` | GET | Blocked dates in [from, to) |
+| `quote&package&checkIn&checkOut&guests[&addons]` | GET | Price for a stay |
+| `addons` | GET | Active add-ons |
+| `getByToken&t=` | GET | Pay-link booking for the guest pay page |
+| `reviews` | GET | Google rating and approved guest reviews |
+| `createBooking` | POST | Website booking (HOLD) |
+| `submitPayment` | POST | Guest sends the UPI reference (UTR) |
+| `eventEnquiry` | POST | Event enquiry (Events sheet) |
+
+`createBooking` works as before. Its response now also has `payment`, the same object `getByToken` returns, and `extraGuests` / `extraGuestsTotal` (see [Packages](#packages)).
+
+### POST submitPayment
+
+Website guests send `bookingId`; pay-link guests send `token`.
+
+```json
+{ "action": "submitPayment", "token": "3fa9c0…(32 hex)", "utr": "412345678901" }
+{ "action": "submitPayment", "bookingId": "BK-MWA83RCP-47Y7", "utr": "412345678901" }
+```
+
+```json
+{ "ok": true, "message": "Payment reference received. Staff will verify and confirm shortly.", "bookingId": "BK-MWA83RCP-47Y7" }
+```
+
+- The UTR is stored in upper case. A UTR already used on another booking gives `DUPLICATE_UTR`.
+- If the hold has run out but the dates are still free, the payment is accepted (the booking is revived). If the dates were taken, staff get a "PAID BUT DATES TAKEN" Telegram alert and the guest gets `DATES_TAKEN_CONTACT_US`.
+- The Telegram alert for pay-link bookings shows **VIA PAY LINK**, the staff member who created it, **Expected: ₹5,000** in bold, and "Special price" when set.
+
+---
+
+## Packages
+
+All package data (names, rates, advance, guest limits) comes from the **Packages** tab, cached for 5 minutes. After editing the tab, use the Sheet menu **NSG → Refresh packages** to apply it at once. Info, quote, createBooking, the staff actions, Telegram alerts, emails, WhatsApp texts and getByToken all read it. Only one booking at a time across all packages (one calendar).
+
+### GET ?action=info
+
+```json
+{ "ok": true, "resortName": "NSG Royal Resort", "minNights": 2, "maxGuests": 100,
+  "packages": [
+    { "id": "whole", "name": "Royal Estate", "subtitle": "Entire Resort",
+      "description": "The whole resort, both floors, just for your group.",
+      "includes": ["bedrooms","lounge","penthouse_lounge","terrace","kitchen","bar","home_theatre","pool","turf","garden"],
+      "excludes": [], "bedrooms": 4, "bathrooms": null, "maxGuests": 25,
+      "weekdayRate": 25000, "weekendRate": 28000, "advance": 10000,
+      "extraGuestFee": 500, "maxExtraGuests": 5, "popular": true } ] }
+```
+
+- Only active packages, sorted by `order`. A blank number is `null`; `extraGuestFee` is `null` when no extra guests are allowed (then `maxExtraGuests` is 0).
+- `includes` / `excludes` keys: bedrooms, lounge, penthouse_lounge, terrace, kitchen, bar, home_theatre, pool, turf, garden, wifi, parking.
+- Fri and Sat nights use `weekendRate`; other nights use `weekdayRate`.
+
+### Extra guests
+
+Guests above `maxGuests` are allowed up to `maxGuests + maxExtraGuests`, only when `extraGuestFee` is set. Charge = `extraGuestFee × extra guests × nights`. It is its own line, added to `total`:
+
+```json
+GET ?action=quote&package=whole&checkIn=2027-03-01&checkOut=2027-03-03&guests=28
+→ { "ok": true, "nights": 2, "breakdown": [ { "date": "2027-03-01", "rate": 25000 }, { "date": "2027-03-02", "rate": 25000 } ],
+    "package": "whole", "packageName": "Royal Estate", "baseTotal": 50000,
+    "extraGuests": { "count": 3, "fee": 500, "nights": 2, "total": 3000, "label": "Extra guests (3 × ₹500 × 2 nights)" },
+    "extraGuestsTotal": 3000, "addonsBreakdown": [], "addonsTotal": 0,
+    "total": 53000, "advance": 53000, "balance": 0 }
+```
+
+- `extraGuests` is `null` when there are none. It is also in createBooking, staffQuote, staffBooking and getByToken (`booking.extraGuests`), and shows as a line in Telegram alerts and the confirmation email.
+- Above the limit: `MAX_GUESTS` with the numbers, e.g. `{ "ok": false, "code": "MAX_GUESTS", "error": "Royal Estate allows up to 25 guests, plus up to 5 extra guests at ₹500 per guest per night (30 in total).", "maxGuests": 25, "maxExtraGuests": 5, "maxTotalGuests": 30 }`.
+- Events have no package, so no extra-guest fee applies (the agreed `specialTotal` is all-in).
+
+### Inactive packages and old bookings
+
+- A package with `active` TRUE but a blank or invalid `maxGuests`, `weekdayRate`, `weekendRate` or `advance` is treated as inactive and written once to the Log sheet. Quote/booking for an inactive package gives `INVALID_PACKAGE`.
+- Bookings that already have package `whole` or `penthouse` keep working; their names come from the tab (or the stored id if the row is gone).
+- If the Packages tab is missing, the old Config keys (`whole_weekdayRate`, `penthouse_weekdayRate`, …) are used as before.
+
+---
+
+## Add-ons
 
 ### GET ?action=addons
 
-Lists the active add-ons (food, travel, car, other) from the **Addons** sheet, sorted by `order`. Cached for 5 minutes, so sheet edits can take up to 5 minutes to show.
-
-An item with a blank or non-numeric price (or an unknown unit) is returned with `"price": null`: show it as "price on request". It cannot be booked.
-
-**Example response:**
 ```json
-{
-  "ok": true,
-  "addons": [
-    { "id": "biryani", "category": "food", "name": "Biryani package", "description": "...",
-      "unit": "per_guest", "price": 350, "maxQty": 10, "confirmRequired": true, "slot": "", "details": "" },
-    { "id": "pickup", "category": "travel", "name": "Station pickup", "description": "...",
-      "unit": "flat", "price": null, "maxQty": 10, "confirmRequired": true, "slot": "", "details": "" }
-  ]
-}
+{ "ok": true, "addons": [
+  { "id": "food-biryani", "category": "food", "name": "Biryani package",
+    "description": "Serves one person. Delivered hot to the resort.",
+    "unit": "per_qty", "price": 250, "minQty": 8, "maxQty": 100,
+    "confirmRequired": true, "slot": "food-biryani", "details": "" } ] }
 ```
-
-**How each unit is priced** (server-side only; the client never sends prices):
 
 | unit | line total |
 |---|---|
 | flat | price |
 | per_guest | price x guests |
-| per_night | price x nights (events count as 1 night) |
-| per_qty | price x qty, qty from 1 to maxQty (default 10) |
+| per_night | price x nights |
+| per_qty | price x qty, qty from `minQty` (default 1) to `maxQty` (default 10) |
 
-Only `per_qty` items use a quantity; other units are counted once. Repeated ids are merged (their quantities are added).
+`price: null` means "price on request" (shown but not bookable). Add-ons are sent as `addons=id:qty,id:qty` on quote, or `[{ "id": "food-biryani", "qty": 8 }]` in JSON bodies. A bad add-on gives `INVALID_ADDON`, e.g. `Biryani package: minimum 8, maximum 100.`
 
 ---
 
-### GET ?action=quote
+## Reviews
 
-Returns a per-night price breakdown and total. Price is always computed server-side.
+### GET ?action=reviews
 
-**Parameters:**
+```json
+{ "ok": true, "rating": 4.8, "count": 127, "url": "https://g.page/r/…",
+  "reviews": [
+    { "id": "r1", "name": "Priya S.", "rating": 5, "text": "Lovely pool and very helpful staff…",
+      "date": "2026-10-12", "source": "google", "link": "https://…", "topic": "stay", "featured": true } ] }
+```
 
-| Param | Type | Required | Example |
-|---|---|---|---|
-| checkIn | YYYY-MM-DD | Yes | 2025-12-20 |
-| checkOut | YYYY-MM-DD | Yes | 2025-12-23 |
-| guests | integer | Yes | 4 |
-| package | whole / penthouse | No (default whole) | whole |
-| addons | id:qty,id:qty | No | biryani:1,boat:2 |
+- `rating`, `count` and `url` come from Config `googleRating`, `googleReviewCount` and `googleReviewUrl`. They are `null` when blank, so hide the badge then.
+- Only rows with `approved` = TRUE are returned (text compare, so `TRUE`/`true` both count; `yes` does not).
+- Order: featured first, then `order` (low first, blank last), then newest `date`. At most 30 rows; `text` is cut to 400 characters (ending in `…`).
+- `rating` per review is a whole number 1–5, or `null` if the cell is not. Unknown `source` becomes `other`, unknown `topic` becomes `general`, and `link` is `""` unless it starts with http(s).
+- Cached for 10 minutes: Sheet edits show up within 10 minutes (running `migrateSheets()` clears the cache at once).
 
-With add-ons the response also has `baseTotal` (package total), `addonsBreakdown` [{id, name, qty, unitPrice, lineTotal}] and `addonsTotal`. Then `total = baseTotal + addonsTotal`, `advance` is unchanged and `balance = total - advance`. Any bad add-on returns `INVALID_ADDON` with a message naming the item.
+---
 
-**Example response:**
+## Guest pay page
+
+### GET ?action=getByToken&t=TOKEN
+
+For pay-link and walk-in bookings only. It never returns phone, email, UTR, createdBy or staff notes. Limited to 30 requests per hour per token.
+
 ```json
 {
   "ok": true,
-  "nights": 3,
-  "breakdown": [
-    { "date": "2025-12-20", "rate": 5000 },
-    { "date": "2025-12-21", "rate": 5000 },
-    { "date": "2025-12-22", "rate": 7000 }
-  ],
-  "total": 17000
+  "booking": {
+    "bookingId": "BK-MWA83RCP-47Y7", "firstName": "Ravi", "status": "HOLD",
+    "bookingType": "stay", "packageName": "Royal Estate", "eventType": "",
+    "checkIn": "2027-01-09", "checkOut": "2027-01-11", "nights": 2, "guests": 6,
+    "addons": [{ "name": "Biryani package", "qty": 8, "line": 2000 }],
+    "total": 40000, "advance": 5000, "advancePaid": null, "balance": 35000,
+    "isSpecialPrice": true, "holdExpiresAt": "2027-01-02T10:00:00.000Z",
+    "checkInTime": "15:00", "checkOutTime": "11:00"
+  },
+  "payment": { "mode": "upi", "upiId": "nsgresort@upi", "payeeName": "NSG Royal Resort",
+               "amount": 5000, "upiLink": "upi://pay?pa=…", "note": "Booking BK-MWA83RCP-47Y7" }
 }
 ```
 
+- `status` is HOLD, PAYMENT_SUBMITTED, CONFIRMED, EXPIRED, REJECTED or CANCELLED. A HOLD past its expiry shows as EXPIRED.
+- `payment` is null unless the status is HOLD.
+- `advancePaid` is set only when CONFIRMED.
+- An unknown token gives `NOT_FOUND`.
+
 ---
 
-### POST action=createBooking
+## Staff app
 
-Places a temporary HOLD. Returns the booking ID, amount, hold expiry, and UPI deep link.
+All staff have equal rights. Every action is a POST whose JSON body includes `"staffToken"` (never put it in a URL), except `staffLogin`.
 
-**Request body (JSON string, Content-Type: text/plain):**
+- A missing, expired or revoked token, or a deactivated staff member, gives code `AUTH`: show the PIN screen again.
+- Sessions last `staffSessionDays` (30) and are extended on every use.
+- Each session can make 120 actions per hour (`RATE_LIMITED`).
+- Every write goes to the Log sheet (who, action, bookingId, before -> after) and posts a one-line Telegram notice.
 
-| Field | Type | Required | Notes |
-|---|---|---|---|
-| action | string | Yes | "createBooking" |
-| name | string | Yes | max 100 chars |
-| phone | string | Yes | 10-digit Indian mobile |
-| email | string | No | for confirmation email |
-| guests | integer | Yes | 1 to maxGuests |
-| checkIn | YYYY-MM-DD | Yes | today or future |
-| checkOut | YYYY-MM-DD | Yes | after checkIn |
-| notes | string | No | max 500 chars |
-| addons | array | No | [{ "id": "biryani", "qty": 1 }] -- priced again under the booking lock |
-| _hp | string | No | honeypot -- must be blank |
+### staffLogin / staffMe / staffLogout
 
-With add-ons the response also has `baseTotal`, `addonsBreakdown` and `addonsTotal`.
-- **Stays:** `total = baseTotal + addonsTotal`; `amount` (the advance paid now) is unchanged; `balance = total - amount`.
-- **Events:** `total`, `balance` and `baseTotal` stay null; the add-ons and `addonsTotal` are stored and shown to staff and the guest as "to be confirmed with our team".
-
-Staff alerts, reminders, the guest email and the WhatsApp text list each add-on as "name x qty = ₹amount", marking `confirmRequired` items "(to confirm)".
-
-**Example JS fetch:**
-```js
-fetch(WEBAPP_URL, {
-  method: 'POST',
-  headers: { 'Content-Type': 'text/plain' },
-  body: JSON.stringify({
-    action: 'createBooking',
-    name: 'Ravi Kumar', phone: '9876543210',
-    email: 'ravi@example.com', guests: 4,
-    checkIn: '2025-12-20', checkOut: '2025-12-23',
-    notes: 'Anniversary trip', _hp: ''
-  })
-});
-```
-
-**Example response:**
 ```json
-{
-  "ok": true,
-  "bookingId": "BK-M5X2A1-K3P7",
-  "amount": 17000,
-  "nights": 3,
-  "breakdown": [
-    { "date": "2025-12-20", "rate": 5000 },
-    { "date": "2025-12-21", "rate": 5000 },
-    { "date": "2025-12-22", "rate": 7000 }
-  ],
-  "holdExpiresAt": "2025-12-20T07:20:00.000Z",
-  "upiLink": "upi://pay?pa=nsgresort%40upi&pn=NSG+Royal+Resort&am=17000&cu=INR&tn=Booking+BK-M5X2A1-K3P7&tr=BK-M5X2A1-K3P7",
-  "message": "Booking hold placed. Complete payment within 20 minutes."
-}
+{ "action": "staffLogin", "pin": "482915", "deviceId": "a-random-id-stored-on-the-device" }
+→ { "ok": true, "token": "40 hex chars", "name": "Asha" }
 ```
 
-**Common errors:**
+- Wrong PIN → `AUTH`.
+- 5 wrong PINs from one `deviceId` lock that device for 15 min (`LOCKED`).
+- 15 wrong PINs overall within 15 min pause all staff logins for 15 min (`LOCKED`).
+- Every login answer takes about 400 ms.
+
 ```json
-{ "ok": false, "error": "Those dates are no longer available.", "code": "DATES_UNAVAILABLE" }
-{ "ok": false, "error": "Minimum stay is 2 nights", "code": "MIN_NIGHTS" }
-{ "ok": false, "error": "Too many bookings attempted.", "code": "RATE_LIMITED" }
-{ "ok": false, "error": "Quantity for \"Boat ride\" must be between 1 and 4.", "code": "INVALID_ADDON" }
+{ "action": "staffMe", "staffToken": "…" }     → { "ok": true, "name": "Asha" }
+{ "action": "staffLogout", "staffToken": "…" } → { "ok": true, "message": "Logged out." }
 ```
 
-### GET ?action=getBooking
+### staffLookupPhone
 
-`bookingId` + `phoneLast4`. The `booking` object now also has `addons` [{id, name, qty, unitPrice, lineTotal, confirmRequired}] (empty for older bookings) and `addonsTotal` (null for older bookings).
-
----
-
-### POST action=submitPayment
-
-Marks the booking as PAYMENT_SUBMITTED and fires the Telegram alert with Confirm/Reject buttons.
-
-**Request body:**
-
-| Field | Type | Required |
-|---|---|---|
-| action | string | Yes ("submitPayment") |
-| bookingId | string | Yes |
-| utr | string | Yes (8-22 alphanumeric chars) |
-
-**Example response:**
 ```json
-{
-  "ok": true,
-  "bookingId": "BK-M5X2A1-K3P7",
-  "message": "Payment reference received. Staff will verify and confirm shortly."
-}
+{ "action": "staffLookupPhone", "staffToken": "…", "phone": "9876511111" }
+→ { "ok": true, "found": true, "name": "Ravi Kumar", "lastStay": "Jan 2027", "visits": 2 }
+→ { "ok": true, "found": false }
 ```
 
----
+`visits` counts CONFIRMED bookings. `lastStay` is the month of the latest one.
 
-### POST action=eventEnquiry
+### staffQuote (writes nothing)
 
-Saves an event enquiry to the Events sheet and sends a Telegram alert. No payment step.
-
-**Request body:**
-
-| Field | Type | Required | Notes |
-|---|---|---|---|
-| action | string | Yes | "eventEnquiry" |
-| name | string | Yes | |
-| phone | string | Yes | Indian mobile |
-| email | string | No | |
-| eventType | string | Yes | wedding, birthday, corporate, other |
-| eventDate | YYYY-MM-DD | No | |
-| guests | integer | No | |
-| notes | string | No | max 1000 chars |
-
-**Example response:**
 ```json
-{
-  "ok": true,
-  "eventId": "EV-M5X2B2-J9Q1",
-  "message": "Enquiry received! Our team will contact you within 24 hours."
-}
+{ "action": "staffQuote", "staffToken": "…", "bookingType": "stay", "package": "whole",
+  "checkIn": "2027-01-09", "checkOut": "2027-01-11", "guests": 6,
+  "addons": [{ "id": "food-biryani", "qty": 8 }], "specialTotal": 40000, "advance": 5000 }
+→ { "ok": true, "bookingType": "stay", "package": "whole", "packageName": "Royal Estate", "eventType": "",
+    "checkIn": "2027-01-09", "checkOut": "2027-01-11", "nights": 2, "guests": 6,
+    "breakdown": [{ "date": "2027-01-09", "rate": 25000 }, { "date": "2027-01-10", "rate": 20000 }],
+    "baseTotal": 45000, "extraGuests": null, "extraGuestsTotal": 0, "addonsBreakdown": [{ "id": "food-biryani", "name": "Biryani package", "qty": 8, "unitPrice": 250, "lineTotal": 2000 }],
+    "addonsTotal": 2000, "standardTotal": 47000, "finalTotal": 40000, "isSpecialPrice": true,
+    "advance": 5000, "minAdvance": 1000, "balance": 35000,
+    "warnings": ["Special price is 15% below standard (₹47,000)"] }
 ```
 
+- `specialTotal` is the agreed all-in price. It replaces the standard total (package plus extra guests plus add-ons).
+- Events: send `"bookingType": "event", "eventType": "wedding"` (wedding, birthday, corporate, getaway, other). `specialTotal` is required (`SPECIAL_TOTAL_REQUIRED`), and `standardTotal` and `baseTotal` are null. A one-day event has checkOut on the next day.
+- The default advance is the package `advance` from the Packages tab, the event's `eventAdvance_<type>` if that Config key exists, or `minAdvance`.
+- Possible warnings: "Advance is below minimum ₹1,000", "Advance is more than the total ₹…", "Special price is X% below/above standard (₹…)".
+
+### staffCreateLink
+
+```json
+{ "action": "staffCreateLink", "staffToken": "…", "requestId": "client-uuid-v4",
+  "bookingType": "stay", "package": "whole", "checkIn": "2027-01-09", "checkOut": "2027-01-11",
+  "guests": 6, "name": "Ravi Kumar", "phone": "9876511111",
+  "addons": [{ "id": "food-biryani", "qty": 8 }], "specialTotal": 40000, "priceNote": "repeat guest",
+  "advance": 5000, "holdHours": 12, "note": "Asked for early check-in" }
+→ { "ok": true, "bookingId": "BK-MWA83RCP-47Y7", "token": "32 hex chars",
+    "payUrl": "https://www.nsgroyalresort.in/pay.html?t=…",
+    "guestMessage": "Hi Ravi! Your Royal Estate at NSG Royal Resort is ready.\nSat 9 Jan – Mon 11 Jan · 6 guests\nTotal ₹40,000\nPay advance ₹5,000 here: https://…\nBalance ₹35,000 at the resort.\nDates held till Sat 9 Jan, 6:30 PM.",
+    "waUrl": "https://wa.me/919876511111?text=Hi%20Ravi…",
+    "status": "HOLD", "total": 40000, "advance": 5000, "balance": 35000,
+    "holdExpiresAt": "2027-01-02T10:00:00.000Z", "warnings": [] }
+```
+
+- **requestId**: generate one per form submission. Sending the same requestId again returns the existing booking unchanged, with `"duplicate": true`.
+- **advance** must be a whole amount from `minAdvance` to the total. Otherwise you get `INVALID_ADVANCE` with `minAdvance` and `maxAdvance`.
+- **holdHours** is 6, 12, 24 or 48. Leave it out to use Config `linkHoldHours`.
+- **Dates already taken** give `DATES_UNAVAILABLE` with what holds them: `"conflict": { "name": "Ravi", "source": "link", "status": "HOLD", "bookingId": "BK-…" }`. A manual block shows `"source": "block", "status": "BLOCKED"`.
+- **`"confirmWithoutAdvance": true`** (requires `note`): the booking is created CONFIRMED with source `walkin`, `advancePaid` 0 and balance = total. A token is still created, so the guest can view the confirmation, and the guest message uses the "confirmed" wording.
+- **Guest message wording** comes from Config `linkMessageTemplate`.
+
+### staffUpdateLink
+
+```json
+{ "action": "staffUpdateLink", "staffToken": "…", "bookingId": "BK-…",
+  "fields": { "checkIn": "2027-01-16", "checkOut": "2027-01-18", "guests": 8 } }
+→ same fields as staffCreateLink, plus "changed": ["checkIn", "checkOut", "guests", "total"], "warnings": []
+```
+
+- Only pay-link bookings in HOLD or PAYMENT_SUBMITTED can be edited.
+- Fields: `guests`, `checkIn`, `checkOut`, `package`, `eventType`, `addons`, `specialTotal` (send "" to go back to the standard price), `advance` (HOLD only), `name`, `note`, `priceNote`.
+- Totals are recomputed, new dates are re-checked (`DATES_UNAVAILABLE` + `conflict`), and the token stays the same.
+
+### staffExtendHold
+
+```json
+{ "action": "staffExtendHold", "staffToken": "…", "bookingId": "BK-…", "hours": 6 }
+→ { "ok": true, "bookingId": "BK-…", "status": "HOLD", "holdExpiresAt": "…", "revived": false }
+```
+
+- `hours` is 6 or 24.
+- A HOLD is extended from its current expiry.
+- An EXPIRED link is revived to HOLD if its dates are still free (`revived: true`); otherwise you get `DATES_UNAVAILABLE` + `conflict`.
+
+### staffConfirm / staffReject
+
+```json
+{ "action": "staffConfirm", "staffToken": "…", "bookingId": "BK-…", "amountReceived": 4000 }
+→ { "ok": true, "bookingId": "BK-…", "status": "CONFIRMED", "already": false, "advancePaid": 4000, "balance": 36000,
+    "warnings": ["Received ₹4,000 but the agreed advance was ₹5,000"] }
+{ "action": "staffReject", "staffToken": "…", "bookingId": "BK-…" }
+→ { "ok": true, "bookingId": "BK-…", "status": "REJECTED", "already": false }
+```
+
+- These use the same code as the Telegram buttons, and both are idempotent.
+- `amountReceived` defaults to the agreed advance and is stored in `advancePaid`.
+- An EXPIRED booking that has a UTR can be confirmed if its dates are free.
+- The original Telegram payment message is edited to show the outcome.
+
+### staffCollectBalance
+
+```json
+{ "action": "staffCollectBalance", "staffToken": "…", "bookingId": "BK-…", "amount": 36000, "method": "cash" }
+→ { "ok": true, "bookingId": "BK-…", "balancePaid": 36000, "balanceMethod": "cash", "remaining": 0 }
+```
+
+- CONFIRMED only.
+- `method` is cash, upi or other.
+- Repeated payments add up.
+- More than the remaining amount gives `INVALID_AMOUNT` with `remaining`.
+
+### staffCancel
+
+```json
+{ "action": "staffCancel", "staffToken": "…", "bookingId": "BK-…", "reason": "Guest changed plans" }
+→ { "ok": true, "bookingId": "BK-…", "status": "CANCELLED", "already": false }
+```
+
+- Works on HOLD, PAYMENT_SUBMITTED, CONFIRMED and EXPIRED bookings, and frees the dates.
+- The Telegram notice mentions any advance received.
+
+### staffBlock / staffUnblock
+
+```json
+{ "action": "staffBlock", "staffToken": "…", "dates": ["2027-02-08", "2027-02-09"], "note": "Maintenance" }
+→ { "ok": true, "blocked": ["2027-02-08", "2027-02-09"], "alreadyBlocked": [] }
+{ "action": "staffUnblock", "staffToken": "…", "dates": ["2027-02-08"] }
+→ { "ok": true, "unblocked": ["2027-02-08"], "notBlocked": [] }
+```
+
+- Up to 60 dates per call.
+- A date with an active booking refuses the whole request with `DATES_UNAVAILABLE` and `conflict` (including `date`).
+
+### staffList / staffCalendar
+
+Both take `from` and `to` (YYYY-MM-DD). They cover the nights in [from, to), at most 400 days.
+
+```json
+{ "action": "staffList", "staffToken": "…", "from": "2027-01-01", "to": "2027-02-01" }
+→ { "ok": true, "from": "…", "to": "…",
+    "bookings": [{ "bookingId": "BK-…", "firstName": "Ravi", "phoneLast4": "1111",
+      "checkIn": "2027-01-09", "checkOut": "2027-01-11", "nights": 2, "guests": 6,
+      "bookingType": "stay", "package": "whole", "packageName": "Royal Estate", "eventType": "",
+      "status": "CONFIRMED", "source": "link", "total": 40000, "advance": 5000, "advancePaid": 5000,
+      "balance": 35000, "balancePaid": 0, "remaining": 35000, "isSpecialPrice": true,
+      "createdBy": "Asha", "holdExpiresAt": null, "token": "…" }],
+    "blocks": [{ "blockId": "BLOCK-2027-01-20", "date": "2027-01-20", "reason": "Maintenance", "addedBy": "Asha" }] }
+
+{ "action": "staffCalendar", "staffToken": "…", "from": "2027-01-08", "to": "2027-01-12" }
+→ { "ok": true, "from": "…", "to": "…", "days": [
+    { "date": "2027-01-08", "state": "free" }, { "date": "2027-01-09", "state": "confirmed" },
+    { "date": "2027-01-10", "state": "confirmed" }, { "date": "2027-01-11", "state": "free" }] }
+```
+
+- The list includes every source (web, link, walkin) and every status.
+- Calendar states are free, hold, pending (payment submitted), confirmed and blocked. When several apply, the strongest wins: confirmed > pending > hold > blocked.
+
+### staffBooking / staffResendMessage
+
+```json
+{ "action": "staffBooking", "staffToken": "…", "bookingId": "BK-…" }
+→ { "ok": true, "booking": { …staffList fields…, "name": "Ravi Kumar", "phone": "9876511111", "email": "",
+    "utr": "UTR999888777", "notes": "", "staffNote": "…", "priceNote": "repeat guest",
+    "createdAt": "…", "confirmedAt": "…", "updatedBy": "", "updatedAt": null,
+    "balanceMethod": "", "settledAt": null, "settledBy": "", "addons": [ … ], "addonsTotal": 2000,
+    "baseTotal": 45000, "payUrl": "…", "requestId": "…" } }
+
+{ "action": "staffResendMessage", "staffToken": "…", "bookingId": "BK-…" }
+→ { "ok": true, "bookingId": "BK-…", "status": "HOLD", "payUrl": "…", "guestMessage": "…", "waUrl": "…" }
+```
+
+### staffReviewMessage
+
+```json
+{ "action": "staffReviewMessage", "staffToken": "…", "bookingId": "BK-…" }
+→ { "ok": true, "bookingId": "BK-…", "message": "Hi Ravi! Thank you for choosing NSG Royal Resort. …", "waUrl": "https://wa.me/919876511111?text=…" }
+```
+
+- Open `waUrl` to send the guest a WhatsApp thank-you message with the Config `googleWriteReviewUrl` link.
+- Confirmed bookings only (`INVALID_STATUS` otherwise). A blank `googleWriteReviewUrl` gives `NO_REVIEW_URL`, and a booking without a valid mobile gives `INVALID_PHONE`.
+- Posts the Telegram notice "Review request sent by <staff>" and writes a Log row.
+
+### Balance rule
+
+`balance` = total − advance received (when CONFIRMED) or − agreed advance (otherwise). `remaining` = balance − balancePaid. The Bookings `balanceAmount` column is kept equal to `balance`.
+
 ---
 
-### Telegram Webhook (internal)
+## Telegram
 
-`POST ?source=telegram&key=<WEBHOOK_SECRET>`
+Commands from allowed chats: `/pending`, `/list`, `/block YYYY-MM-DD [...] [reason]`, `/unblock YYYY-MM-DD [...]`, `/cancel <bookingId> [reason]`, `/help`.
 
-Handled automatically when staff tap buttons in Telegram.
-
-- Confirm: status becomes CONFIRMED, dates permanently blocked, guest confirmation email sent, Telegram message edited to show outcome, buttons removed.
-- Reject: status becomes REJECTED, dates freed immediately, Telegram message edited.
-- Both operations are idempotent -- tapping a button twice is harmless.
+- Confirm and Reject buttons work as before.
+- Messages use HTML formatting.
+- One-line notices are sent for: link created, updated, hold extended or revived, confirmed (also without advance), rejected, balance collected, cancelled, blocked/unblocked, review request sent, and login lockouts.
+- Every `reminderMinutes`, payments waiting for confirmation are reminded, up to `reminderMaxCount` times, outside quiet hours.
 
 ---
 
-## Error Code Reference
+## Sheets
+
+**Bookings.** Columns from S onward: addons, addonsTotal, baseTotal, bookingType, eventType, balanceAmount, lastReminderAt, reminderCount, source, linkToken, createdBy, updatedBy, updatedAt, priceNote, isSpecialPrice, advancePaid, balancePaid, balanceMethod, settledAt, settledBy, staffNote, requestId, extraGuests, extraGuestCharge.
+- `total` = baseTotal + extraGuestCharge + addonsTotal (or the special price).
+- `amount` is the advance agreed (what the UPI link charges).
+- Website rows leave most of these columns blank (source blank = web).
+
+**Staff.** Columns: name, pinHash, active, sessionVersion, lastLogin, failedCount, lockedUntil.
+- Only SHA-256(PIN + STAFF_PEPPER) is stored. Set PINs with the Sheet menu **Staff → Set staff PIN…** or `setStaffPin(name, pin)`.
+- PINs are 6 digits. Repeated digits (000000) and straight runs (123456) are refused, and a PIN must be unique among active staff.
+- Set `active` to FALSE to block a person immediately. Changing a PIN signs out all of that person's sessions.
+- Lockouts are tracked per device and overall, because a PIN login does not say who is trying. `failedCount` is reset on a good login, and `lockedUntil` is not used.
+
+**ManualBlocks.** Columns: blockId, blockDate, reason, createdAt, addedBy.
+
+**Packages.** Columns: id, name, subtitle, description, includes, excludes, bedrooms, bathrooms, maxGuests, weekdayRate, weekendRate, advance, extraGuestFee, maxExtraGuests, order, active, popular.
+- `migrateSheets()` creates the tab and seeds whole (Royal Estate, active), ground (Grand Suite) and penthouse (Crown Penthouse) only when it has no rows. ground and penthouse start inactive with a blank maxGuests.
+- `includes`/`excludes` are comma-separated keys. `id`, `includes`, `excludes`, `active` and `popular` are plain text.
+- Edits show up within 5 minutes, or at once with **NSG → Refresh packages** (it also lists any problems).
+
+**Reviews.** Columns: id, name (as shown, e.g. "Priya S."), rating (1–5), text, date (YYYY-MM-DD, plain text), source (google | whatsapp | other), link, topic (stay | event | food | general), approved, featured, order.
+- `migrateSheets()` creates the tab (no rows) and adds any missing column at the end. `date`, `approved` and `featured` are plain text.
+- Rows with a blank `id` are ignored. Set `approved` to TRUE to publish a review, and `featured` to TRUE to pin it to the top.
+
+**Config keys added by `migrateSheets()`.** Existing values are never changed.
+
+| Key | Default |
+|---|---|
+| linkHoldHours | 24 |
+| minAdvance | 1000 |
+| payPageUrl | `[TBD: https://www.nsgroyalresort.in/pay.html]` |
+| staffSessionDays | 30 |
+| linkMessageTemplate | Default guest message (placeholders `{name} {package} {dates} {guests} {total} {advance} {balance} {link} {holdUntil}`) |
+| checkInTime | 15:00 |
+| checkOutTime | 11:00 |
+| reminderMinutes | 30 |
+| reminderMaxCount | 12 |
+| reminderQuietStartHour | 23 |
+| reminderQuietEndHour | 7 |
+| googleRating | blank (e.g. 4.8) |
+| googleReviewCount | blank (e.g. 127) |
+| googleReviewUrl | blank (page to read Google reviews) |
+| googleWriteReviewUrl | blank ("write a review" link sent by `staffReviewMessage`) |
+
+---
+
+## Error codes
 
 | Code | Meaning |
 |---|---|
-| INVALID_DATE | Date string malformed or not a real calendar date |
-| PAST_DATE | Check-in is before today |
-| INVALID_RANGE | Check-out is not after check-in |
-| MIN_NIGHTS | Fewer nights than configured minimum |
-| MAX_GUESTS | Guests exceed configured maximum |
-| INVALID_GUESTS | Guests is zero or non-numeric |
-| INVALID_PHONE | Not a valid 10-digit Indian mobile |
-| INVALID_EMAIL | Malformed email address |
-| INVALID_UTR | UTR is not 8-22 alphanumeric characters |
-| INVALID_EVENT_TYPE | eventType not in the allowed list |
-| INVALID_ADDON | Unknown, inactive or unpriced add-on, or quantity outside 1..maxQty (message names the item) |
-| MISSING_NAME | Name field is blank |
-| MISSING_FIELD | A required field is absent |
-| DATES_UNAVAILABLE | Selected dates overlap with an existing booking |
-| HOLD_EXPIRED | The hold timed out before UTR was submitted |
-| ALREADY_SUBMITTED | UTR already submitted for this booking |
-| INVALID_STATUS | Operation not valid for the booking's current status |
-| RATE_LIMITED | More than 3 HOLD attempts from same phone in one hour |
-| HONEYPOT | Bot detected (honeypot field was filled) |
-| LOCK_TIMEOUT | Server busy -- retry in a moment |
-| FORBIDDEN | Telegram webhook called with wrong secret |
-| BAD_JSON | POST body is not valid JSON |
-| UNKNOWN_ACTION | action parameter not recognised |
-| NOT_FOUND | Booking ID does not exist |
-| SERVER_ERROR | Unhandled exception (check Log sheet for details) |
-
----
-
-## Booking Status Lifecycle
-
-```
-createBooking  ->  HOLD  ->  (hold expires)  ->  EXPIRED
-                    |
-                    +->  submitPayment  ->  PAYMENT_SUBMITTED
-                                                  |
-                             +--------------------+--------------------+
-                             v                                         v
-                         CONFIRMED                               REJECTED
-                    (dates blocked forever)               (dates freed immediately)
-```
-
-Staff can also manually set CANCELLED directly in the Bookings sheet for any booking.
-
----
-
-## Data Sheets Reference
-
-### Bookings sheet columns
-
-| Column | Description |
-|---|---|
-| bookingId | Unique ID (BK-...) |
-| createdAt | ISO 8601 timestamp |
-| name | Guest full name |
-| phone | Normalised 10-digit mobile |
-| email | Optional -- used for confirmation email |
-| guests | Number of guests |
-| checkIn | YYYY-MM-DD (inclusive) |
-| checkOut | YYYY-MM-DD (exclusive) |
-| nights | Number of nights (computed) |
-| amount | Total INR (computed server-side, never from client) |
-| status | HOLD / PAYMENT_SUBMITTED / CONFIRMED / REJECTED / EXPIRED / CANCELLED |
-| holdExpiresAt | ISO timestamp -- cleared after CONFIRMED |
-| utr | Transaction reference from guest |
-| confirmedAt | ISO timestamp -- set when staff confirms |
-| notes | Guest notes |
-| telegramMsgId | Telegram message ID used to edit the alert |
-| bookingType, packageId, eventType, totalAmount, balanceAmount, lastReminderAt, reminderCount | v2 columns (Q to W) |
-| addons | JSON list of priced add-on lines; blank on older rows |
-| addonsTotal | Sum of add-on lines |
-| baseTotal | Package total before add-ons (stays only) |
-
-### Addons sheet
-
-Created by `migrateSheets()` with three inactive `[TBD: ...]` rows. Columns are read by header name.
-
-| Column | Value |
-|---|---|
-| id | Unique id used by the API, e.g. biryani |
-| category | food / travel / car / other |
-| name, description | Shown to guests |
-| unit | flat / per_guest / per_night / per_qty |
-| price | INR, plain text. Blank = "price on request", not bookable |
-| maxQty | Highest quantity for per_qty items (default 10) |
-| active | TRUE to show and allow booking |
-| confirmRequired | TRUE marks the item "(to confirm)" in messages |
-| slot, details | Optional image slot name and extra text for the website |
-| order | Sort order in the list |
-
-### Events sheet columns
-
-| Column | Description |
-|---|---|
-| eventId | Unique ID (EV-...) |
-| createdAt | ISO timestamp |
-| name | Enquirer name |
-| phone | Mobile |
-| email | Optional |
-| eventType | wedding / birthday / corporate / getaway / other |
-| eventDate | Preferred date |
-| guests | Expected headcount |
-| notes | Details |
-| status | NEW (staff updates manually) |
-
-### Config sheet keys
-
-| Key | Default | Description |
-|---|---|---|
-| weekdayRate | 5000 | INR per night (Sun-Thu) |
-| weekendRate | 7000 | INR per night (Fri-Sat) |
-| minNights | 2 | Minimum booking duration |
-| maxGuests | 100 | Capacity cap |
-| holdMinutesBeforePayment | 20 | Hold TTL before UTR submission |
-| holdMinutesAfterPaymentSubmitted | 1440 | Hold TTL after UTR submitted (24 h) |
-| upiId | nsgresort@upi | UPI VPA |
-| payeeName | NSG Royal Resort | Shown in UPI app |
-| resortName | NSG Royal Resort | Used in emails and Telegram |
-| notifyOnNewHold | false | true = alert on every new HOLD |
-| timezone | Asia/Kolkata | Informational only |
-| maxActiveHolds | 15 | Max active HOLD rows allowed |
-| reminderMinutes | 30 | Minutes between reminder attempts |
-| reminderMaxCount | 12 | Max reminders per booking |
-| reminderQuietStartHour | 23 | Quiet hours start (hour 0-23) |
-| reminderQuietEndHour | 7 | Quiet hours end (hour 0-23) |
-| resortAddress | Nidigattu, Bheemunipatnam, Bheemili | Resort address |
-| checkInTime | 15:00 | Check-in time |
-| checkOutTime | 11:00 | Check-out time |
-| cancellationPolicy | Free cancellation up to 48 hours before check-in. | Cancellation policy |
-| pkgWholeName | Whole Resort | Whole package display name |
-| pkgWholeWeekdayRate | 40000 | Whole package weekday rate |
-| pkgWholeWeekendRate | 50000 | Whole package weekend rate |
-| pkgWholeAdvance | 10000 | Whole package advance |
-| pkgWholeMaxGuests | 100 | Whole package max guests |
-| pkgPentName | Penthouse + Pool, Turf & Garden | Penthouse package display name |
-| pkgPentWeekdayRate | 15000 | Penthouse weekday rate |
-| pkgPentWeekendRate | 20000 | Penthouse weekend rate |
-| pkgPentAdvance | 5000 | Penthouse advance |
-| pkgPentMaxGuests | 20 | Penthouse max guests |
-| eventAdvance_wedding | 10000 | Event advance - wedding |
-| eventAdvance_birthday | 5000 | Event advance - birthday |
-| eventAdvance_corporate | 5000 | Event advance - corporate |
-| eventAdvance_other | 2000 | Event advance - other |
-
-### ManualBlocks sheet
-
-Staff add rows to block specific dates:
-
-| Column | Value |
-|---|---|
-| blockId | Any unique string |
-| blockDate | YYYY-MM-DD |
-| reason | e.g. Maintenance, Private event |
-| createdAt | Date added |
-
-### Log sheet
-
-Every INFO/WARN/ERROR is appended automatically:
-
-| Column | Value |
-|---|---|
-| timestamp | When it happened |
-| level | INFO / WARN / ERROR |
-| action | Function that logged it |
-| detail | Human-readable message |
-
----
-
-## Known Limitations
-
-| Limitation | Detail |
-|---|---|
-| Apps Script execution time | Max 6 minutes per call; web app calls normally finish in under 3 s |
-| MailApp daily quota | 100 emails/day on personal Gmail; 1,500/day on Google Workspace |
-| UrlFetchApp quota | 20,000 calls/day |
-| Spreadsheet throughput | Suitable for up to ~100 concurrent users; each write acquires a global lock |
-| No real-time push | Availability calendar must be polled; Apps Script has no WebSocket support |
-| Cold starts | First request after inactivity can take 2-4 s |
-| No custom CORS headers | Frontend must use Content-Type: text/plain for POST to avoid preflight |
-| Telegram message editing | Telegram does not allow editing messages older than 48 hours |
-| Rate limiter accuracy | CacheService is script-wide; under extreme concurrency limits may be slightly inaccurate |
-| WhatsApp not implemented | sendGuestWhatsApp() is a stub -- logs only until a provider is plugged in |
-| No payment gateway | UPI payments are verified manually by staff |
-| Single US-region deployment | Expect 200-400 ms additional latency from India |
-
----
-
-## Plugging in WhatsApp Later
-
-Find `sendGuestWhatsApp` in `Code.gs`. Replace the logEntry call with a `UrlFetchApp.fetch()` to your provider (Interakt, Wati, Gupshup, or Meta Cloud API). The phone is already normalised to 10 digits -- prepend +91 for international format.
-
----
-
-## Re-deploying After Code Changes
-
-```
-Apps Script editor
-  -> Deploy
-  -> Manage deployments
-  -> Edit (pencil icon) on the current deployment
-  -> Version: "New version"
-  -> Deploy
-```
-
-The URL stays the same. No changes needed on the frontend.
-
----
-
-*Built for NSG Royal Resort, Bheemili, Andhra Pradesh, India.*
+| AUTH | Wrong PIN, or staff token missing, expired or revoked |
+| LOCKED | Too many wrong PINs (device or all logins), wait 15 min |
+| RATE_LIMITED | Too many requests (staff 120/hour/session, getByToken 30/hour/token, website 3 holds/hour/phone) |
+| INVALID_ADVANCE | Advance not a whole amount from minAdvance to the total |
+| INVALID_PRICE / SPECIAL_TOTAL_REQUIRED | Bad specialTotal / event without specialTotal |
+| INVALID_HOLD_HOURS | holdHours not 6/12/24/48, or extend hours not 6/24 |
+| NOTE_REQUIRED | confirmWithoutAdvance without a note |
+| DATES_UNAVAILABLE | Dates taken; `conflict` says by what |
+| DATES_TAKEN / DATES_TAKEN_CONTACT_US | Paid after expiry but the dates are gone (staff / guest side) |
+| DUPLICATE_UTR | UTR already used on another booking |
+| INVALID_ADDON | Unknown, inactive or unpriced add-on, or quantity outside minQty..maxQty |
+| INVALID_STATUS | Action not allowed in the booking's current status |
+| INVALID_AMOUNT / INVALID_METHOD | Bad balance payment |
+| NOT_A_LINK | Action needs a pay-link booking |
+| NO_REVIEW_URL | Config googleWriteReviewUrl is blank |
+| MAX_GUESTS | Too many guests; has `maxGuests`, `maxExtraGuests`, `maxTotalGuests` when a package is known |
+| INVALID_PACKAGE | Unknown or inactive package |
+| NOT_FOUND, MISSING_FIELD, INVALID_PHONE, INVALID_DATE, PAST_DATE, MIN_NIGHTS, PRICE_NOT_SET, LOCK_TIMEOUT | As named |

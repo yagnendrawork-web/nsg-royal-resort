@@ -6,8 +6,6 @@ Per SPEC Section 1 & 11: Never invent facts. Any unknown value is marked as an o
 |------|----------|-------------------|--------|
 | API_URL | `content/config.json` | `[TBD: API_URL]` | Awaiting Apps Script endpoint |
 | SITE_URL | `content/config.json` | `[TBD: SITE_URL]` | Awaiting deployment domain |
-| PHONE | `content/config.json` | `[TBD: PHONE]` | Awaiting primary resort phone number |
-| WHATSAPP | `content/config.json` | `[TBD: WHATSAPP]` | Awaiting resort WhatsApp contact |
 | TURNSTILE_SITE_KEY | `content/config.json` | `[TBD: TURNSTILE_SITE_KEY]` | Awaiting Cloudflare Turnstile key |
 | checkInTime | `content/site.json` (`site.checkInTime`) | `[TBD: checkInTime]` | Awaiting confirmed standard check-in hour |
 | checkOutTime | `content/site.json` (`site.checkOutTime`) | `[TBD: checkOutTime]` | Awaiting confirmed standard check-out hour |
@@ -124,3 +122,38 @@ Policies were rewritten as full, realistic terms (cancellation tiers 7+ days / 3
 | Key | Placeholder | Notes |
 |---|---|---|
 | dining.packages.notice | [TBD: X hours] | How much advance notice a food order needs. Hidden on the page until filled. |
+
+## Staff app + pay page (2026-11-10)
+- pay.bring ("What to bring" on the confirmed pay page): taken from the ID and balance rules in policiesPage, plus "Swimwear for the pool". Owner to review.
+- Backend Config payPageUrl is still "[TBD: https://www.nsgroyalresort.in/pay.html]". Set it to the live pay page (for now https://yagnendrawork-web.github.io/nsg-royal-resort/pay.html), or the links staff send will not open.
+- Mock demo data (Ravi, Priya, …, PIN 246810, token DEMO) exists only with ?mock=1 or USE_MOCK; never shown on the live site.
+
+## Home showcase + guest reviews (2026-11-17)
+- Showcase photos reuse gallery photos via "use" in tools/slots.json: showcase-private = gallery-02 (resort at night), showcase-pool = gallery-05 (birthday pool party), showcase-rooms = gallery-19 (penthouse suite). Each card keeps its own crop ("focal") and alt text. To swap a photo, change "use" and rebuild.
+- home.showcase card lines and the "Most loved" chip on Pool & leisure are new copy. Owner to approve.
+- Reviews come only from the backend (Reviews sheet rows with approved = TRUE; Config googleRating, googleReviewCount, googleReviewUrl). Nothing shows while the sheet is empty. The rating strip also needs googleRating and googleReviewCount filled in.
+- Staff "Ask for review" needs Config googleWriteReviewUrl. Until it is set, staff see a note instead of WhatsApp opening.
+- Mock reviews ("Mock Reviewer", 4.8 / 120, text starting "MOCK") appear only with USE_MOCK or ?mockreviews=1.
+
+## Three packages (2026-11-17)
+- Package names, subtitles, rooms, guest limits, rates, extra-guest fee and includes/excludes come from the backend (info). Until it is deployed, USE_MOCK shows MOCK values: whole 20 guests, ground 16, penthouse 4; ₹500 extra guest; names end in "(MOCK)".
+- Grand Suite (id ground) uses the gallery-26 photo through "use" in tools/slots.json (pkg-ground; manifest.js IMG_USE for the live cards). pkg-whole and pkg-penthouse have their own photos.
+- New generic copy: home.packages.title "Choose your stay" and subtitle, seo.stay.description, ui.errors.MAX_GUESTS, all packageUi text. Owner to review.
+- Theme: site.json theme.label "Dark mode" (toggle label). The dark palette is new; owner to approve the look.
+
+## Owner to confirm: services (2026-11-18)
+Edit in content/site.json "services" (and events.tiers); price any add-on later by adding a row with the same id (ext-tent, ext-stage, ext-photo, ext-decor, ext-buffet, ext-sports) to the Addons tab.
+- Box cricket: free for guests or hourly charge, and how many hours (shown as "[TBD: confirm hours]").
+- Do the inclusions apply to every package (including Crown Penthouse) and to events?
+- Barbecue: grill and charcoal only, or food as well?
+- LED screen: size, and what it can be used for.
+- Any time window for barbecue, campfire and DJ (for example until 10 PM).
+- Sports equipment: which items can be rented.
+- Event group sizes: tier boundaries (25–50 / 51–75 / 75+), whether "From ₹45,000 / ₹55,000 / ₹65,000" is per event, and what each includes (each card shows "[TBD: confirm price and what it includes]").
+- House-rule chips on stay.html mirror the drafted policies (check-in 11 AM, check-out 10 AM, music until 10 PM, no smoking indoors, pool 7 AM–8 PM, photo ID): approve with the policies.
+- Photos wanted (4:3, originals/<slot>.jpg): svc-bbq, svc-campfire, svc-dj, svc-led, svc-seating, svc-cricket, svc-tent, svc-stage, svc-photo, svc-decor, svc-buffet, svc-sports, amenity-lighting, amenity-water (the lighting and water-feature tiles stay hidden in production builds until their photos exist).
+
+## Cars page (2026-11-18)
+- cars.html lists Audi A6, Tata Nexon EV, Jeep and Maruti Suzuki Ciaz (site.json carsPage.cars). The type, fuel, gearbox, seats and drive details are PLACEHOLDERS added at the owner's request; replace them with the real specs (and the Jeep's model).
+- No prices on the site: each car asks for the price on WhatsApp. Photos wanted (4:3): originals/car-audi-a6.jpg, car-nexon-ev.jpg, car-jeep.jpg, car-ciaz.jpg.
+- The cars page, its nav and footer links, the Amenities car card and the car nudge all follow FEATURES.cars in config.json; the owner must still confirm permits and insurance before it goes public.

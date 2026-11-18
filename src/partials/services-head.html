@@ -1,0 +1,13 @@
+<!-- Services, full mode: built from site.json "services" (static, works without JS); services.js adds the filter,
+     detail sheet, API prices, quote selection and motion. Wrap it in [data-services="full" data-topic="..."]. -->
+<header class="section-header svc-head reveal">
+  <span class="section-tag">{{services.eyebrow}}</span>
+  <h2 class="section-title" id="services-title">{{services.title}}</h2>
+  <hr class="gold-hairline" aria-hidden="true">
+</header>
+<div class="svc-filter" role="group" aria-label="{{services.filters.label}}" hidden>
+  <span class="svc-filter-ind" aria-hidden="true"></span>
+  <button type="button" class="svc-filter-btn" data-filter="all" aria-pressed="true">{{services.filters.all}}</button>
+  <button type="button" class="svc-filter-btn" data-filter="inc" aria-pressed="false">{{services.filters.included}}</button>
+  <button type="button" class="svc-filter-btn" data-filter="ext" aria-pressed="false">{{services.filters.extras}}</button>
+</div>

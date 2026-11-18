@@ -1,5 +1,5 @@
 /* NSG ROYAL RESORT — amenities.js: hides [TBD] detail lines and lights up the
-   jump-bar link for the section in view. Loaded on amenities.html only. */
+   jump-bar link for the section in view. Loaded on amenities.html. */
 (function () {
   'use strict';
 

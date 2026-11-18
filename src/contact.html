@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FBF8F2" data-dark="#0B1512">
+  {{include:theme-head}}
+  {{include:api-preconnect}}
   <title>{{seo.contact.title}}</title>
   <meta name="description" content="{{seo.contact.description}}">
 
@@ -31,6 +34,7 @@
   <script src="js/content.ui.js" defer></script>
   <script src="js/api.js" defer></script>
   <script src="js/site.js" defer></script>
+  <script src="js/theme.js" defer></script>
 </head>
 <body class="page-contact">
   <!-- Accessibility Skip Link -->
@@ -59,6 +63,7 @@
           <span class="section-tag">{{copy.contact.contact}}</span>
           <h2 id="contact-title" class="section-title">{{contact.heroTitle}}</h2>
           <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle"><a href="stay.html#services" class="contact-services-link" data-cta="contact:services">{{contact.servicesLink}}</a></p>
         </header>
         <div class="contact-grid">
           <a href="https://wa.me/{{config.WHATSAPP}}" class="card-contact reveal" target="_blank" rel="noopener noreferrer">

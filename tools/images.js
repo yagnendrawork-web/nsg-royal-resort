@@ -35,6 +35,11 @@ async function processImages() {
   const extensions = ['.jpg', '.jpeg', '.png', '.webp'];
 
   for (const slot of slotKeys) {
+    // Slots with "use" show another slot's photo (build.js); they need no original of their own
+    if (slots[slot].use) {
+      statusTable.push({ Slot: slot, Status: 'REUSES', Source: slots[slot].use });
+      continue;
+    }
     let sourceFile = null;
     for (const ext of extensions) {
       const candidate = path.join(originalsDir, `${slot}${ext}`);
@@ -87,7 +92,10 @@ async function processImages() {
   }
 
   // Write manifest.js
-  const manifestContent = `window.NSG = window.NSG || {};\nwindow.NSG.IMG = ${JSON.stringify(manifest, null, 2)};\n`;
+  // Slots with "use" show another slot's files (NSG.img and build.js resolve them)
+  const uses = {};
+  slotKeys.forEach((s) => { if (slots[s].use) uses[s] = slots[s].use; });
+  const manifestContent = `window.NSG = window.NSG || {};\nwindow.NSG.IMG = ${JSON.stringify(manifest, null, 2)};\nwindow.NSG.IMG_USE = ${JSON.stringify(uses, null, 2)};\n`;
   fs.writeFileSync(path.join(outputDir, 'manifest.js'), manifestContent, 'utf8');
 
   // Print table

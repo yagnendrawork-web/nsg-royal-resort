@@ -62,12 +62,16 @@ window.NSG = window.NSG || {};
 
   let currentIndex = 0;
   let galleryItems = [];
+  // List mode (NSG.Lightbox.open): plain { src, alt } photos instead of the gallery grid
+  let photos = null;
+  let photoOpener = null;
+  const count = () => (photos ? photos.length : galleryItems.length);
+  const photoAt = (i) => (photos ? photos[i] : galleryItems[i] && galleryItems[i].querySelector('img'));
 
   function openLightbox(index) {
     if (!lightbox || !lightboxImg) return;
     currentIndex = index;
-    const item = galleryItems[currentIndex];
-    const imgEl = item.querySelector('img');
+    const imgEl = photoAt(currentIndex);
     if (imgEl) {
       lightboxImg.src = imgEl.src;
       lightboxImg.alt = imgEl.alt;
@@ -88,6 +92,37 @@ window.NSG = window.NSG || {};
       videoOpener.focus();
       videoOpener = null;
     }
+    photos = null;
+    if (photoOpener) {
+      photoOpener.focus();
+      photoOpener = null;
+    }
+  }
+
+  // Any page: show a list of photos ({ src, alt }) in the lightbox
+  function openPhotos(list, index, opener) {
+    if (!lightbox || !list || !list.length) return;
+    initLightbox();
+    photos = list;
+    photoOpener = opener || null;
+    openLightbox(Math.min(index || 0, list.length - 1));
+  }
+  window.NSG.Lightbox = { open: openPhotos };
+
+  // [data-photos="slot,slot"] links open those photos (the ones that exist) instead of the gallery page;
+  // data-photo-start picks the first one shown. With no photos yet the link simply stays a link.
+  function initPhotoLinks() {
+    const IMG = window.NSG.IMG || {};
+    const USE = window.NSG.IMG_USE || {};
+    document.querySelectorAll('[data-photos]').forEach((el) => {
+      const alt = (el.querySelector('strong') || el).textContent.trim();
+      const list = el.getAttribute('data-photos').split(',').map((s) => USE[s.trim()] || s.trim()).filter((f) => IMG[f]).map((f) => ({ src: `assets/img/${f}-${IMG[f][IMG[f].length - 1]}.webp`, alt: alt }));
+      if (!list.length) return;
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        openPhotos(list, Number(el.getAttribute('data-photo-start')) || 0, el);
+      });
+    });
   }
 
   // Video mode: the youtube-nocookie iframe is inserted only when the lightbox opens
@@ -142,18 +177,18 @@ window.NSG = window.NSG || {};
   }
 
   function prevImage() {
-    currentIndex = (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+    currentIndex = (currentIndex - 1 + count()) % count();
     updateLightboxImage();
   }
 
   function nextImage() {
-    currentIndex = (currentIndex + 1) % galleryItems.length;
+    currentIndex = (currentIndex + 1) % count();
     updateLightboxImage();
   }
 
   function updateLightboxImage() {
-    if (!lightboxImg || !galleryItems[currentIndex]) return;
-    const imgEl = galleryItems[currentIndex].querySelector('img');
+    const imgEl = photoAt(currentIndex);
+    if (!lightboxImg || !imgEl) return;
     if (imgEl) {
       lightboxImg.src = imgEl.src;
       lightboxImg.alt = imgEl.alt;
@@ -281,6 +316,7 @@ window.NSG = window.NSG || {};
 
   onReady(initGallery);
   onReady(initVideos);
+  onReady(initPhotoLinks);
 
   // Featured self-hosted video: muted loop while at least half visible; never autoplays
   // under reduced motion or Data Saver (poster + play button instead)

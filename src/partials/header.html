@@ -10,6 +10,7 @@
         <ul class="nav-list">
           <li><a href="stay.html" class="nav-link">{{copy.common.stay}}</a></li>
           <li><a href="amenities.html" class="nav-link">{{copy.common.amenities}}</a></li>
+          <!--feature:cars--><li><a href="cars.html" class="nav-link">{{copy.common.cars}}</a></li><!--/feature-->
           <li><a href="dining.html" class="nav-link">{{copy.common.dining}}</a></li>
           <li><a href="events.html" class="nav-link">{{copy.common.events}}</a></li>
           <li><a href="gallery.html" class="nav-link">{{copy.common.gallery}}</a></li>
@@ -18,6 +19,7 @@
         </ul>
       </div>
       <div class="mobile-menu-actions">
+        {{include:theme-toggle}}
         <a href="https://wa.me/{{config.WHATSAPP}}" class="mobile-menu-pill" target="_blank" rel="noopener noreferrer">{{contact.whatsapp}}</a>
         <a href="tel:{{config.PHONE}}" class="mobile-menu-pill">{{contact.call}}</a>
         <a href="book.html" class="btn btn-primary btn-lg mobile-cta">{{ui.buttons.bookNow}}</a>
@@ -25,6 +27,7 @@
     </nav>
 
     <div class="header-actions">
+      {{include:theme-toggle}}
       <a href="book.html" class="btn btn-primary btn-sm header-book">{{ui.buttons.bookNow}}</a>
       <button type="button" class="menu-toggle" aria-controls="header-nav" aria-expanded="false" aria-label="Toggle navigation menu">
         <span class="menu-toggle-icon" aria-hidden="true">

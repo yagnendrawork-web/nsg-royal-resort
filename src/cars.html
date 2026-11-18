@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FBF8F2" data-dark="#0B1512">
+  {{include:theme-head}}
+  {{include:api-preconnect}}
+  <title>{{seo.cars.title}}</title>
+  <meta name="description" content="{{seo.cars.description}}">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{seo.cars.title}}">
+  <meta property="og:description" content="{{seo.cars.description}}">
+  <meta property="og:image" content="assets/img/{{seo.cars.ogImage}}">
+
+  <!-- Preload Critical Fonts -->
+  <link rel="preload" href="assets/fonts/cormorant-garamond-600.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-600.woff2" as="font" type="font/woff2" crossorigin>
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/print.css" media="print">
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
+
+  <!-- Scripts -->
+  <script src="js/config.js" defer></script>
+  <script src="js/content.ui.js" defer></script>
+  <script src="js/api.js" defer></script>
+  <script src="js/site.js" defer></script>
+  <script src="js/theme.js" defer></script>
+</head>
+<body class="page-cars">
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">{{copy.common.skipToMainContent}}</a>
+
+  <!-- Header Partial -->
+  {{include:header}}
+
+  <main id="main-content">
+    {{include:svc-icons}}
+    <!-- Compact hero -->
+    <section class="hero-section hero-section--banner compact-hero" aria-label="{{carsPage.title}}">
+      <div class="hero-backdrop" aria-hidden="true">
+        {{slot:banner-cars}}
+      </div>
+      <div class="hero-overlay" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <h1 class="hero-title">{{carsPage.title}}</h1>
+        <p class="hero-lead">{{carsPage.heroLine}}</p>
+      </div>
+    </section>
+
+    <!-- The cars (site.json carsPage.cars). No prices: each card asks for the price on WhatsApp. -->
+    <section class="section bg-ivory" id="car-list" aria-labelledby="car-list-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{carsPage.listTag}}</span>
+          <h2 id="car-list-title" class="section-title">{{carsPage.listTitle}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{carsPage.listSubtitle}}</p>
+        </header>
+        <p class="car-terms">{{ui.cars.terms}}</p>
+        <ul class="car-grid">
+          <!--each:carsPage.cars--><li class="car-card reveal" id="car-{{.id}}">
+            <div class="car-card-media">{{slot:.slot}}<span class="car-type">{{.type}}</span></div>
+            <div class="car-card-body">
+              <h3 class="car-card-name">{{.name}}</h3>
+              <ul class="car-specs"><!--sub:specs--><li><svg aria-hidden="true"><use href="#svc-i-{{:icon}}"/></svg>{{:text}}</li><!--/sub--></ul>
+              <p class="car-price-note">{{carsPage.priceNote}}</p>
+              <a href="https://wa.me/{{config.WHATSAPP}}" class="btn btn-primary btn-md car-cta" target="_blank" rel="noopener noreferrer" data-wa-text="{{.whatsappText}}" data-cta="cars:whatsapp-{{.id}}">{{carsPage.cta}}</a>
+              <p class="car-avail">{{ui.cars.availabilityNote}}</p>
+            </div>
+          </li><!--/each-->
+        </ul>
+      </div>
+    </section>
+
+    <!-- Next step -->
+    <section class="next-band" aria-labelledby="cars-next-title">
+      <div class="container next-band-inner reveal">
+        <h2 id="cars-next-title" class="next-band-title">{{carsPage.nextTitle}}</h2>
+        <div class="next-band-actions">
+          <a href="book.html" class="btn btn-primary btn-lg" data-cta="cars:band-check">{{carsPage.nextCheck}}</a>
+          <a href="amenities.html" class="btn btn-secondary btn-lg" data-cta="cars:band-amenities">{{carsPage.nextAmenities}}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Partial -->
+  {{include:footer}}
+
+  <!-- Sticky Mobile Bar Partial -->
+  {{include:sticky-bar}}
+</body>
+</html>

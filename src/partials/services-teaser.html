@@ -1,0 +1,8 @@
+<!-- Services, teaser mode (static): included items as icon chips with durations, no prices -->
+<div class="svc-teaser reveal">
+  <h3 class="svc-teaser-title"><span class="svc-badge svc-badge--free"><svg aria-hidden="true"><use href="#svc-i-check"/></svg>{{services.includedGroup.badge}}</span>{{services.teaser.title}}</h3>
+  <ul class="svc-chips">
+    <!--each:services.included--><li class="svc-chip-item"><svg aria-hidden="true"><use href="#svc-i-{{.icon}}"/></svg><span>{{.name}}</span><small>{{.duration}}{{.durationNote}}</small></li><!--/each-->
+  </ul>
+  <a href="stay.html#services" class="btn btn-secondary btn-md" data-cta="home:services-teaser">{{services.teaser.link}}</a>
+</div>

@@ -308,5 +308,23 @@ window.NSG.IMG = {
   ],
   "food-desserts": [
     480
+  ],
+  "car-audi-a6": [
+    480
+  ],
+  "car-nexon-ev": [
+    480
+  ],
+  "car-jeep": [
+    480
+  ],
+  "car-ciaz": [
+    480
   ]
+};
+window.NSG.IMG_USE = {
+  "pkg-ground": "gallery-26",
+  "showcase-private": "gallery-02",
+  "showcase-pool": "gallery-05",
+  "showcase-rooms": "gallery-19"
 };

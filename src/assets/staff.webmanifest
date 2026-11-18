@@ -1,0 +1,14 @@
+{
+  "name": "NSG Staff",
+  "short_name": "NSG Staff",
+  "description": "Staff booking tools for NSG Royal Resort",
+  "start_url": "../staff.html",
+  "scope": "../",
+  "display": "standalone",
+  "background_color": "#FBF8F2",
+  "theme_color": "#0E2F28",
+  "icons": [
+    { "src": "img/logo-md.png", "sizes": "160x160", "type": "image/png" },
+    { "src": "img/logo.png", "sizes": "500x500", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

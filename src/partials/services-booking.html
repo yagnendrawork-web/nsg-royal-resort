@@ -1,0 +1,8 @@
+<!-- Services, booking mode (static): a collapsed row of included items; opening it does not move the page above -->
+<details class="svc-booking">
+  <summary><svg class="svc-booking-ic" aria-hidden="true"><use href="#svc-i-check"/></svg><span>{{services.booking.summary}}</span><svg class="svc-booking-chev" aria-hidden="true"><use href="#svc-i-chevron"/></svg></summary>
+  <ul class="svc-chips svc-chips--compact">
+    <!--each:services.included--><li class="svc-chip-item"><svg aria-hidden="true"><use href="#svc-i-{{.icon}}"/></svg><span>{{.name}}</span><small>{{.duration}}{{.durationNote}}</small></li><!--/each-->
+  </ul>
+  <a href="stay.html#included" class="svc-booking-link" data-cta="booking-row:services-included">{{services.booking.link}}</a>
+</details>

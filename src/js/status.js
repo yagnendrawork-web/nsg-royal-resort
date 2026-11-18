@@ -101,7 +101,7 @@ window.NSG = window.NSG || {};
 
   function renderBookingStatus(booking, container) {
     const statusBadge = getStatusBadgeHtml(booking.status);
-    const packageName = booking.packageName || (booking.packageId === 'whole' ? 'Whole Resort' : 'Penthouse + Pool & Turf');
+    const packageName = booking.packageName || booking.packageId || '';
     const checkInTime = '11 AM';
     const checkOutTime = '10 AM';
     // Add-ons and totals (older bookings have none, so nothing changes for them)

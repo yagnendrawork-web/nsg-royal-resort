@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FBF8F2" data-dark="#0B1512">
+  {{include:theme-head}}
+  {{include:api-preconnect}}
   <title>{{seo.book.title}}</title>
   <meta name="description" content="{{seo.book.description}}">
 
@@ -32,12 +35,18 @@
   <!-- Scripts -->
   <script src="js/config.js" defer></script>
   <script src="js/content.ui.js" defer></script>
+  <script src="assets/img/manifest.js" defer></script>
   <script src="js/api.js" defer></script>
   <script src="js/calendar.js" defer></script>
   <script src="js/payment.js" defer></script>
   <script src="js/site.js" defer></script>
   <script src="js/addons.js" defer></script>
+  <script src="js/packages.js" defer></script>
   <script src="js/book.js" defer></script>
+  <script src="js/reviews.js" defer></script>
+  <script type="application/json" id="reviews-text">{{reviews}}</script>
+  <script type="application/json" id="package-text">{{packageUi}}</script>
+  <script src="js/theme.js" defer></script>
 </head>
 <body class="page-book">
   <!-- Accessibility Skip Link -->
@@ -59,6 +68,8 @@
   </section>
 
   <main id="main-content">
+    {{include:pkg-icons}}
+    {{include:svc-icons}}
     <div class="container section">
       <header class="book-page-header book-page-header--no-top">
         <p class="section-subtitle" style="text-align:center;margin-bottom:var(--space-6);">{{book.subtitle}}</p>
@@ -96,26 +107,8 @@
 
         <!-- Stay Package Options Block -->
         <div id="stay-options-block">
-          <div class="package-selection-cards" role="radiogroup" aria-label="Select Package">
-            <label class="package-radio-card">
-              <input type="radio" name="packageSelect" value="whole" checked>
-              <div class="package-radio-title">{{copy.book.wholeResort}}</div>
-              <div class="package-radio-meta" data-pkg-guests="whole" data-text="{{copy.book.allSuitesPenthousePool}}"></div>
-              <div class="card-package-pricing book-pkg-pricing is-loading" data-pkg="whole">
-                <div class="price-row"><span class="price-currency">₹</span><span class="price-val" data-pkg-price data-fallback-price="{{copy.book.n10000AdvanceRequired}}"></span><span class="price-period">{{ui.labels.perNight}}</span></div>
-                <div class="price-advance" data-pkg-advance></div>
-              </div>
-            </label>
-            <label class="package-radio-card">
-              <input type="radio" name="packageSelect" value="penthouse">
-              <div class="package-radio-title">{{copy.book.penthousePoolTurf}}</div>
-              <div class="package-radio-meta" data-pkg-guests="penthouse" data-text="{{copy.book.rooftopSuiteWithPool}}"></div>
-              <div class="card-package-pricing book-pkg-pricing is-loading" data-pkg="penthouse">
-                <div class="price-row"><span class="price-currency">₹</span><span class="price-val" data-pkg-price data-fallback-price="{{copy.book.n5000AdvanceRequired}}"></span><span class="price-period">{{ui.labels.perNight}}</span></div>
-                <div class="price-advance" data-pkg-advance></div>
-              </div>
-            </label>
-          </div>
+          <!-- Compact package cards from api.getInfo(), rendered by book.js with packages.js (radios: name="packageSelect") -->
+          <div class="pk-row pk-row--compact" id="package-picker" role="radiogroup" aria-label="{{packageUi.pickerLabel}}"><div class="pk-card pk-card--compact pk-skel" aria-hidden="true">{{include:loader}}</div><div class="pk-card pk-card--compact pk-skel" aria-hidden="true">{{include:loader}}</div><div class="pk-card pk-card--compact pk-skel" aria-hidden="true">{{include:loader}}</div></div>
         </div>
 
         <!-- Event Options Block (Hidden initially) -->
@@ -129,23 +122,31 @@
               <option value="other">{{copy.book.otherCelebration2000}}</option>
             </select>
           </div>
-          <p class="text-muted" style="font-size:0.875rem;">
-            {{book.eventEnquiryLinkText}}
-          </p>
+          <!-- Events are enquiry-only: no online booking or price here (book.js hides the calendar and summary) -->
+          <div class="event-enquiry-panel">
+            <h3 class="event-enquiry-title">{{book.eventEnquiry.title}}</h3>
+            <p>{{book.eventEnquiry.text}}</p>
+            <a href="events.html#enquire-form" class="btn btn-primary btn-lg" id="event-enquire-link">{{book.eventEnquiry.cta}}</a>
+          </div>
         </div>
 
         <!-- Step 1 Layout: Calendar + Summary -->
-        <div class="book-step-1-layout">
+        <div class="book-step-1-layout" id="book-step-1-layout">
           <div>
             <!-- Calendar Component Container -->
-            <div id="calendar-container"></div>
+            <div id="calendar-container"><div class="nsg-loading" role="status">{{include:loader}}<p>{{book.calendarLoading}}</p></div></div>
             <div id="calendar-error-msg" class="form-error" style="display:none; margin-top:8px;" role="alert"></div>
 
             <!-- Guests Input -->
             <div class="form-group" style="margin-top:var(--space-6); max-width:320px;">
               <label for="guests-input" class="form-label">{{copy.book.numberOfGuests}}</label>
-              <input type="number" id="guests-input" class="form-input" min="1" max="100" value="2">
+              <div class="sf-stepper">
+                <button type="button" class="sf-step" data-guests-step="-1" aria-label="{{packageUi.fewerGuests}}">&minus;</button>
+                <input type="number" id="guests-input" class="form-input" min="1" max="100" value="2" inputmode="numeric">
+                <button type="button" class="sf-step" data-guests-step="1" aria-label="{{packageUi.moreGuests}}">+</button>
+              </div>
               <small class="text-muted" id="guests-max-hint" style="display:block; margin-top:4px;">{{copy.book.maxCapacityApplies}}</small>
+              <p class="extra-guest-note" id="extra-guest-note" role="status" hidden></p>
             </div>
 
             <!-- Optional add-ons ("Make it special"): shown once dates are chosen and items exist -->
@@ -174,6 +175,11 @@
                 {{copy.book.continueToGuestDetails}}
               </button>
             </div>
+
+            {{include:services-booking}}
+
+            <!-- Guest review (reviews.js): stay or event topic follows the toggle; nothing shows without reviews -->
+            <div class="rv-book" data-reviews="card" data-topic-from="bookingType"></div>
           </div>
         </div>
       </section>
@@ -221,7 +227,7 @@
                 <input type="checkbox" id="policy-checkbox" required style="margin-top:3px; min-height:20px; min-width:20px;">
                 <span>
                   {{copy.book.iHaveReadAnd}}
-                  <a href="policies.html#cancellation" target="_blank" rel="noopener" style="color:var(--emerald-900); text-decoration:underline;">{{copy.book.cancellationPolicy}}</a>
+                  <a href="policies.html#cancellation" target="_blank" rel="noopener" style="color:var(--heading); text-decoration:underline;">{{copy.book.cancellationPolicy}}</a>
                   {{copy.book.andResortHouseRules}}
                 </span>
               </label>
@@ -241,7 +247,7 @@
       <!-- STEP 3: Advance Payment (UPI) -->
       <section id="book-step-3" class="book-step" style="display:none;" aria-labelledby="step3-heading">
         <h2 id="step3-heading" class="visually-hidden" style="position:absolute;left:-9999px;">{{copy.book.step3AdvancePayment}}</h2>
-        <div id="step3-payment-container"></div>
+        <div id="step3-payment-container" data-reviews-watch></div>
       </section>
 
       <!-- STEP 4: Request Received / Confirmation -->

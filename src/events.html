@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FBF8F2" data-dark="#0B1512">
+  {{include:theme-head}}
+  {{include:api-preconnect}}
   <title>{{seo.events.title}}</title>
   <meta name="description" content="{{seo.events.description}}">
 
@@ -30,9 +33,14 @@
   <script src="js/config.js" defer></script>
   <script src="js/content.ui.js" defer></script>
   <script src="js/api.js" defer></script>
+  <script src="assets/img/manifest.js" defer></script>
   <script src="js/site.js" defer></script>
   <script src="js/events.js" defer></script>
+  <script src="js/services.js" defer></script>
   <script src="js/gallery.js" defer></script>
+  <script src="js/reviews.js" defer></script>
+  <script type="application/json" id="reviews-text">{{reviews}}</script>
+  <script src="js/theme.js" defer></script>
 </head>
 <body class="page-events">
   <!-- Accessibility Skip Link -->
@@ -42,6 +50,8 @@
   {{include:header}}
 
   <main id="main-content">
+    {{include:pkg-icons}}
+    {{include:svc-icons}}
     <!-- Hero -->
     <section class="hero-section hero-section--banner" aria-label="Events">
       <div class="hero-backdrop" aria-hidden="true">
@@ -53,6 +63,31 @@
         <h1 class="hero-title">{{events.heroTitle}}</h1>
         <p class="hero-lead">{{copy.events.heroLead}}</p>
         <a href="#enquire-form" class="btn btn-primary btn-lg">{{copy.events.planCta}}</a>
+      </div>
+    </section>
+
+    <!-- Group sizes: display-only starting prices (site.json events.tiers; owner to confirm) -->
+    <section class="section bg-sand" id="group-sizes" aria-labelledby="tiers-title">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{events.tiersTag}}</span>
+          <h2 id="tiers-title" class="section-title">{{events.tiersTitle}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{events.tiersSubtitle}}</p>
+        </header>
+        <ul class="tier-grid">
+          <!--each:events.tiers--><li class="tier-card reveal">
+            <span class="tier-guests"><svg class="pk-ic" aria-hidden="true"><use href="#pk-i-guests"/></svg>{{.guests}}</span>
+            <h3 class="tier-name">{{.name}}</h3>
+            <p class="tier-price">{{.price}}</p>
+            <p class="tier-note">{{.note}}</p>
+            <div class="tier-actions">
+              <a href="#enquire-form" class="btn btn-primary btn-md" data-tier="{{.enquiryNote}}" data-cta="events:tier-hold-{{.id}}">{{events.holdDate}}</a>
+              <a href="https://wa.me/{{config.WHATSAPP}}" class="btn btn-secondary btn-md" target="_blank" rel="noopener noreferrer" data-wa-text="{{.whatsappText}}" data-cta="events:tier-whatsapp-{{.id}}">{{events.tierWhatsApp}}</a>
+            </div>
+          </li><!--/each-->
+        </ul>
+        <a href="#event-types" class="tier-next" data-cta="events:tier-next">{{events.tiersNext}}<svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
       </div>
     </section>
 
@@ -157,6 +192,25 @@
     </section>
 
     <!-- Past celebrations: photo mosaic (frames without a photo are dropped in production builds) -->
+
+    <!-- Services for events: event items first -->
+    <section class="section bg-ivory svc" id="services" aria-labelledby="services-title" data-services="full" data-topic="event">
+      <div class="container">
+        {{include:services}}
+      </div>
+    </section>
+
+    <!-- Next step -->
+    <section class="next-band" aria-labelledby="ev-next-title">
+      <div class="container next-band-inner reveal">
+        <h2 id="ev-next-title" class="next-band-title">{{events.planTitle}}</h2>
+        <div class="next-band-actions">
+          <a href="#enquire-form" class="btn btn-primary btn-lg" data-cta="events:band-hold">{{events.holdDate}}</a>
+          <a href="https://wa.me/{{config.WHATSAPP}}" class="btn btn-secondary btn-lg" target="_blank" rel="noopener noreferrer" data-wa-text="{{events.tiers.0.whatsappText}}" data-cta="events:band-whatsapp">{{events.planWhatsApp}}</a>
+        </div>
+      </div>
+    </section>
+
     <section class="section ev-past" id="past-events" aria-labelledby="past-events-title">
       <div class="container">
         <header class="section-header reveal">
@@ -202,6 +256,7 @@
           <ol class="ev-steps-list">
             <!--each:copy.events.steps--><li><strong>{{.title}}</strong><span>{{.text}}</span></li><!--/each-->
           </ol>
+          <div class="rv-ev" data-reviews="card" data-topic="event"></div>
         </aside>
         <form id="event-enquiry-form" class="enquiry-form" novalidate>
           <div class="form-group">

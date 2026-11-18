@@ -95,6 +95,46 @@ if (fs.existsSync(videoDir)) {
   });
 }
 
+// Private pages (guest pay page, staff app): noindex, not in the sitemap, not linked from any page; staff manifest present
+const sitemap = fs.existsSync(path.join(distDir, 'sitemap.xml')) ? fs.readFileSync(path.join(distDir, 'sitemap.xml'), 'utf8') : '';
+['pay.html', 'staff.html'].forEach((page) => {
+  const file = path.join(distDir, page);
+  if (!fs.existsSync(file)) return errors.push(`${page}: missing from dist`);
+  if (!/<meta name="robots" content="noindex/.test(fs.readFileSync(file, 'utf8'))) errors.push(`${page}: no robots noindex meta`);
+  if (sitemap.includes(page)) errors.push(`sitemap.xml: lists private page ${page}`);
+  htmlFiles.forEach((f) => {
+    if (path.basename(f) !== page && new RegExp(`href="${page.replace('.', '\\.')}`).test(fs.readFileSync(f, 'utf8'))) errors.push(`${path.relative(distDir, f)}: links to private page ${page}`);
+  });
+});
+['header.html', 'footer.html'].forEach((p) => {
+  const partial = fs.readFileSync(path.join(rootDir, 'src', 'partials', p), 'utf8');
+  if (/pay\.html|staff\.html/.test(partial)) errors.push(`partials/${p}: links to pay.html or staff.html`);
+});
+const manifestFile = path.join(distDir, 'assets', 'staff.webmanifest');
+if (!fs.existsSync(manifestFile)) errors.push('assets/staff.webmanifest: missing');
+else {
+  try {
+    const mf = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+    (mf.icons || []).forEach((i) => { if (!fs.existsSync(path.join(distDir, 'assets', i.src))) errors.push(`staff.webmanifest: icon ${i.src} not found`); });
+  } catch (e) {
+    errors.push('assets/staff.webmanifest: invalid JSON');
+  }
+}
+
+// Booking-flow scripts: every #id they look up must still exist in their page (or be created by the script itself)
+[['book.js', 'book.html'], ['calendar.js', 'book.html'], ['payment.js', 'book.html'], ['status.js', 'status.html']].forEach(([js, page]) => {
+  const code = fs.readFileSync(path.join(distDir, 'js', js), 'utf8');
+  const html = fs.readFileSync(path.join(distDir, page), 'utf8');
+  const ids = new Set();
+  const re = /getElementById\(['"]([\w-]+)['"]\)|querySelector(?:All)?\(['"]#([\w-]+)['"]\)/g;
+  let mm;
+  while ((mm = re.exec(code)) !== null) ids.add(mm[1] || mm[2]);
+  ids.forEach((id) => {
+    const attr = `id="${id}"`;
+    if (!html.includes(attr) && !code.includes(attr)) errors.push(`${js}: #${id} not found in ${page}`);
+  });
+});
+
 // --launch: block publishing while any [TBD: ...] placeholder is still visible in dist
 if (process.argv.includes('--launch')) {
   htmlFiles.forEach((file) => {

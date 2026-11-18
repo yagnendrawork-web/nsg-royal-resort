@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FBF8F2" data-dark="#0B1512">
+  {{include:theme-head}}
+  {{include:api-preconnect}}
   <title>{{seo.home.title}}</title>
   <meta name="description" content="{{seo.home.description}}">
 
@@ -36,6 +39,9 @@
   <script src="js/api.js" defer></script>
   <script src="js/site.js" defer></script>
   <script src="js/motion.js" defer></script>
+  <script type="application/json" id="reviews-text">{{reviews}}</script>
+  <script type="application/json" id="package-text">{{packageUi}}</script>
+  <script src="js/theme.js" defer></script>
 </head>
 <body class="page-home">
   <!-- Accessibility Skip Link -->
@@ -46,11 +52,14 @@
 
 
   <main id="main-content">
+    {{include:pkg-icons}}
+    {{include:svc-icons}}
     <!-- Line icons (one inline sprite) -->
     <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
       <symbol id="i-key" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M17 6l3 3M14 9l2 2"/></symbol>
       <symbol id="i-pool" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><path d="M2 18c2 0 3-1.5 5-1.5s3 1.5 5 1.5 3-1.5 5-1.5 3 1.5 5 1.5M2 14c2 0 3-1.5 5-1.5s3 1.5 5 1.5 3-1.5 5-1.5 3 1.5 5 1.5M8 12V5a2 2 0 0 1 4 0M16 12V5a2 2 0 0 0-4 0"/></symbol>
       <symbol id="i-events" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round"><circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M12 3v3M8.5 4.5 10 6.5M15.5 4.5 14 6.5"/></symbol>
+      <symbol id="i-bed" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19V6M3 15h18v4M21 15v-3a3 3 0 0 0-3-3h-7v6"/><circle cx="7" cy="11.5" r="2"/></symbol>
     </svg>
 
     <!-- 1. Hero -->
@@ -71,7 +80,6 @@
         <div class="hero-date-bar">
           <form class="date-bar-form" action="book.html" method="get">
             <input type="hidden" name="type" value="stay">
-            <input type="hidden" name="package" value="whole">
             <div class="date-bar-field">
               <label for="check-in-date" class="date-bar-label">{{ui.labels.checkIn}}</label>
               <input type="date" id="check-in-date" name="checkIn" class="date-bar-input" required>
@@ -94,7 +102,8 @@
             <button type="submit" class="btn btn-primary btn-md">{{ui.buttons.checkAvailability}}</button>
           </form>
         </div>
-        <p class="hero-reassure">{{home.hero.reassure}}</p>
+        <!-- reviews.js is loaded by motion.js after parsing (Home JS budget); the strip shows only with a rating and reviews -->
+        <p class="hero-reassure" data-lazy-script="js/reviews.js">{{home.hero.reassure}}<span data-reviews="strip" data-variant="dark"></span></p>
       </div>
     </section>
 
@@ -107,9 +116,29 @@
           <hr class="gold-hairline" aria-hidden="true">
           <p class="section-subtitle">{{home.exclusive.subtitle}}</p>
         </header>
-        <ul class="ex-points">
-          <!--each:home.exclusive.points--><li class="ex-point reveal"><svg class="ex-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#{{.icon}}"/></svg><h3 class="ex-title">{{.title}}</h3><p class="ex-text">{{.text}}</p></li><!--/each-->
+        <ul class="sc-row reveal" data-showcase>
+          <!--each:home.showcase.cards--><li class="sc-item sc-item--{{.variant}}"><a href="{{.href}}" class="sc-card">{{slot:.slot}}<span class="sc-chip">{{.chip}}</span><span class="sc-body"><svg class="sc-icon" viewBox="0 0 24 24" aria-hidden="true"><use href="#{{.icon}}"/></svg><h3 class="sc-title">{{.title}}</h3><span class="sc-line">{{.line}}</span></span></a></li><!--/each-->
         </ul>
+        <div class="sc-dots" aria-hidden="true"><span></span><span></span><span></span></div>
+      </div>
+    </section>
+
+    <!-- 2b. Explore the property: photo mosaic, opens the lightbox (gallery.js, loaded when near) -->
+    <section class="section bg-ivory home-mosaic" aria-labelledby="mosaic-title" data-lazy-script="js/gallery.js">
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{home.mosaic.tag}}</span>
+          <h2 id="mosaic-title" class="section-title">{{home.mosaic.title}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+          <p class="section-subtitle">{{home.mosaic.subtitle}}</p>
+        </header>
+        <div class="mosaic reveal">
+          <!--each:home.mosaic.items--><a href="gallery.html" class="mosaic-tile" data-photos="{{home.mosaic.photos}}" data-photo-start="{{.i}}" data-cta="home:mosaic-photo">{{slot:.slot}}<span class="mosaic-cap">{{.caption}}</span></a><!--/each-->
+        </div>
+        <div class="section-cta mosaic-ctas reveal">
+          <a href="gallery.html" class="btn btn-primary btn-md" data-cta="home:mosaic-gallery">{{home.mosaic.galleryCta}}</a>
+          <a href="stay.html#services" class="btn btn-secondary btn-md" data-cta="home:mosaic-services">{{home.mosaic.servicesCta}}</a>
+        </div>
       </div>
     </section>
 
@@ -122,115 +151,9 @@
           <hr class="gold-hairline" aria-hidden="true">
           <p class="section-subtitle">{{home.packages.subtitle}}</p>
         </header>
-        <div class="packages-grid" id="home-packages-container">
-          <!-- Package 1: Whole Resort -->
-          <article class="card-package reveal">
-            <div class="card-package-media">
-              <div class="pkg-slider">
-                <div class="pkg-slides" role="region" tabindex="0" aria-label="{{copy.packages.photosLabel}}">
-                  <!--each:copy.packages.wholeSlides--><figure class="pkg-slide">{{slot:.slot}}<figcaption class="pkg-slide-caption">{{.caption}}</figcaption></figure><!--/each-->
-                </div>
-              </div>
-            </div>
-            <div class="card-package-body">
-              <h3 class="card-package-title">{{home.packages.whole.name}}</h3>
-              <p class="card-package-tagline">{{home.packages.whole.tagline}}</p>
-
-              <div class="card-package-pricing is-loading" data-pkg="whole">
-                <div class="price-row">
-                  <span class="price-from">{{ui.labels.fromRate}}</span>
-                  <span class="price-currency">₹</span>
-                  <span class="price-val" id="pkg-price-whole" data-pkg-price data-fallback-price="{{home.packages.whole.fallbackPrice}}"></span>
-                  <span class="price-period">{{ui.labels.perNight}}</span>
-                </div>
-                <div class="price-advance" id="pkg-advance-whole" data-pkg-advance data-fallback-advance="{{home.packages.whole.fallbackAdvance}}"></div>
-              </div>
-
-              <ul class="card-package-inclusions" aria-label="Inclusions">
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  <span>{{copy.home.fullPrivateAccessTo}}</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  <span>{{copy.home.privateSwimmingPoolFloodlit}}</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  <span>{{copy.home.expansiveManicuredPartyLawns}}</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  <span>{{copy.home.rooftopPenthouseWithPanoramic}}</span>
-                </li>
-              </ul>
-
-              <a href="book.html?type=stay&package=whole" class="btn btn-primary btn-md">{{ui.buttons.select}} {{home.packages.whole.name}}</a>
-            </div>
-          </article>
-
-          <!-- Package 2: Penthouse + Pool, Turf & Garden -->
-          <article class="card-package reveal">
-            <div class="card-package-media">
-              <div class="pkg-slider">
-                <div class="pkg-slides" role="region" tabindex="0" aria-label="{{copy.packages.photosLabel}}">
-                  <!--each:copy.packages.penthouseSlides--><figure class="pkg-slide">{{slot:.slot}}<figcaption class="pkg-slide-caption">{{.caption}}</figcaption></figure><!--/each-->
-                </div>
-              </div>
-            </div>
-            <div class="card-package-body">
-              <h3 class="card-package-title">{{home.packages.penthouse.name}}</h3>
-              <p class="card-package-tagline">{{home.packages.penthouse.tagline}}</p>
-
-              <div class="card-package-pricing is-loading" data-pkg="penthouse">
-                <div class="price-row">
-                  <span class="price-from">{{ui.labels.fromRate}}</span>
-                  <span class="price-currency">₹</span>
-                  <span class="price-val" id="pkg-price-penthouse" data-pkg-price data-fallback-price="{{home.packages.penthouse.fallbackPrice}}"></span>
-                  <span class="price-period">{{ui.labels.perNight}}</span>
-                </div>
-                <div class="price-advance" id="pkg-advance-penthouse" data-pkg-advance data-fallback-advance="{{home.packages.penthouse.fallbackAdvance}}"></div>
-              </div>
-
-              <ul class="card-package-inclusions" aria-label="Inclusions">
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  <span>{{copy.home.luxuryRooftopPenthouseSuite}}</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  <span>{{copy.home.exclusiveAccessToPrivate}}</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  <span>{{copy.home.fullAccessToCricket}}</span>
-                </li>
-                <li>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  <span>{{copy.home.groundFloorRoomsExcluded}}</span>
-                </li>
-              </ul>
-
-              <a href="book.html?type=stay&package=penthouse" class="btn btn-primary btn-md">{{ui.buttons.select}} {{copy.home.penthouseShort}}</a>
-            </div>
-          </article>
-        </div>
+        <!-- Cards rendered from api.getInfo() by packages.js (loaded when near the screen; Home JS budget) -->
+        <div class="pk-row" data-packages="cards" data-lazy-script="js/packages.js"><div class="pk-card pk-skel" aria-hidden="true">{{include:loader}}</div><div class="pk-card pk-skel" aria-hidden="true">{{include:loader}}</div><div class="pk-card pk-skel" aria-hidden="true">{{include:loader}}</div></div>
+        {{include:services-teaser}}
       </div>
     </section>
 
@@ -296,7 +219,19 @@
       </div>
     </section>
 
-    <!-- 7. How booking works -->
+    <!-- 7. Guest reviews ribbon (reviews.js): stays hidden unless approved reviews exist -->
+    <section class="section bg-sand" aria-labelledby="reviews-title" data-reviews-section hidden>
+      <div class="container">
+        <header class="section-header reveal">
+          <span class="section-tag">{{reviews.home.tag}}</span>
+          <h2 id="reviews-title" class="section-title">{{reviews.home.title}}</h2>
+          <hr class="gold-hairline" aria-hidden="true">
+        </header>
+        <div data-reviews="ribbon"></div>
+      </div>
+    </section>
+
+    <!-- 8. How booking works -->
     <section class="section bg-ivory" aria-labelledby="booking-steps-title">
       <div class="container">
         <header class="section-header reveal">
@@ -311,8 +246,6 @@
       </div>
     </section>
 
-    <!-- 8. Reviews: omitted until real reviews exist in site.json -->
-
     <!-- 9. Location (click-to-load map) -->
     <section class="section bg-sand" aria-labelledby="location-title">
       <div class="container">
@@ -324,7 +257,7 @@
         </header>
         <div class="location-layout">
           <div class="location-info reveal">
-            <h3 style="font-size: 1.5rem; color: var(--emerald-900);">{{copy.home.nsgRoyalResort}}</h3>
+            <h3 style="font-size: 1.5rem; color: var(--heading);">{{copy.home.nsgRoyalResort}}</h3>
             <p class="location-address">
               {{home.location.address}}
             </p>

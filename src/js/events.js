@@ -65,8 +65,10 @@
     tablist.classList.add('is-ready');
   }
 
-  // 3. "Plan this event" pre-selects the event type in the enquiry form
+  // 3. "Plan this event" (and ?event=<type> from book.html) pre-selects the event type in the enquiry form
   const typeSelect = document.getElementById('ev-event-type');
+  const fromBook = new URLSearchParams(window.location.search).get('event');
+  if (typeSelect && fromBook && typeSelect.querySelector('option[value="' + fromBook.replace(/[^a-z-]/g, '') + '"]')) typeSelect.value = fromBook;
   document.querySelectorAll('[data-plan]').forEach(function (btn) {
     btn.addEventListener('click', function () {
       if (!typeSelect) return;
@@ -82,7 +84,13 @@
     });
   });
 
-  // 4. Soft spotlight that follows the pointer over past-celebration photos
+  // 4. Group sizes: "Hold your date" puts the tier in the enquiry note (website events are enquiry-only)
+  const notes = document.getElementById('ev-notes');
+  document.querySelectorAll('[data-tier]').forEach(function (a) {
+    a.addEventListener('click', function () { if (notes && !notes.value.trim()) notes.value = a.getAttribute('data-tier'); });
+  });
+
+  // 5. Soft spotlight that follows the pointer over past-celebration photos
   if (window.matchMedia('(hover: hover) and (prefers-reduced-motion: no-preference)').matches) {
     document.querySelectorAll('.ev-moment').forEach(function (fig) {
       fig.addEventListener('pointermove', function (e) {
