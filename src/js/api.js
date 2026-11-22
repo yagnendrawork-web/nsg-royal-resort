@@ -58,6 +58,7 @@ window.NSG = window.NSG || {};
     return formatDateStr(d);
   }
 
+  /* MOCK:START */
   // -------------------------------------------------------------------------
   // Mock Storage (localStorage under nsg_mock_*)
   // -------------------------------------------------------------------------
@@ -185,6 +186,7 @@ window.NSG = window.NSG || {};
     { id: 'food-desserts', category: 'food', name: 'Mock Desserts package', description: 'Mock item for testing.', unit: 'per_qty', price: 250, minQty: 8, maxQty: 100, confirmRequired: true, slot: 'food-desserts', details: '' }
   ];
 
+  /* MOCK:END */
   function normaliseAddon(a) {
     a = a || {};
     const price = a.price === null || a.price === undefined || a.price === '' ? null : Number(a.price);
@@ -227,6 +229,7 @@ window.NSG = window.NSG || {};
       .join(',');
   }
 
+  /* MOCK:START */
   // Mock-mode pricing that mirrors the server rules (docs/api.md, GET addons)
   function mockPriceAddons(addons, guests, nights) {
     const merged = {};
@@ -258,7 +261,7 @@ window.NSG = window.NSG || {};
     }
     return { lines: lines, total: total };
   }
-
+  /* MOCK:END */
 
   // -------------------------------------------------------------------------
   // 1. GET info
@@ -346,9 +349,11 @@ window.NSG = window.NSG || {};
 
   async function loadInfo() {
     const config = getConfig();
+    /* MOCK:START */
     if (config.USE_MOCK) {
       return { ok: true, data: Object.assign({}, MOCK_INFO, { packages: normalisePackages(MOCK_INFO.packages) }) };
     }
+    /* MOCK:END */
 
     try {
       const url = `${config.API_URL}?action=info`;
@@ -391,11 +396,13 @@ window.NSG = window.NSG || {};
   // -------------------------------------------------------------------------
   async function getAvailability(from, to) {
     const config = getConfig();
+    /* MOCK:START */
     if (config.USE_MOCK) {
       const allBlocked = getSeedBlockedNights();
       const filtered = allBlocked.filter((d) => (!from || d >= from) && (!to || d <= to));
       return { ok: true, data: filtered };
     }
+    /* MOCK:END */
 
     try {
       const url = `${config.API_URL}?action=availability&from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`;
@@ -428,6 +435,7 @@ window.NSG = window.NSG || {};
   // -------------------------------------------------------------------------
   async function getQuote(packageId, checkIn, checkOut, guests, addons) {
     const config = getConfig();
+    /* MOCK:START */
     if (config.USE_MOCK) {
       const pkg = MOCK_INFO.packages.find((p) => p.id === packageId) || MOCK_INFO.packages[0];
       const start = parseDateStr(checkIn);
@@ -485,6 +493,7 @@ window.NSG = window.NSG || {};
         }
       };
     }
+    /* MOCK:END */
 
     try {
       const addonsQuery = addonsParam(addons);
@@ -531,10 +540,6 @@ window.NSG = window.NSG || {};
   }
 
   // -------------------------------------------------------------------------
-  // 4. GET offers
-  // -------------------------------------------------------------------------
-
-  // -------------------------------------------------------------------------
   // 5. POST createBooking
   // -------------------------------------------------------------------------
   async function createBooking(payload) {
@@ -546,6 +551,7 @@ window.NSG = window.NSG || {};
     if (cleanPhone.startsWith('91') && cleanPhone.length === 12) cleanPhone = cleanPhone.slice(2);
     if (cleanPhone.startsWith('0') && cleanPhone.length === 11) cleanPhone = cleanPhone.slice(1);
 
+    /* MOCK:START */
     if (config.USE_MOCK) {
       // Honeypot check
       if (payload._hp && String(payload._hp).trim() !== '') {
@@ -684,6 +690,7 @@ window.NSG = window.NSG || {};
         }
       };
     }
+    /* MOCK:END */
 
     try {
       const body = {
@@ -760,6 +767,7 @@ window.NSG = window.NSG || {};
     const token = ref && typeof ref === 'object' ? String(ref.token || '') : '';
     const bookingId = ref && typeof ref === 'object' ? String(ref.bookingId || '') : String(ref || '');
 
+    /* MOCK:START */
     if (config.USE_MOCK) {
       // UTR containing "DUP" -> DUPLICATE_UTR
       if (cleanUtr.toUpperCase().includes('DUP')) {
@@ -794,6 +802,7 @@ window.NSG = window.NSG || {};
         }
       };
     }
+    /* MOCK:END */
 
     try {
       let res;
@@ -837,6 +846,7 @@ window.NSG = window.NSG || {};
     const cleanId = String(bookingId || '').trim();
     const cleanLast4 = String(phoneLast4 || '').trim();
 
+    /* MOCK:START */
     if (config.USE_MOCK) {
       const allBookings = getMockBookings();
       const booking = allBookings[cleanId];
@@ -881,6 +891,7 @@ window.NSG = window.NSG || {};
         }
       };
     }
+    /* MOCK:END */
 
     try {
       const url = `${config.API_URL}?action=getBooking&bookingId=${encodeURIComponent(cleanId)}&phoneLast4=${encodeURIComponent(cleanLast4)}`;
@@ -938,6 +949,7 @@ window.NSG = window.NSG || {};
     if (cleanPhone.startsWith('91') && cleanPhone.length === 12) cleanPhone = cleanPhone.slice(2);
     if (cleanPhone.startsWith('0') && cleanPhone.length === 11) cleanPhone = cleanPhone.slice(1);
 
+    /* MOCK:START */
     if (config.USE_MOCK) {
       if (!/^\d{10}$/.test(cleanPhone)) {
         return { ok: false, code: 'INVALID_PHONE', error: getErrorMessage('INVALID_PHONE') };
@@ -955,6 +967,7 @@ window.NSG = window.NSG || {};
         }
       };
     }
+    /* MOCK:END */
 
     try {
       let res;
@@ -1004,9 +1017,11 @@ window.NSG = window.NSG || {};
   // -------------------------------------------------------------------------
   async function addons() {
     const config = getConfig();
+    /* MOCK:START */
     if (config.USE_MOCK) {
       return { ok: true, data: MOCK_ADDONS.map(normaliseAddon) };
     }
+    /* MOCK:END */
     try {
       let res;
       try {
@@ -1054,6 +1069,7 @@ window.NSG = window.NSG || {};
   const REVIEWS_KEY = 'nsg_reviews';
   let reviewsPromise = null;
 
+  /* MOCK:START */
   // MOCK only (USE_MOCK, or ?mockreviews=1 for one page view): sample rows, never shown as real reviews
   function mockReviews() {
     const today = getTodayKolkataStr();
@@ -1066,6 +1082,7 @@ window.NSG = window.NSG || {};
       }))
     };
   }
+  /* MOCK:END */
 
   function normaliseReviews(json) {
     const num = (v) => (v === null || v === undefined || v === '' || !isFinite(Number(v)) ? null : Number(v));
@@ -1086,7 +1103,9 @@ window.NSG = window.NSG || {};
 
   function reviews() {
     const config = getConfig();
+    /* MOCK:START */
     if (config.USE_MOCK || /[?&]mockreviews=1\b/.test(location.search)) return Promise.resolve({ ok: true, data: mockReviews() });
+    /* MOCK:END */
     try {
       const hit = JSON.parse(sessionStorage.getItem(REVIEWS_KEY));
       if (hit && Date.now() - hit.at < 600000) return Promise.resolve({ ok: true, data: hit.data });
@@ -1128,8 +1147,12 @@ window.NSG = window.NSG || {};
   };
 
   // Mock internals shared with api.link.js (pay-link and staff actions); unused in live mode
+  // (today/addDays are live display helpers for api.link.js, so they stay outside the MOCK block)
   window.NSG.api._mock = {
+    /* MOCK:START */
     bookings: getMockBookings, save: saveMockBookings, blocks: getMockBlocks, saveBlocks: saveMockBlocks,
-    info: MOCK_INFO, addons: MOCK_ADDONS, price: mockPriceAddons, today: getTodayKolkataStr, addDays: addDays
+    info: MOCK_INFO, addons: MOCK_ADDONS, price: mockPriceAddons,
+    /* MOCK:END */
+    today: getTodayKolkataStr, addDays: addDays
   };
 })();

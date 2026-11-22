@@ -139,7 +139,7 @@ window.NSG = window.NSG || {};
   function viewPin() {
     const keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '', '0', 'del'];
     app.innerHTML = `<section class="sf-pin${st.pinShake ? ' is-shake' : ''}">
-      <img src="assets/img/logo-md.png" alt="" width="72" height="72" class="sf-pin-logo">
+      <img src="assets/img/logo-md.png" alt="" width="72" height="72" class="sf-pin-logo" decoding="async">
       <h2>${esc(t.pin.title)}</h2>
       <div class="sf-dots" aria-label="${esc(t.pin.hint)}">${[0, 1, 2, 3, 4, 5].map((i) => `<span class="${i < st.pin.length ? 'is-on' : ''}"></span>`).join('')}</div>
       <p class="sf-pin-msg${st.pinError ? ' is-err' : ''}" role="alert">${esc(st.pinError || (st.pinBusy ? t.pin.checking : t.pin.hint))}</p>

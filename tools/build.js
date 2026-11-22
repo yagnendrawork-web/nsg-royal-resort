@@ -84,7 +84,7 @@ function renderSlot(slotName, slotsRegistry, imgAssetsDir) {
       srcset = existingWidths.map((w) => `assets/img/${file}-${w}.webp ${w}w`).join(', ');
     }
 
-    const priorityAttrs = isPriority ? 'fetchpriority="high"' : 'loading="lazy"';
+    const priorityAttrs = isPriority ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
     const srcsetAttr = srcset ? ` srcset="${srcset}"` : '';
     const sizesAttr = ` sizes="${sizes}"`;
 
@@ -109,17 +109,19 @@ function renderSlot(slotName, slotsRegistry, imgAssetsDir) {
 function renderPreload(slotName, slotsRegistry, imgAssetsDir) {
   const slot = slotsRegistry[slotName];
   if (!slot || !slot.priority) return '';
-  const candidate480 = path.join(imgAssetsDir, `${slotName}-480.webp`);
-  const candidate960 = path.join(imgAssetsDir, `${slotName}-960.webp`);
+  const file = slot.use || slotName; // same files renderSlot uses
+  const candidate480 = path.join(imgAssetsDir, `${file}-480.webp`);
+  const candidate960 = path.join(imgAssetsDir, `${file}-960.webp`);
 
   if (!fs.existsSync(candidate480) && !fs.existsSync(candidate960)) {
     return '';
   }
 
   const widths = [480, 960, 1600];
-  const existingWidths = widths.filter((w) => fs.existsSync(path.join(imgAssetsDir, `${slotName}-${w}.webp`)));
-  const imagesrcset = existingWidths.map((w) => `assets/img/${slotName}-${w}.webp ${w}w`).join(', ');
-  const href = `assets/img/${slotName}-${existingWidths[0] || 960}.webp`;
+  const existingWidths = widths.filter((w) => fs.existsSync(path.join(imgAssetsDir, `${file}-${w}.webp`)));
+  const imagesrcset = existingWidths.map((w) => `assets/img/${file}-${w}.webp ${w}w`).join(', ');
+  // href matches the <img src> fallback (960 when present), for browsers without imagesrcset
+  const href = `assets/img/${file}-${existingWidths.includes(960) ? 960 : existingWidths[0]}.webp`;
   const sizes = slot.sizes || '100vw';
 
   return `<link rel="preload" as="image" href="${href}" imagesrcset="${imagesrcset}" imagesizes="${sizes}">`;
@@ -229,6 +231,9 @@ function processTemplate(content, siteData, configData, slotsRegistry, imgAssets
     const isEnabled = configData.FEATURES && !!configData.FEATURES[featureName];
     return isEnabled ? inner : '';
   });
+
+  // 2a. <!--dev-->...<!--/dev-->: dev-only markup (e.g. the styleguide link), dropped in --prod builds
+  content = content.replace(/<!--dev-->([\s\S]*?)<!--\/dev-->/g, (match, inner) => (isProd ? '' : inner));
 
   // 2b. <!--ifslot:NAME-->...<!--/ifslot-->: dropped in --prod builds while slot NAME has no photo
   content = content.replace(/<!--ifslot:([a-zA-Z0-9_-]+)-->([\s\S]*?)<!--\/ifslot-->/g, (match, slotName, inner) => {
@@ -373,6 +378,228 @@ function trimDistJs(jsDir) {
   });
 }
 
+/**
+ * --prod CSS minify, no dependencies: drops comments, collapses whitespace, removes it only next to { } ; ,
+ * and drops the ; before }. Strings and url(...) are copied untouched; all other spacing (combinators,
+ * calc(), media queries) is kept as one space, so meaning never changes.
+ */
+function minifyCss(css) {
+  const SEP = '{};,';
+  let out = '';
+  let space = false;
+  let i = 0;
+  while (i < css.length) {
+    const c = css[i];
+    if (c === '/' && css[i + 1] === '*') {
+      const end = css.indexOf('*/', i + 2);
+      i = end < 0 ? css.length : end + 2;
+      space = true;
+      continue;
+    }
+    if (/\s/.test(c)) { space = true; i++; continue; }
+    if (space && out && !SEP.includes(out[out.length - 1]) && !SEP.includes(c)) out += ' ';
+    space = false;
+    if (c === '"' || c === "'") {
+      let j = i + 1;
+      while (j < css.length && css[j] !== c) j += css[j] === '\\' ? 2 : 1;
+      out += css.slice(i, j + 1);
+      i = j + 1;
+      continue;
+    }
+    if (/^url\(/i.test(css.slice(i, i + 4))) {
+      const end = css.indexOf(')', i);
+      out += css.slice(i, end + 1);
+      i = end + 1;
+      continue;
+    }
+    if (c === '}' && out.endsWith(';')) out = out.slice(0, -1);
+    out += c;
+    i++;
+  }
+  return out + '\n';
+}
+
+/**
+ * --prod: removes the mock layer from shipped JS. Blocks between lines holding exactly
+ * MOCK:START and MOCK:END comments (api.js, api.link.js) stay in src for local testing.
+ * Fails the build if markers are unbalanced or the result no longer parses.
+ */
+function stripMockBlocks(jsDir) {
+  fs.readdirSync(jsDir).filter((name) => name.endsWith('.js')).forEach((name) => {
+    const file = path.join(jsDir, name);
+    const code = fs.readFileSync(file, 'utf8');
+    if (!code.includes('MOCK:START')) return;
+    const out = code.replace(/^[ \t]*\/\* MOCK:START \*\/[ \t]*\n[\s\S]*?^[ \t]*\/\* MOCK:END \*\/[ \t]*\n/gm, '');
+    try {
+      if (/MOCK:(START|END)/.test(out)) throw new Error('unbalanced MOCK:START / MOCK:END markers');
+      new vm.Script(out, { filename: name });
+    } catch (e) {
+      console.error(`[MOCK] could not strip mock code from js/${name}: ${e.message}`);
+      process.exit(1);
+    }
+    fs.writeFileSync(file, out, 'utf8');
+    console.log(`[MOCK] stripped mock code from js/${name}: ${code.length} -> ${out.length} bytes`);
+  });
+}
+
+/**
+ * --prod: deletes dist images that nothing can load. An image is kept if its file name appears in any
+ * dist HTML/CSS/JS/JSON/webmanifest file, or its slot is in manifest.js (the Sheet can name any manifest
+ * slot at runtime: add-on photos, pkg-<id>, services photoSlot).
+ */
+function pruneUnusedImages() {
+  const imgDir = path.join(distDir, 'assets', 'img');
+  if (!fs.existsSync(imgDir)) return;
+  const texts = [];
+  const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).forEach((e) => {
+    const p = path.join(dir, e.name);
+    if (e.isDirectory()) walk(p);
+    else if (/\.(html|css|js|json|webmanifest)$/.test(e.name)) texts.push(fs.readFileSync(p, 'utf8'));
+  });
+  walk(distDir);
+  const all = texts.join('\n');
+  const sandbox = { window: {} };
+  try {
+    vm.runInNewContext(fs.readFileSync(path.join(imgDir, 'manifest.js'), 'utf8'), sandbox);
+  } catch (e) {
+    console.warn('[IMG] manifest.js unreadable; no images pruned');
+    return;
+  }
+  const slots = new Set(Object.keys((sandbox.window.NSG && sandbox.window.NSG.IMG) || {}));
+  const removed = [];
+  fs.readdirSync(imgDir).forEach((f) => {
+    if (f === 'manifest.js' || all.includes(f)) return;
+    const m = f.match(/^(.+)-(\d+)\.webp$/);
+    if (m && slots.has(m[1])) return;
+    removed.push(f);
+    fs.unlinkSync(path.join(imgDir, f));
+  });
+  if (removed.length) console.log(`[IMG] --prod excluded ${removed.length} unreferenced image(s): ${removed.join(', ')}`);
+}
+
+/**
+ * Cloudflare Pages _redirects from src/_redirects. Cloudflare follows a redirect even when a file exists, and
+ * serves page.html at /page (redirecting /page.html there), so a rule whose source is an emitted page would hide
+ * that page or loop; such rules are left out and listed. Fragments and comments pass through unchanged.
+ */
+function writeRedirects(emittedPages) {
+  const file = path.join(srcDir, '_redirects');
+  if (!fs.existsSync(file)) return;
+  const skipped = [];
+  const lines = fs.readFileSync(file, 'utf8').split('\n').filter((line) => {
+    const from = line.trim().split(/\s+/)[0];
+    if (!from || from.startsWith('#')) return true;
+    const page = from.replace(/^\//, '').replace(/\.html$/, '') + '.html';
+    if (emittedPages.includes(page)) { skipped.push(from); return false; }
+    return true;
+  });
+  fs.writeFileSync(path.join(distDir, '_redirects'), lines.join('\n'), 'utf8');
+  if (skipped.length) console.log(`[REDIRECTS] left out (live page at that URL): ${skipped.join(', ')}`);
+}
+
+/**
+ * --prod: appends ?v=<content hash> to css/*.css, js/*.js and assets/img/manifest.js references in HTML
+ * (href, src, data-lazy-script), so the 7-day cache in _headers never serves old CSS/JS after a deploy.
+ */
+function versionAssetRefs() {
+  const crypto = require('crypto');
+  const hashes = {};
+  const hashOf = (rel) => {
+    if (!(rel in hashes)) {
+      const f = path.join(distDir, rel);
+      hashes[rel] = fs.existsSync(f) ? crypto.createHash('md5').update(fs.readFileSync(f)).digest('hex').slice(0, 8) : '';
+    }
+    return hashes[rel];
+  };
+  fs.readdirSync(distDir).filter((f) => f.endsWith('.html')).forEach((page) => {
+    const file = path.join(distDir, page);
+    const html = fs.readFileSync(file, 'utf8').replace(
+      /\b(href|src|data-lazy-script)="((?:css|js)\/[\w.-]+\.(?:css|js)|assets\/img\/manifest\.js)"/g,
+      (m, attr, rel) => (hashOf(rel) ? `${attr}="${rel}?v=${hashOf(rel)}"` : m)
+    );
+    fs.writeFileSync(file, html, 'utf8');
+  });
+}
+
+/** Empty, or an obvious placeholder ([TBD: ...], [MISSING: ...], YOUR_..., example.com) */
+function isPlaceholder(v) {
+  const s = String(v == null ? '' : v).trim();
+  return !s || /\[(TBD|MISSING)|\bTBD\b|YOUR[_-]|PLACEHOLDER|example\.com/i.test(s);
+}
+
+/**
+ * --launch: refuses to publish while placeholders or test settings remain. Prints every problem, then exits 1.
+ * The live reviews check needs the network; if the API cannot be reached it is a warning, not a failure.
+ */
+async function launchChecks() {
+  const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
+  const site = JSON.parse(fs.readFileSync(sitePath, 'utf8'));
+  const problems = [];
+  const notes = [];
+
+  // 1. [TBD: ...] / [MISSING: ...] in anything a visitor receives (scripts are skipped: their code tests for "[TBD")
+  const found = {};
+  const scan = (dir) => fs.readdirSync(dir, { withFileTypes: true }).forEach((e) => {
+    const p = path.join(dir, e.name);
+    const rel = path.relative(distDir, p);
+    if (e.isDirectory()) return scan(p);
+    if (!/\.(html|xml|txt|json|webmanifest)$/.test(e.name) && !['js/config.js', 'js/content.ui.js'].includes(rel)) return;
+    for (const m of fs.readFileSync(p, 'utf8').matchAll(/\[(?:TBD|MISSING)[^\]\n]{0,120}\]?/g)) {
+      (found[m[0]] = found[m[0]] || new Set()).add(rel);
+    }
+  });
+  scan(distDir);
+  Object.entries(found).forEach(([text, files]) => {
+    const list = [...files];
+    problems.push(`placeholder ${text} in ${list.slice(0, 4).join(', ')}${list.length > 4 ? ` (+${list.length - 4} more)` : ''}`);
+  });
+
+  // 2. config.json
+  if (config.USE_MOCK === true) problems.push('content/config.json: USE_MOCK is true (the site would show mock data)');
+  if (isPlaceholder(config.API_URL) || !/^https:\/\/script\.google\.com\/macros\/s\/[\w-]+\/exec$/.test(config.API_URL)) {
+    problems.push(`content/config.json: API_URL is empty or not an Apps Script /exec URL ("${config.API_URL || ''}")`);
+  }
+  ['PHONE', 'WHATSAPP', 'SITE_URL'].forEach((k) => {
+    if (isPlaceholder(config[k])) problems.push(`content/config.json: ${k} is empty or a placeholder ("${config[k] || ''}")`);
+  });
+  if (!isPlaceholder(config.SITE_URL) && !/^https:\/\//.test(config.SITE_URL)) problems.push(`content/config.json: SITE_URL must start with https:// ("${config.SITE_URL}")`);
+
+  // 3. Sample reviews: in site.json, and in the live reviews feed
+  const walk = (v, where) => {
+    if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${where}[${i}]`));
+    else if (v && typeof v === 'object') Object.entries(v).forEach(([k, x]) => {
+      if (k === 'name' && /^sample/i.test(String(x).trim())) problems.push(`content/site.json ${where}.name is a sample review ("${x}")`);
+      walk(x, where ? `${where}.${k}` : k);
+    });
+  };
+  walk(site, '');
+  if (!isPlaceholder(config.API_URL)) {
+    try {
+      const res = await fetch(`${config.API_URL}?action=reviews`, { signal: AbortSignal.timeout(25000) });
+      const json = await res.json();
+      const rows = (json.data && json.data.reviews) || json.reviews || [];
+      rows.filter((r) => /^sample/i.test(String(r.name || '').trim())).forEach((r) => problems.push(`Reviews sheet: approved review "${r.name}" looks like a sample row`));
+      notes.push(`live reviews feed checked: ${rows.length} approved review(s)`);
+    } catch (e) {
+      notes.push(`WARNING: live reviews feed not checked (${e.message}); check the Reviews tab for "Sample" names by hand`);
+    }
+  }
+
+  // 4. payPageUrl lives in the Apps Script Config tab, which the website cannot read
+  if (fs.existsSync(path.join(distDir, 'pay.html'))) {
+    notes.push('pay.html is live: in the Sheet Config tab, payPageUrl must be SITE_URL + "/pay.html" with no [TBD] (run NSG > Launch check in the Sheet)');
+  }
+
+  console.log('\n--- Launch check ---');
+  notes.forEach((n) => console.log(`  note: ${n}`));
+  if (problems.length) {
+    console.error(`LAUNCH BLOCKED: ${problems.length} problem(s) to fix first:`);
+    problems.forEach((p, i) => console.error(`  ${i + 1}. ${p}`));
+    process.exit(1);
+  }
+  console.log('LAUNCH CHECK PASSED');
+}
+
 function build() {
   console.log('--- Starting Build ---');
   const startTime = Date.now();
@@ -390,15 +617,16 @@ function build() {
   // Ensure vendor/qrcode.js is copied from node_modules if present
   const qrcodeSrc = path.join(rootDir, 'node_modules', 'qrcode-generator', 'dist', 'qrcode.js');
   const vendorDir = path.join(srcDir, 'js', 'vendor');
-  if (fs.existsSync(qrcodeSrc)) {
+  const qrcodeDest = path.join(vendorDir, 'qrcode.js');
+  // Only when it differs: rewriting a file inside src/ would retrigger --watch in a loop
+  if (fs.existsSync(qrcodeSrc) && (!fs.existsSync(qrcodeDest) || !fs.readFileSync(qrcodeSrc).equals(fs.readFileSync(qrcodeDest)))) {
     if (!fs.existsSync(vendorDir)) fs.mkdirSync(vendorDir, { recursive: true });
-    fs.copyFileSync(qrcodeSrc, path.join(vendorDir, 'qrcode.js'));
+    fs.copyFileSync(qrcodeSrc, qrcodeDest);
   }
 
-  // Clean / prepare dist
-  if (!fs.existsSync(distDir)) {
-    fs.mkdirSync(distDir, { recursive: true });
-  }
+  // Start from an empty dist so files removed from src (old scripts, pages, images) never ship
+  fs.rmSync(distDir, { recursive: true, force: true });
+  fs.mkdirSync(distDir, { recursive: true });
 
   // Copy assets, css, js from src to dist
   const subdirs = ['css', 'js', 'assets'];
@@ -427,12 +655,31 @@ window.NSG.UI = ${JSON.stringify(siteData.ui || {}, null, 2)};
 `;
   fs.writeFileSync(path.join(jsDir, 'content.ui.js'), uiJsContent, 'utf8');
 
+  // --prod: no mock data or mock branches in shipped JS (before trimming, which drops the marker comments)
+  if (isProd) stripMockBlocks(path.join(distDir, 'js'));
+
+  // --prod: minified CSS (JS stays as trimDistJs leaves it: a safe JS minifier would need a dependency)
+  if (isProd && !args.includes('--no-minify')) {
+    const cssDir = path.join(distDir, 'css');
+    let before = 0;
+    let after = 0;
+    fs.readdirSync(cssDir).filter((n) => n.endsWith('.css')).forEach((n) => {
+      const file = path.join(cssDir, n);
+      const css = fs.readFileSync(file, 'utf8');
+      const min = minifyCss(css);
+      before += css.length;
+      after += min.length;
+      fs.writeFileSync(file, min, 'utf8');
+    });
+    console.log(`[CSS] minified: ${before} -> ${after} bytes`);
+  }
+
   // Trim comments and indentation from emitted JS (Home JS budget); keep the original if the result does not parse
   trimDistJs(path.join(distDir, 'js'));
 
-  // Cloudflare Pages redirects
-  const redirectsSrc = path.join(srcDir, '_redirects');
-  if (fs.existsSync(redirectsSrc)) fs.copyFileSync(redirectsSrc, path.join(distDir, '_redirects'));
+  // Cloudflare Pages headers (_redirects is written after the pages, below)
+  const headersSrc = path.join(srcDir, '_headers');
+  if (fs.existsSync(headersSrc)) fs.copyFileSync(headersSrc, path.join(distDir, '_headers'));
 
   // Process HTML templates in src/
   const imgAssetsDir = path.join(srcDir, 'assets', 'img');
@@ -449,6 +696,8 @@ window.NSG.UI = ${JSON.stringify(siteData.ui || {}, null, 2)};
       console.log(`Skipping feature page: ${file} (feature disabled)`);
       continue;
     }
+    // Dev-only pages (styleguide, any test/demo page) never ship in --prod
+    if (isProd && DEV_PAGE.test(file)) continue;
 
     const templateContent = fs.readFileSync(path.join(srcDir, file), 'utf8');
     const processed = processTemplate(templateContent, siteData, configData, slotsRegistry, imgAssetsDir, file);
@@ -456,40 +705,42 @@ window.NSG.UI = ${JSON.stringify(siteData.ui || {}, null, 2)};
     emittedPages.push(file);
   }
 
-  // Remove images left in dist by earlier builds whose source image is gone (e.g. a replaced photo had a 1600 size)
-  const distImg = path.join(distDir, "assets", "img");
-  if (fs.existsSync(distImg)) {
-    fs.readdirSync(distImg).forEach((f) => {
-      if (!fs.existsSync(path.join(imgAssetsDir, f))) fs.unlinkSync(path.join(distImg, f));
+  writeRedirects(emittedPages);
+
+  if (isProd) {
+    versionAssetRefs();
+    // No source maps in production (none are generated today; this keeps it that way)
+    const dropMaps = (dir) => fs.readdirSync(dir, { withFileTypes: true }).forEach((e) => {
+      const p = path.join(dir, e.name);
+      if (e.isDirectory()) dropMaps(p);
+      else if (e.name.endsWith('.map')) fs.unlinkSync(p);
     });
+    dropMaps(distDir);
+    pruneUnusedImages();
   }
 
-  // Remove pages left in dist by earlier builds that are no longer emitted (e.g. cars.html)
-  fs.readdirSync(distDir).forEach((f) => {
-    if (f.endsWith('.html') && !emittedPages.includes(f)) fs.unlinkSync(path.join(distDir, f));
-  });
+  // Emit sitemap.xml and robots.txt from SITE_URL; public pages only (noindex and dev pages left out).
+  // Without a real SITE_URL there is no sitemap (never a guessed domain); --launch fails on it.
+  const siteUrl = isPlaceholder(configData.SITE_URL) ? '' : configData.SITE_URL.replace(/\/$/, '');
+  if (!siteUrl) console.warn('[SITEMAP] SITE_URL is not set in content/config.json: sitemap.xml not written');
 
-  // Emit sitemap.xml (private pages excluded: status, guest pay page, staff app)
-  const siteUrl = (configData.SITE_URL && !configData.SITE_URL.startsWith('[TBD'))
-    ? configData.SITE_URL.replace(/\/$/, '')
-    : 'https://nsgroyalresort.com';
-
-  const NOINDEX_PAGES = ['status.html', 'pay.html', 'staff.html'];
-  const sitemapPages = emittedPages.filter((p) => !NOINDEX_PAGES.includes(p));
+  const NOINDEX_PAGES = ['status.html', 'pay.html', 'staff.html', '404.html'];
+  const sitemapPages = emittedPages.filter((p) => !NOINDEX_PAGES.includes(p) && !DEV_PAGE.test(p));
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${sitemapPages
       .map((p) => {
-        const loc = p === 'index.html' ? `${siteUrl}/` : `${siteUrl}/${p}`;
+        // Cloudflare Pages serves page.html at /page (and redirects /page.html there): list the final URL
+        const loc = p === 'index.html' ? `${siteUrl}/` : `${siteUrl}/${p.replace(/\.html$/, '')}`;
         return `  <url>\n    <loc>${loc}</loc>\n    <changefreq>weekly</changefreq>\n  </url>`;
       })
       .join('\n')}
 </urlset>
 `;
-  fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapXml, 'utf8');
+  if (siteUrl) fs.writeFileSync(path.join(distDir, 'sitemap.xml'), sitemapXml, 'utf8');
 
   // Emit robots.txt
-  const robotsTxt = `User-agent: *\nAllow: /\n\nSitemap: ${siteUrl}/sitemap.xml\n`;
+  const robotsTxt = `User-agent: *\nAllow: /\n` + (siteUrl ? `\nSitemap: ${siteUrl}/sitemap.xml\n` : '');
   fs.writeFileSync(path.join(distDir, 'robots.txt'), robotsTxt, 'utf8');
 
   const elapsed = Date.now() - startTime;
@@ -554,9 +805,17 @@ const args = process.argv.slice(2);
 const isWatch = args.includes('--watch');
 const isServe = args.includes('--serve');
 const isProd = args.includes('--prod');
+const DEV_PAGE = /^(styleguide|test|demo)\b.*\.html$/i;
 let omittedGalleryCount = 0;
 
+if (args.includes('--launch') && !isProd) {
+  console.error('--launch needs --prod (it checks the production build): node tools/build.js --prod --launch');
+  process.exit(1);
+}
+
 build();
+
+if (args.includes('--launch')) launchChecks();
 
 if (isWatch) {
   console.log('Watching for changes in src/, content/, and tools/slots.json...');

@@ -119,22 +119,6 @@ img, svg {
   background-color: var(--bg-alt);
 }
 
-.bg-emerald {
-  background-color: var(--emerald-900);
-  color: var(--ivory);
-}
-
-.bg-emerald h1,
-.bg-emerald h2,
-.bg-emerald h3,
-.bg-emerald h4 {
-  color: var(--ivory);
-}
-
-.bg-emerald .text-muted {
-  color: var(--gold-light);
-}
-
 .text-muted {
   color: var(--text-muted);
 }

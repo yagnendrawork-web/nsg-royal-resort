@@ -1,0 +1,23 @@
+# Cloudflare Pages response headers (copied to dist by tools/build.js).
+# Every response gets the security headers and no-cache (pages are always revalidated).
+# Static files then swap no-cache for a 7-day cache: "! Cache-Control" removes the value set by /* first,
+# because Cloudflare joins repeated headers with a comma. CSS/JS links carry ?v=<content hash> in --prod
+# builds, so a deploy never mixes new HTML with week-old CSS or JS.
+/*
+  Cache-Control: no-cache
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+/assets/*
+  ! Cache-Control
+  Cache-Control: public, max-age=604800
+
+/css/*
+  ! Cache-Control
+  Cache-Control: public, max-age=604800
+
+/js/*
+  ! Cache-Control
+  Cache-Control: public, max-age=604800

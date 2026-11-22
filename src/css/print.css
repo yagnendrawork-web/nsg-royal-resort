@@ -23,13 +23,11 @@
   /* Hide navigation, buttons, forms, footers, headers */
   .site-header,
   .site-footer,
-  .offers-bar,
   .sticky-mobile-bar,
   .no-print,
   .btn,
   button,
   form,
-  .status-form-section,
   .section-tag,
   .gold-hairline,
   .section-header {

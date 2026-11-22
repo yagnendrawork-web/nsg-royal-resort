@@ -36,7 +36,7 @@ function checkHtml(filePath) {
     const url = m[1];
     if (url.startsWith('#') || url.startsWith('http://') || url.startsWith('https://') || url.startsWith('mailto:') || url.startsWith('tel:') || url.startsWith('javascript:')) continue;
     if (url.startsWith('assets/') || url.startsWith('css/') || url.startsWith('js/')) {
-      if (!fileExistsInDist(url)) {
+      if (!fileExistsInDist(url.split('?')[0])) { // --prod adds ?v=<hash> to css/js links
         errors.push(`${fileName}: unresolved ${m[1].startsWith('href') ? 'href' : 'src'}="${url}"`);
       }
     }
@@ -97,11 +97,14 @@ if (fs.existsSync(videoDir)) {
 
 // Private pages (guest pay page, staff app): noindex, not in the sitemap, not linked from any page; staff manifest present
 const sitemap = fs.existsSync(path.join(distDir, 'sitemap.xml')) ? fs.readFileSync(path.join(distDir, 'sitemap.xml'), 'utf8') : '';
-['pay.html', 'staff.html'].forEach((page) => {
+// Not for search engines: noindex and not in the sitemap (styleguide is dev only and never ships in --prod)
+['pay.html', 'staff.html', 'status.html', '404.html', 'styleguide.html'].forEach((page) => {
   const file = path.join(distDir, page);
-  if (!fs.existsSync(file)) return errors.push(`${page}: missing from dist`);
-  if (!/<meta name="robots" content="noindex/.test(fs.readFileSync(file, 'utf8'))) errors.push(`${page}: no robots noindex meta`);
-  if (sitemap.includes(page)) errors.push(`sitemap.xml: lists private page ${page}`);
+  if (page !== 'styleguide.html' && !fs.existsSync(file)) return errors.push(`${page}: missing from dist`);
+  if (page !== 'styleguide.html' && !/<meta name="robots" content="noindex/.test(fs.readFileSync(file, 'utf8'))) errors.push(`${page}: no robots noindex meta`);
+  if (sitemap.includes(`/${page}<`) || sitemap.includes(`/${page.replace(/\.html$/, '')}<`)) errors.push(`sitemap.xml: lists non-public page ${page}`);
+});
+['pay.html', 'staff.html'].forEach((page) => {
   htmlFiles.forEach((f) => {
     if (path.basename(f) !== page && new RegExp(`href="${page.replace('.', '\\.')}`).test(fs.readFileSync(f, 'utf8'))) errors.push(`${path.relative(distDir, f)}: links to private page ${page}`);
   });

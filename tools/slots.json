@@ -25,19 +25,22 @@
     "alt": "Self-drive cars",
     "focal": "50% 50%",
     "sizes": "100vw",
-    "use": "amenity-cars"
+    "use": "amenity-cars",
+    "priority": true
   },
   "banner-gallery": {
     "ratio": "21/9",
     "focal": "50% 50%",
     "sizes": "100vw",
-    "alt": "The resort at night"
+    "alt": "The resort at night",
+    "priority": true
   },
   "banner-contact": {
     "ratio": "21/9",
     "focal": "50% 60%",
     "sizes": "100vw",
-    "alt": "Front of the resort at night"
+    "alt": "Front of the resort at night",
+    "priority": true
   },
   "pkg-whole": {
     "ratio": "4/3",
@@ -465,7 +468,8 @@
     "ratio": "21/9",
     "focal": "40% 45%",
     "sizes": "100vw",
-    "alt": "Guests at a buffet by the pool"
+    "alt": "Guests at a buffet by the pool",
+    "priority": true
   },
   "food-01": {
     "ratio": "3/2",
@@ -543,14 +547,15 @@
     "ratio": "21/9",
     "focal": "50% 50%",
     "sizes": "100vw",
-    "priority": false,
+    "priority": true,
     "alt": "Haldi stage with a marigold ring at the resort"
   },
   "banner-amenities": {
     "ratio": "21/9",
     "focal": "50% 55%",
     "sizes": "100vw",
-    "alt": "Living room and kitchen"
+    "alt": "Living room and kitchen",
+    "priority": true
   },
   "penthouse-lounge": {
     "ratio": "4/3",

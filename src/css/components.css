@@ -448,101 +448,6 @@ html {
 }
 
 /* --------------------------------------------------------------------------
-   2. Offers Bar
-   -------------------------------------------------------------------------- */
-.offers-bar {
-  background-color: var(--emerald-900);
-  color: var(--ivory);
-  font-size: 0.875rem;
-  font-weight: 500;
-  font-family: var(--font-body);
-  border-bottom: 1px solid rgba(194, 155, 74, 0.25);
-  overflow: hidden;
-  z-index: 400;
-}
-
-.offers-bar[hidden] {
-  display: none !important;
-}
-
-.offers-bar-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  max-width: var(--container-max);
-  margin: 0 auto;
-  padding: var(--space-2) var(--space-6);
-  gap: var(--space-6);
-  overflow: hidden;
-}
-
-.offers-marquee-wrapper {
-  flex: 1;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.offers-track {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-8);
-}
-
-.offers-item {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  color: var(--gold-light);
-}
-
-.offers-item a {
-  color: var(--gold-light);
-  text-decoration: underline;
-}
-
-.offers-dismiss-btn {
-  background: rgba(251, 248, 242, 0.1);
-  border: 1px solid rgba(251, 248, 242, 0.25);
-  color: var(--ivory);
-  cursor: pointer;
-  padding: var(--space-1) var(--space-3);
-  min-height: 28px;
-  min-width: 28px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--r-btn);
-  font-size: 1.1rem;
-  line-height: 1;
-  transition: all var(--transition);
-}
-
-.offers-dismiss-btn:hover {
-  background: rgba(251, 248, 242, 0.2);
-  border-color: var(--line-strong);
-  color: var(--gold-light);
-}
-
-/* Mobile: stack items vertically for readability */
-@media (max-width: 480px) {
-  .offers-bar-container {
-    flex-direction: column;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-4);
-    text-align: center;
-  }
-
-  .offers-marquee-wrapper {
-    width: 100%;
-  }
-
-  .offers-track {
-    justify-content: center;
-  }
-}
-
-/* --------------------------------------------------------------------------
    3. Sticky Mobile Bar (SPEC: hidden on book.html, visible on small screens)
    -------------------------------------------------------------------------- */
 .sticky-mobile-bar {
@@ -666,15 +571,6 @@ html {
   color: var(--on-gold);
 }
 
-.bg-emerald .btn-secondary {
-  color: var(--ivory);
-}
-
-.bg-emerald .btn-secondary:hover {
-  background-color: var(--gold);
-  color: var(--on-gold);
-}
-
 /* Ghost Button */
 .btn-ghost {
   background-color: transparent;
@@ -685,15 +581,6 @@ html {
 .btn-ghost:hover {
   background-color: rgba(194, 155, 74, 0.15);
   color: var(--heading);
-}
-
-.bg-emerald .btn-ghost {
-  color: var(--ivory);
-}
-
-.bg-emerald .btn-ghost:hover {
-  background-color: rgba(232, 213, 163, 0.15);
-  color: var(--gold-light);
 }
 
 .btn:disabled,
@@ -763,10 +650,6 @@ html {
   margin-bottom: var(--space-2);
 }
 
-.bg-emerald .section-tag {
-  color: var(--gold-light);
-}
-
 .section-title {
   margin-bottom: var(--space-3);
 }
@@ -785,19 +668,9 @@ html {
   font-size: 1.0625rem;
 }
 
-.bg-emerald .section-subtitle {
-  color: rgba(251, 248, 242, 0.85);
-}
-
 /* --------------------------------------------------------------------------
    7. Slot Frames and Placeholders (SPEC Section 5)
    -------------------------------------------------------------------------- */
-.slot-frame {
-  position: relative;
-  border-radius: var(--r-card);
-  overflow: hidden;
-  width: 100%;
-}
 
 .slot-img {
   width: 100%;
@@ -924,45 +797,6 @@ body.show-slots .slot-ph-label {
   font-size: 0.9375rem;
   color: var(--text-muted);
   line-height: 1.5;
-}
-
-/* Event Card */
-.card-event {
-  background-color: rgba(251, 248, 242, 0.05);
-  border: 1px solid rgba(232, 213, 163, 0.3);
-  border-radius: var(--r-card);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  transition: transform var(--transition);
-}
-
-.card-event:hover {
-  transform: translateY(-4px);
-}
-
-.card-event-media {
-  width: 100%;
-}
-
-.card-event-body {
-  padding: var(--space-5);
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-.card-event-title {
-  font-size: 1.35rem;
-  color: var(--ivory);
-  margin-bottom: var(--space-2);
-}
-
-.card-event-desc {
-  font-size: 0.9375rem;
-  color: var(--gold-light);
-  line-height: 1.5;
-  margin-bottom: var(--space-4);
 }
 
 /* Car Card */
@@ -1549,9 +1383,7 @@ body.show-slots .slot-ph-label {
 /* Secondary buttons on dark or photo backgrounds */
 .hero-section .btn-secondary,
 .events-band .btn-secondary,
-.final-cta .btn-secondary,
-.photo-band .btn-secondary,
-.bg-emerald .btn-secondary {
+.final-cta .btn-secondary {
   color: var(--ivory);
   border-color: var(--line-strong);
   background-color: rgba(251, 248, 242, 0.06);
@@ -1559,9 +1391,7 @@ body.show-slots .slot-ph-label {
 
 .hero-section .btn-secondary:hover,
 .events-band .btn-secondary:hover,
-.final-cta .btn-secondary:hover,
-.photo-band .btn-secondary:hover,
-.bg-emerald .btn-secondary:hover {
+.final-cta .btn-secondary:hover {
   background-color: rgba(251, 248, 242, 0.16);
   color: var(--ivory);
 }
@@ -1630,9 +1460,7 @@ body.show-slots .slot-ph-label {
   margin-bottom: var(--space-3);
 }
 
-.bg-emerald .section-tag,
-.events-band .section-tag,
-.photo-band .section-tag {
+.events-band .section-tag {
   color: var(--gold-light);
 }
 
@@ -1670,13 +1498,10 @@ body.show-slots .slot-ph-label {
    The hover shadow sits on ::after and only its opacity animates. */
 
 .card-amenity,
-.card-event,
 .card-car,
 .card-review,
 .card-contact,
-.capacity-card,
-.info-card,
-.step-card {
+.info-card {
   position: relative;
   overflow: visible;
   border-radius: var(--r-card);
@@ -1688,15 +1513,12 @@ body.show-slots .slot-ph-label {
 .card-car,
 .card-review,
 .card-contact,
-.capacity-card,
-.info-card,
-.step-card {
+.info-card {
   background-color: var(--surface);
   border: 1px solid var(--line);
 }
 
 .card-amenity::after,
-.card-event::after,
 .card-car::after,
 .card-contact::after {
   content: '';
@@ -1709,23 +1531,19 @@ body.show-slots .slot-ph-label {
   transition: opacity var(--dur) var(--ease-out);
 }
 
-.card-amenity-media,
-.card-event-media {
+.card-amenity-media {
   overflow: hidden;
   border-radius: var(--r-card) var(--r-card) 0 0;
 }
 
 .card-amenity-media .slot-img,
-.card-amenity-media .slot-ph,
-.card-event-media .slot-img,
-.card-event-media .slot-ph {
+.card-amenity-media .slot-ph {
   border-radius: 0;
   border: none;
   transition: transform var(--dur-slow) var(--ease-out), scale 900ms var(--ease-out);
 }
 
-.card-amenity:hover,
-.card-event:hover {
+.card-amenity:hover {
   transform: none;
   box-shadow: var(--shadow-md);
 }
@@ -1733,45 +1551,25 @@ body.show-slots .slot-ph-label {
 @media (hover: hover) {
   
   .card-amenity:hover,
-.card-event:hover,
 .card-car:hover,
 .card-contact:hover {
     transform: translateY(-4px);
   }
   
   .card-amenity:hover::after,
-.card-event:hover::after,
 .card-car:hover::after,
 .card-contact:hover::after {
     opacity: 1;
   }
   
   .card-amenity:hover .slot-img,
-.card-amenity:hover .slot-ph,
-.card-event:hover .slot-img,
-.card-event:hover .slot-ph {
+.card-amenity:hover .slot-ph {
     transform: scale(1.05);
   }
 }
 
-.card-amenity-title,
-.card-event-title {
+.card-amenity-title {
   font-size: 1.45rem;
-}
-
-.card-event {
-  background: rgba(251, 248, 242, 0.05);
-  border: 1px solid rgba(232, 213, 163, 0.28);
-  box-shadow: none;
-}
-
-.card-event-desc {
-  color: rgba(251, 248, 242, 0.82);
-}
-
-.card-event-body .btn {
-  align-self: flex-start;
-  margin-top: auto;
 }
 
 /* Badges */
@@ -2277,7 +2075,6 @@ html.js-reveal .reveal:not(.is-revealed) .pkg-slider {
 .extra-guest-note { margin: var(--space-2) 0 0; padding: var(--space-2) var(--space-3); border-left: 3px solid var(--warn); border-radius: var(--r-input); background-color: rgba(183, 121, 31, 0.1); font-size: 0.875rem; font-weight: 600; color: var(--text); }
 .extra-guest-note[hidden] { display: none; }
 
-
 /* ==========================================================================
    19. Theme: light/dark switch (theme.js), circular reveal, dark-only glows
    ========================================================================== */
@@ -2400,8 +2197,7 @@ html.theme-fade *:not(.theme-toggle, .theme-toggle *)::after { transition: backg
   :root[data-theme="dark"] .pk-from strong,
   :root[data-theme="dark"] .payment-amount,
   :root[data-theme="dark"] .pay-big strong,
-  :root[data-theme="dark"] .fp-price,
-  :root[data-theme="dark"] .food-card-price { text-shadow: var(--glow-text); }
+  :root[data-theme="dark"] .fp-price { text-shadow: var(--glow-text); }
   :root[data-theme="dark"] .pk-from strong { color: var(--gold-bright); }
   /* Calendar: emerald selection would sink into the dark card; use the emerald accent */
   :root[data-theme="dark"] .calendar-day--selected,

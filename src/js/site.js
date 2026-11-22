@@ -34,11 +34,11 @@ window.NSG = window.NSG || {};
 
     if (widths && widths.length > 0) {
       if (slotName === 'og-image') {
-        return `<img class="slot-img${safeClass}" src="assets/img/og-image.jpg" width="1200" height="630" alt="${safeAlt}">`;
+        return `<img class="slot-img${safeClass}" src="assets/img/og-image.jpg" width="1200" height="630" alt="${safeAlt}" loading="lazy" decoding="async">`;
       }
       const srcset = widths.map((w) => `assets/img/${file}-${w}.webp ${w}w`).join(', ');
       const src = `assets/img/${file}-${widths[0]}.webp`;
-      return `<img class="slot-img${safeClass}" src="${src}" srcset="${srcset}" alt="${safeAlt}" loading="lazy" decoding="async">`;
+      return `<img class="slot-img${safeClass}" src="${src}" srcset="${srcset}" width="1200" height="900" alt="${safeAlt}" loading="lazy" decoding="async">`;
     }
 
     return `<div class="slot-ph${safeClass}" data-slot="${slotName}" data-label="${slotName}">

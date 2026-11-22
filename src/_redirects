@@ -1,1 +1,12 @@
+# Cloudflare Pages redirects (copied to dist by tools/build.js).
+# Old Hostinger URLs. Cloudflare follows a redirect even when a page exists at that path, and it already
+# serves /page.html at /page, so build.js drops any rule whose source is a page it emits (printed in the
+# build log). That keeps the live Amenities, Gallery, Contact and Cars pages reachable (no redirect loops),
+# and brings the /cars.html rule back on its own if FEATURES.cars is turned off.
+/amenities /stay.html 301
+/gallery /gallery.html 301
+/contact /contact.html 301
+/blogs / 301
+/blog / 301
 /cars.html /stay.html#car-rental 301
+/home / 301

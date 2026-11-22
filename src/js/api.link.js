@@ -10,9 +10,11 @@ window.NSG = window.NSG || {};
 
   const api = window.NSG.api = window.NSG.api || {};
   const M = api._mock || {};
+  /* MOCK:START */
   // ?mock=1 on pay.html / staff.html switches to mock data for this page view only (config.json untouched)
   const MOCK_PARAM = typeof location !== 'undefined' && /[?&]mock=1\b/.test(location.search);
   if (MOCK_PARAM && window.NSG.CONFIG) window.NSG.CONFIG.USE_MOCK = true;
+  /* MOCK:END */
   const TOKEN_KEY = 'nsg_staff_token';
   const TIMEOUT_MS = 15000; // Apps Script cold starts are slow; same reason getInfo/addons use 15 s
   const cfg = () => window.NSG.CONFIG || { USE_MOCK: true, API_URL: '' };
@@ -86,7 +88,9 @@ window.NSG = window.NSG || {};
   const post = (body) => request(cfg().API_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify(body) });
 
   function staffCall(action, payload) {
+    /* MOCK:START */
     if (cfg().USE_MOCK) return Promise.resolve().then(() => mockStaff(action, payload || {}));
+    /* MOCK:END */
     if (action !== 'staffLogin' && !staffToken) { authLost('AUTH'); return Promise.resolve(fail('AUTH')); }
     const body = Object.assign({ action: action }, payload || {});
     if (action !== 'staffLogin') body.staffToken = staffToken;
@@ -110,7 +114,9 @@ window.NSG = window.NSG || {};
   async function getByToken(token) {
     const t = String(token || '').trim();
     if (!t) return fail('NOT_FOUND');
+    /* MOCK:START */
     if (cfg().USE_MOCK) return mockGetByToken(t);
+    /* MOCK:END */
     const r = await request(`${cfg().API_URL}?action=getByToken&t=${encodeURIComponent(t)}`);
     if (!r.ok) return r;
     return { ok: true, data: { booking: normBooking(r.data.booking), payment: r.data.payment || null } };
@@ -174,6 +180,7 @@ window.NSG = window.NSG || {};
     fmt: { dayLabel: dayLabel, inr: inr, nights: nightsBetween, cleanPhone: cleanPhone, today: () => M.today(), addDays: (d, n) => M.addDays(d, n) }
   });
 
+  /* MOCK:START */
   // =========================================================================
   // MOCK MODE (mirrors the server rules in docs/api.md; data in localStorage nsg_mock_*)
   // =========================================================================
@@ -635,4 +642,5 @@ window.NSG = window.NSG || {};
       default: return fail('GENERIC_ERROR', { detail: 'Unknown action ' + action });
     }
   }
+  /* MOCK:END */
 })();

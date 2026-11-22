@@ -10,7 +10,8 @@
     "build:prod": "node tools/build.js --prod",
     "dev": "node tools/build.js --watch --serve",
     "check": "node tools/check.js",
-    "check:launch": "node tools/build.js --prod && node tools/check.js --launch"
+    "check:launch": "node tools/build.js --prod && node tools/check.js --launch",
+    "launch": "node tools/build.js --prod --launch && node tools/check.js"
   },
   "devDependencies": {
     "qrcode-generator": "^2.0.4",
